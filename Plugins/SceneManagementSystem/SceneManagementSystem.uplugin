@@ -1,0 +1,10 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "Scene Management System",
+  "Description": "GameplayTag-driven functional scenes within a map, with Blueprint lifecycle callbacks and asynchronous completion.",
+  "Category": "Gameplay",
+  "CanContainContent": true,
+  "Modules": [{"Name": "SceneManagementSystem", "Type": "Runtime", "LoadingPhase": "Default"}]
+}

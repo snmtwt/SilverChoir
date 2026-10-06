@@ -1,0 +1,27 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="理解三个时间点的区别，确定哪些帧可以接入、何时完成对齐。"><title>时间参数与时间轴 · HMS 使用手册</title><link rel="stylesheet" href="assets/manual.css"></head><body><a class="skip" href="#main">跳到正文</a><aside class="sidebar" aria-label="使用手册章节导航"><div class="brand"><div class="mark" aria-hidden="true">HMS</div><div><b>Hybrid Motion System</b><small>插件使用手册</small></div></div><div class="nav-label">智能对象交互动画</div><nav aria-label="切换章节页面"><a href="manual.html">01　从这里开始</a><a href="interaction-create.html">02　创建通知与轨迹</a><a href="interaction-timing.html" aria-current="page">03　时间参数与时间轴</a><a href="interaction-notifies.html">04　通知含义详解</a><a href="interaction-trajectories.html">05　轨迹曲线怎么读</a><a href="interaction-regenerate.html">06　重新生成与覆盖</a><a href="interaction-runtime.html">07　接入交互运行流程</a><a href="interaction-help.html">08　排查问题与检查清单</a></nav><div class="nav-label">角色与基础运动</div><nav aria-label="角色测试章节"><a href="character-testing.html">09　运动、转身与布娃娃测试</a></nav><div class="nav-label">掩体状态</div><nav aria-label="掩体状态章节"><a href="cover-state.html">10　掩体状态与动画蓝图</a></nav><div class="nav-label">武器动画</div><nav aria-label="武器动画章节"><a href="weapon-animation.html">11　武器姿态与瞄准偏移</a></nav><nav aria-label="掩体探出章节"><a href="cover-peek.html">12　持枪转身探出掩体</a></nav><nav aria-label="动画查询章节"><a href="animation-query.html">13　行为、装备与动作查询</a></nav><div class="nav-label">后续章节 / 待整理</div><div class="later">重定向与编辑器工具 <span>规划</span></div><footer>离线多页面手册 · 无网络依赖<br>内容核对：2026.09.06<br><a href="index.html">已有插件总览 ↗</a></footer></aside><main id="main"><div class="topline"><span>HMS / 使用手册 / 智能对象交互动画</span><span>03 / 08 · UE 5.8</span></div><header class="page-hero" id="overview"><div class="eyebrow">智能对象交互动画 / 03</div><h1>时间参数与时间轴</h1><p>理解三个时间点的区别，确定哪些帧可以接入、何时完成对齐。</p></header><p><strong>版本说明：</strong>本页旧截图中的 M_Cover 时间参数仅为历史示例；当前三方向资产、通知同步与测试方式请见<a href="interaction-runtime.html">第 07 章</a>。</p><nav class="local-toc" aria-label="本页目录">本页内容：<a href="#parameters">参数怎么填</a><a href="#timeline">用一张时间轴读懂通知</a></nav><section id="parameters">
+    <span class="section-num">03 / PARAMETERS</span><h2>参数怎么填</h2>
+    <div class="table-wrap"><table><thead><tr><th scope="col">界面参数</th><th scope="col">含义</th><th scope="col">设置方法</th></tr></thead><tbody>
+      <tr><td>允许接入开始（秒）</td><td>最早允许被查询选为新起播点的时刻，同时是对齐窗口的开始。</td><td>放在转身动作之前，保留一点步态供姿态匹配。越靠后，可用候选越少。</td></tr>
+      <tr><td>允许接入结束（秒）</td><td>可选择新起播点的末端；此后的动画仍可继续播放。</td><td>放在明显贴靠姿态之前，并且必须早于接触时刻。不要把它设为 0 来表达“自动”。</td></tr>
+      <tr><td>对齐结束 / 接触时刻（秒）</td><td>希望根运动对齐到目标的时刻，也是 Motion Warping 窗口终点。</td><td>看身体与物体的实际接触姿态来确认；根骨停止移动只是参考。</td></tr>
+      <tr><td>对齐目标名称</td><td>运行时用于查找目标变换的名字。</td><td>现有状态树使用 <code>SmartObject</code>。动画窗口和运行时提交的名字必须一致。</td></tr>
+      <tr><td>开启根运动</td><td>生成时启用动画根运动，并将根骨锁定方式设为动画首帧。</td><td>用于已有根骨位移的进入动画。取消勾选表示不修改现有开关，不会主动关闭已经启用的根运动。</td></tr>
+      <tr><td>生成根轨迹参考曲线</td><td>从根骨烘焙五条浮点曲线。</td><td>需要检查轨迹或更新剩余距离时勾选。取消勾选会保留旧曲线，不会删除它们。</td></tr>
+    </tbody></table></div>
+    <div class="formula">0 ≤ 接入开始 &lt; 接入结束 &lt; 接触时刻 ≤ 动画长度</div>
+    <p class="muted">时间单位为秒。如果你记录的是帧号，用“帧号 ÷ 对应采样帧率”换算，并核对时间轴使用的是从 0 开始的帧索引还是显示序号。</p>
+  </section><section id="timeline">
+    <span class="section-num">04 / TIMELINE</span><h2>用一张时间轴读懂通知</h2>
+    <p>M_Cover 长约 3.233 秒。下面采用工具建议值：接入开始约 1.567 秒，接入结束约 1.967 秒，接触时刻约 2.167 秒。</p>
+    <figure class="figure">
+      <div class="timeline-scroll"><div class="timeline" role="img" aria-label="动画全长为 0 到 3.233 秒。新起播点只允许在约 1.567 到 1.967 秒之间选择。对齐窗口从约 1.567 秒持续到 2.167 秒，之后仍可播放动画尾段。">
+        <div class="axis"><span>0 s</span><span>3.233 s / 动画结束</span></div>
+        <div class="timeline-row"><span>原始动画</span><div class="track"><span class="band full">移动 → 转入 → 接触后的姿态</span></div></div>
+        <div class="timeline-row"><span>新的查询起播点</span><div class="track"><span class="band block-a">禁止新接入</span><span class="band allowed">可接入</span><span class="band block-b">禁止新接入 · 允许续播</span></div></div>
+        <div class="timeline-row"><span>Motion Warping</span><div class="track"><span class="band warp">对齐窗口</span><span class="end-line"></span></div></div>
+      </div></div>
+      <div class="point-grid"><div>接入开始 S<b>≈ 1.567 s</b>开始提供候选姿态</div><div>接入结束 E<b>≈ 1.967 s</b>不再接受新的起播点</div><div>接触时刻 C<b>≈ 2.167 s</b>对齐窗口在这里结束</div></div>
+      <figcaption>这是窗口关系示意，动作阶段文字不代表逐帧姿态判定。边界实际采样会受数据库采样率与通知边界规则影响，建议在区间内部选择候选帧。</figcaption>
+    </figure>
+    <div class="callout"><p><strong>例如查询选中 1.80 秒：</strong>角色从 1.80 秒开始播放，继续经过接入结束点，再到达接触时刻。经过“禁止新接入”区域不会让正在播放的动画停止。</p></div>
+  </section><nav class="pager" aria-label="上一章与下一章"><a href="interaction-create.html"><small>← 上一章</small><strong>创建通知与轨迹</strong></a><a class="next" href="interaction-notifies.html"><small>下一章 →</small><strong>通知含义详解</strong></a></nav><footer class="end"><span>Hybrid Motion System · 中文使用手册<br>双击 manual.html 开始阅读；移动或分享时请保留整个 Documentation 文件夹。</span><a href="#overview">返回本页顶部 ↑</a></footer></main></body></html>

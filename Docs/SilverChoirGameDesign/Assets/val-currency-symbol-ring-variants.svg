@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="920" viewBox="0 0 1440 920">
+	<rect width="1440" height="920" fill="#f5f7f8"/>
+
+	<text x="54" y="68" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="34" font-weight="700">瓦尔 Val · 圆环符号精修</text>
+	<text x="54" y="108" fill="#5b6870" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="18">缩短内侧 V、提高视觉重心，并让圆环参与货币符号的结构</text>
+	<line x1="54" y1="140" x2="1386" y2="140" stroke="#cbd3d8" stroke-width="2"/>
+
+	<!-- 01: balanced full ring -->
+	<g transform="translate(50 175)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">01 · 平衡环</text>
+		<g transform="translate(210 169)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<circle r="78" stroke-width="9"/>
+			<path d="M-43 -48 L0 50 L43 -48" stroke-width="14"/>
+			<path d="M-29 2 H29" stroke-width="9"/>
+		</g>
+		<text x="22" y="265" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">保留完整圆环，调整后的留白更加稳定。</text>
+		<text x="22" y="292" fill="#68767e" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14">适合：硬币正面、官方印章</text>
+	</g>
+
+	<!-- 02: open ring with currency bar -->
+	<g transform="translate(510 175)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#168064" stroke-width="3"/>
+		<rect x="22" y="20" width="70" height="28" rx="4" fill="#168064"/>
+		<text x="57" y="40" text-anchor="middle" fill="#ffffff" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">推荐</text>
+		<text x="22" y="82" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">02 · 衡轨环</text>
+		<g transform="translate(210 169)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<path d="M-74 -24 A78 78 0 0 1 74 -24" stroke="#168064" stroke-width="10"/>
+			<path d="M74 24 A78 78 0 0 1 -74 24" stroke="#168064" stroke-width="10"/>
+			<path d="M-43 -48 L0 50 L43 -48" stroke-width="14"/>
+			<path d="M-78 2 H78" stroke-width="9"/>
+		</g>
+		<text x="22" y="265" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">开环被横线贯穿，像汇率轴与全球交易轨道。</text>
+		<text x="22" y="292" fill="#168064" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">适合：价格、银行界面、国际结算</text>
+	</g>
+
+	<!-- 03: double orbit -->
+	<g transform="translate(970 175)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">03 · 双轨环</text>
+		<g transform="translate(210 169)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<circle r="82" stroke="#2d6b9f" stroke-width="6"/>
+			<circle r="68" stroke="#2d6b9f" stroke-width="5" stroke-dasharray="84 23" transform="rotate(-12)"/>
+			<path d="M-38 -43 L0 45 L38 -43" stroke-width="13"/>
+			<path d="M-27 1 H27" stroke-width="8"/>
+		</g>
+		<text x="22" y="265" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">双层轨道强化国际金融与电子货币气质。</text>
+		<text x="22" y="292" fill="#2d6b9f" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14">适合：金融机构、电子账户</text>
+	</g>
+
+	<!-- 04: mint ticks -->
+	<g transform="translate(50 525)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">04 · 铸刻环</text>
+		<g transform="translate(210 169)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<circle r="75" stroke="#8f5d2f" stroke-width="9"/>
+			<path d="M0 -88 V-68 M88 0 H68 M0 88 V68 M-88 0 H-68" stroke="#8f5d2f" stroke-width="9"/>
+			<path d="M-41 -46 L0 48 L41 -46" stroke-width="14"/>
+			<path d="M-28 1 H28" stroke-width="9"/>
+		</g>
+		<text x="22" y="265" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">四个刻度来自古代称重与铸币校准标记。</text>
+		<text x="22" y="292" fill="#8f5d2f" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14">适合：纸币纹章、硬币与历史版本</text>
+	</g>
+
+	<!-- 05: crown gap -->
+	<g transform="translate(510 525)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">05 · 冠隙环</text>
+		<g transform="translate(210 169)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<circle r="78" stroke="#9a6d19" stroke-width="9" stroke-dasharray="441 49" transform="rotate(-84)"/>
+			<path d="M-13 -75 L0 -91 L13 -75" stroke="#9a6d19" stroke-width="8"/>
+			<path d="M-43 -46 L0 50 L43 -46" stroke-width="14"/>
+			<path d="M-29 2 H29" stroke-width="9"/>
+		</g>
+		<text x="22" y="265" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">顶部留出王冠式缺口，保留古王国的余韵。</text>
+		<text x="22" y="292" fill="#9a6d19" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14">适合：传统纸币、纪念币</text>
+	</g>
+
+	<!-- 06: global orbit -->
+	<g transform="translate(970 525)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">06 · 环球轨</text>
+		<g transform="translate(210 169)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<circle r="70" stroke="#694f91" stroke-width="8"/>
+			<ellipse rx="88" ry="34" stroke="#694f91" stroke-width="8" transform="rotate(-18)"/>
+			<path d="M-37 -41 L0 44 L37 -41" stroke-width="13"/>
+			<path d="M-25 1 H25" stroke-width="8"/>
+		</g>
+		<text x="22" y="265" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">倾斜轨道带来全球流通与跨国组织的动势。</text>
+		<text x="22" y="292" fill="#694f91" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14">适合：国际储备体系、金融组织</text>
+	</g>
+
+	<text x="54" y="888" fill="#5b6870" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="15">推荐组合：日常货币符号采用 02；硬币与官方印章采用 01 或 04；06 可作为瓦尔发行机构的徽记。</text>
+</svg>

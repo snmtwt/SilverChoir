@@ -1,0 +1,45 @@
+{
+	"FileVersion": 3,
+	"EngineVersion": "5.8.0",
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "EasyHouseBuilder",
+	"Description": "Procedural building authoring tools for walls, floors, slabs, stairs, railings, doors, windows, roofs, generated meshes, and AI-assisted layout creation.",
+	"Category": "Architecture",
+	"CreatedBy": "GENG003",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "EasyHouseBuilderManifold",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EasyHouseBuilder",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "EasyHouseBuilderEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "GeometryProcessing",
+			"Enabled": true
+		},
+		{
+			"Name": "ToolsetRegistry",
+			"Enabled": true
+		}
+	]
+}

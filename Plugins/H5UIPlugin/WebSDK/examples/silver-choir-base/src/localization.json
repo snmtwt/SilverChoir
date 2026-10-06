@@ -1,0 +1,93 @@
+{
+  "defaultLanguage": "zh-CN",
+  "languages": {
+    "zh-CN": {
+      "htmlLanguage": "zh-CN",
+      "documentTitle": "银色唱诗班 - 基地控制",
+      "sceneHeading": "基地场景",
+      "currentRoom": "当前房间",
+      "locationHeading": "镜头定位",
+      "locationHint": "选择观察区域",
+      "scenes": {
+        "haven": { "label": "酒馆", "sublabel": "HAVEN / 地表设施" },
+        "underground": { "label": "地下基地", "sublabel": "UNDERGROUND / 核心设施" }
+      },
+      "locations": {
+        "hall": "大厅",
+        "kitchen": "厨房",
+        "office": "办公室",
+        "commandRoom": "作战指挥室",
+        "readinessRoom": "人员整备室",
+        "squadRoom": "小队会议室",
+        "commanderOffice": "团长办公室"
+      },
+      "currency": {
+        "heading": "基地资产",
+        "name": "瓦尔（Val）",
+        "deltaLabel": "本周期"
+      },
+      "time": {
+        "month": "月",
+        "day": "日",
+        "heading": "战略时间",
+        "paused": "时间停止",
+        "running": "时间流动",
+        "pauseHint": "播放或暂停时间",
+        "fastHint": "切换 5、10、20 倍时间流速"
+      },
+      "menu": {
+        "heading": "管理菜单",
+        "hint": "人员 / 背包 / 基地"
+      },
+      "status": {
+        "network": "基地控制网络在线",
+        "channel": "SC / BASE CONTROL",
+        "overlayReady": "管理界面挂载区"
+      }
+    },
+    "en-US": {
+      "htmlLanguage": "en",
+      "documentTitle": "Silver Choir - Base Control",
+      "sceneHeading": "BASE SCENES",
+      "currentRoom": "CURRENT ROOM",
+      "locationHeading": "CAMERA FOCUS",
+      "locationHint": "SELECT OBSERVATION AREA",
+      "scenes": {
+        "haven": { "label": "HAVEN", "sublabel": "SURFACE FACILITY" },
+        "underground": { "label": "UNDERGROUND", "sublabel": "CORE FACILITY" }
+      },
+      "locations": {
+        "hall": "MAIN HALL",
+        "kitchen": "KITCHEN",
+        "office": "OFFICE",
+        "commandRoom": "COMBAT COMMAND",
+        "readinessRoom": "READINESS ROOM",
+        "squadRoom": "SQUAD BRIEFING",
+        "commanderOffice": "COMMANDER OFFICE"
+      },
+      "currency": {
+        "heading": "BASE ASSETS",
+        "name": "VAL",
+        "deltaLabel": "THIS CYCLE"
+      },
+      "time": {
+        "month": "MON",
+        "day": "DAY",
+        "heading": "STRATEGIC TIME",
+        "paused": "TIME PAUSED",
+        "running": "TIME RUNNING",
+        "pauseHint": "Play or pause strategic time",
+        "fastHint": "Cycle 5x, 10x, and 20x time speed"
+      },
+      "menu": {
+        "heading": "MANAGEMENT",
+        "hint": "ROSTER / INVENTORY / BASE"
+      },
+      "status": {
+        "network": "BASE CONTROL NETWORK ONLINE",
+        "channel": "SC / BASE CONTROL",
+        "overlayReady": "MANAGEMENT OVERLAY HOST"
+      }
+    }
+  }
+}

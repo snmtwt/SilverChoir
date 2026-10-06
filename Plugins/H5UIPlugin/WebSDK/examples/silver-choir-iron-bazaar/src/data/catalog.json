@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "title": "Iron Bazaar",
+  "tagline": "Marketplace · shadow://iron.bazaar",
+  "currency": "USD",
+  "freeShippingOver": 2500,
+  "shippingFee": 120,
+  "categories": [
+    { "id": "all", "label": "All" },
+    { "id": "rifles", "label": "Rifles" },
+    { "id": "smgs", "label": "SMGs" },
+    { "id": "sidearms", "label": "Sidearms" },
+    { "id": "ammo", "label": "Ammo" },
+    { "id": "optics", "label": "Optics" },
+    { "id": "gear", "label": "Gear" }
+  ],
+  "products": [
+    {
+      "id": "ar-m4a1",
+      "cat": "rifles",
+      "name": "M4A1 Carbine",
+      "desc": "5.56 NATO, collapsible stock, rail handguard. Contractor standard.",
+      "price": 1850,
+      "was": 2100,
+      "rating": 4.8,
+      "sold": 312,
+      "stock": 14,
+      "badge": "SALE",
+      "featured": 10,
+      "image": "",
+      "detail": {
+        "subtitle": "Workhorse carbine for escort and compound work",
+        "longDesc": [
+          "The M4A1 remains the default contractor long gun on most FOBs. Short enough for vehicle work, accurate enough for mid-range contact.",
+          "This lot ships with a collapsible stock, railed handguard, and one 30-round magazine. Optics and lights sold separately."
+        ],
+        "specs": [
+          { "label": "Caliber", "value": "5.56×45 NATO" },
+          { "label": "Action", "value": "Gas, selective fire" },
+          { "label": "Barrel", "value": "14.5 in" },
+          { "label": "Weight", "value": "2.9 kg empty" },
+          { "label": "Condition", "value": "B+ serviceable" }
+        ],
+        "highlights": ["Rail handguard", "Collapsible stock", "Contractor standard"],
+        "seller": { "name": "FOB-7 Armory", "rating": 4.8, "deals": 1204 },
+        "condition": "B+",
+        "tags": ["carbine", "5.56", "cqb"],
+        "image": ""
+      }
+    },
+    {
+      "id": "ar-ak74",
+      "cat": "rifles",
+      "name": "AK-74N",
+      "desc": "5.45×39, side rail, reliable in sand and mud. Surplus condition B+.",
+      "price": 1420,
+      "rating": 4.6,
+      "sold": 268,
+      "stock": 9,
+      "featured": 8,
+      "detail": {
+        "subtitle": "Surplus reliability for dirty theaters",
+        "longDesc": [
+          "Side-rail AK-74N from a cleaned surplus batch. Runs hot and dirty without complaint.",
+          "Expect cosmoline ghosts and honest wear — function-checked before listing."
+        ],
+        "specs": [
+          { "label": "Caliber", "value": "5.45×39" },
+          { "label": "Mount", "value": "Side rail" },
+          { "label": "Condition", "value": "B+ surplus" }
+        ],
+        "highlights": ["Sand tolerant", "Cheap ammo cycle", "Side rail ready"],
+        "seller": { "name": "East Line Surplus", "rating": 4.4, "deals": 880 }
+      }
+    },
+    {
+      "id": "ar-scar-h",
+      "cat": "rifles",
+      "name": "SCAR-H 17S",
+      "desc": "7.62×51 battle rifle, folding stock. Premium build, limited stock.",
+      "price": 3200,
+      "rating": 4.9,
+      "sold": 87,
+      "stock": 3,
+      "badge": "HOT",
+      "featured": 12,
+      "detail": {
+        "subtitle": "Premium 7.62 platform — limited drop",
+        "longDesc": [
+          "SCAR-H 17S for teams that pay for reach and modularity. Folding stock, full-length rail, battle-rifle manners.",
+          "This listing uses the special product shell so later drops can attach custom layout or media."
+        ],
+        "specs": [
+          { "label": "Caliber", "value": "7.62×51 NATO" },
+          { "label": "Stock", "value": "Folding" },
+          { "label": "Role", "value": "Battle rifle / DMR base" }
+        ],
+        "highlights": ["Limited stock", "Premium build", "Folding stock"],
+        "seller": { "name": "Black Rail Imports", "rating": 4.9, "deals": 210 },
+        "specialPage": "scar-h"
+      }
+    },
+    {
+      "id": "smg-mp5",
+      "cat": "smgs",
+      "name": "MP5A3",
+      "desc": "9×19, retractable stock, clean trigger. CQB favorite.",
+      "price": 1680,
+      "rating": 4.7,
+      "sold": 194,
+      "stock": 11,
+      "featured": 7,
+      "detail": {
+        "subtitle": "Classic CQB subgun",
+        "longDesc": ["Retractable stock MP5A3 with a clean trigger and tidy finish. Room-clearing staple."],
+        "specs": [
+          { "label": "Caliber", "value": "9×19" },
+          { "label": "Stock", "value": "Retractable" }
+        ],
+        "highlights": ["Low recoil", "CQB proven"],
+        "seller": { "name": "FOB-7 Armory", "rating": 4.8, "deals": 1204 }
+      }
+    },
+    {
+      "id": "smg-ump",
+      "cat": "smgs",
+      "name": "UMP45",
+      "desc": "Compact .45 ACP, polymer frame, low recoil for the caliber.",
+      "price": 1540,
+      "was": 1750,
+      "rating": 4.5,
+      "sold": 121,
+      "stock": 6,
+      "badge": "SALE",
+      "featured": 6,
+      "detail": {
+        "subtitle": "Polymer .45 for tight corridors",
+        "longDesc": ["Compact UMP45 with polymer furniture. Soft shooting for the caliber, easy to stash in vehicle kits."],
+        "specs": [{ "label": "Caliber", "value": ".45 ACP" }],
+        "highlights": ["Polymer frame", "Sale lot"],
+        "seller": { "name": "Grey Market Desk", "rating": 4.2, "deals": 540 }
+      }
+    },
+    {
+      "id": "smg-pp19",
+      "cat": "smgs",
+      "name": "PP-19 Bizon",
+      "desc": "Helical mag, 9×18. High capacity for room clearing.",
+      "price": 1290,
+      "rating": 4.3,
+      "sold": 76,
+      "stock": 8,
+      "featured": 4,
+      "detail": {
+        "subtitle": "Helical magazine volume of fire",
+        "longDesc": ["PP-19 Bizon with helical mag. Capacity wins arguments in stairwells."],
+        "specs": [
+          { "label": "Caliber", "value": "9×18" },
+          { "label": "Magazine", "value": "Helical" }
+        ],
+        "seller": { "name": "East Line Surplus", "rating": 4.4, "deals": 880 }
+      }
+    },
+    {
+      "id": "p-g17",
+      "cat": "sidearms",
+      "name": "Glock 17 Gen4",
+      "desc": "9×19 service pistol, three mags included. Always in demand.",
+      "price": 520,
+      "rating": 4.9,
+      "sold": 640,
+      "stock": 28,
+      "badge": "BEST",
+      "featured": 11,
+      "detail": {
+        "subtitle": "Default sidearm — three mags in the box",
+        "longDesc": ["Gen4 service pistol. Three magazines included. Boring in the best way."],
+        "specs": [
+          { "label": "Caliber", "value": "9×19" },
+          { "label": "Mags", "value": "3× included" }
+        ],
+        "highlights": ["High demand", "Spare mags"],
+        "seller": { "name": "FOB-7 Armory", "rating": 4.8, "deals": 1204 }
+      }
+    },
+    {
+      "id": "p-m9",
+      "cat": "sidearms",
+      "name": "Beretta M9A1",
+      "desc": "9×19, rail accessory, field-proven. Good secondary for any kit.",
+      "price": 480,
+      "rating": 4.4,
+      "sold": 210,
+      "stock": 17,
+      "featured": 5,
+      "detail": {
+        "subtitle": "Rail-ready service pistol",
+        "longDesc": ["M9A1 with accessory rail. Proven secondary for mixed kits."],
+        "specs": [{ "label": "Caliber", "value": "9×19" }],
+        "seller": { "name": "Grey Market Desk", "rating": 4.2, "deals": 540 }
+      }
+    },
+    {
+      "id": "p-de50",
+      "cat": "sidearms",
+      "name": "Desert Eagle .50",
+      "desc": "Showpiece stopper. Heavy, loud, unnecessary — and popular.",
+      "price": 1450,
+      "rating": 4.1,
+      "sold": 44,
+      "stock": 2,
+      "badge": "NEW",
+      "featured": 3,
+      "detail": {
+        "subtitle": "Status sidearm — not a duty gun",
+        "longDesc": ["Desert Eagle .50. Heavy, loud, and a terrible daily sidearm. Lists still move."],
+        "specs": [{ "label": "Caliber", "value": ".50 AE" }],
+        "highlights": ["Limited stock", "Showpiece"],
+        "seller": { "name": "Black Rail Imports", "rating": 4.9, "deals": 210 }
+      }
+    },
+    {
+      "id": "am-556",
+      "cat": "ammo",
+      "name": "5.56 NATO · 500rd can",
+      "desc": "M855 ball, sealed ammo can. Lot-matched for training or ops.",
+      "price": 280,
+      "was": 320,
+      "rating": 4.7,
+      "sold": 890,
+      "stock": 42,
+      "badge": "SALE",
+      "featured": 9,
+      "detail": {
+        "subtitle": "Sealed M855 can — lot matched",
+        "longDesc": ["500-round sealed can of 5.56 M855. Training or ops; free crate wraps on multi-can orders when stock allows."],
+        "specs": [
+          { "label": "Caliber", "value": "5.56 NATO" },
+          { "label": "Count", "value": "500 rd" },
+          { "label": "Type", "value": "M855 ball" }
+        ],
+        "seller": { "name": "FOB-7 Armory", "rating": 4.8, "deals": 1204 }
+      }
+    },
+    {
+      "id": "am-9mm",
+      "cat": "ammo",
+      "name": "9×19 FMJ · 1000rd",
+      "desc": "Bulk FMJ for range and sidearms. Free crate with 3+ cans.",
+      "price": 340,
+      "rating": 4.6,
+      "sold": 720,
+      "stock": 55,
+      "featured": 7,
+      "detail": {
+        "subtitle": "Bulk 9mm for range and duty",
+        "longDesc": ["1000-round bulk FMJ. Free crate on 3+ cans while the promo runs."],
+        "specs": [
+          { "label": "Caliber", "value": "9×19" },
+          { "label": "Count", "value": "1000 rd" }
+        ],
+        "seller": { "name": "FOB-7 Armory", "rating": 4.8, "deals": 1204 }
+      }
+    },
+    {
+      "id": "am-762",
+      "cat": "ammo",
+      "name": "7.62×51 · 200rd",
+      "desc": "M80 ball, linked option available on request.",
+      "price": 390,
+      "rating": 4.5,
+      "sold": 156,
+      "stock": 19,
+      "featured": 5,
+      "detail": {
+        "subtitle": "M80 ball — linked on request",
+        "longDesc": ["200-round 7.62×51 M80. Linked belts available if you message the desk before checkout."],
+        "specs": [
+          { "label": "Caliber", "value": "7.62×51" },
+          { "label": "Count", "value": "200 rd" }
+        ],
+        "seller": { "name": "Black Rail Imports", "rating": 4.9, "deals": 210 }
+      }
+    },
+    {
+      "id": "op-acog",
+      "cat": "optics",
+      "name": "ACOG 4×32",
+      "desc": "Trijicon-style 4× fixed optic, illuminated reticle, rugged mount.",
+      "price": 980,
+      "rating": 4.8,
+      "sold": 203,
+      "stock": 7,
+      "featured": 8,
+      "detail": {
+        "subtitle": "Fixed 4× for mid-range work",
+        "longDesc": ["Rugged 4×32 optic with illuminated reticle and solid mount hardware."],
+        "specs": [
+          { "label": "Magnification", "value": "4× fixed" },
+          { "label": "Objective", "value": "32 mm" }
+        ],
+        "seller": { "name": "Glass & Rail Co.", "rating": 4.7, "deals": 390 }
+      }
+    },
+    {
+      "id": "op-rds",
+      "cat": "optics",
+      "name": "T2 Red Dot",
+      "desc": "1× micro RDS, multi-reticle. Fast acquisition for CQB loads.",
+      "price": 420,
+      "was": 490,
+      "rating": 4.7,
+      "sold": 388,
+      "stock": 15,
+      "badge": "SALE",
+      "featured": 9,
+      "detail": {
+        "subtitle": "Micro red dot for fast CQB",
+        "longDesc": ["1× micro RDS with multi-reticle options. Sale pricing this cycle."],
+        "specs": [{ "label": "Magnification", "value": "1×" }],
+        "seller": { "name": "Glass & Rail Co.", "rating": 4.7, "deals": 390 }
+      }
+    },
+    {
+      "id": "op-lpvo",
+      "cat": "optics",
+      "name": "1-6× LPVO",
+      "desc": "Variable optic for DMR and general purpose. Glass is clear.",
+      "price": 1150,
+      "rating": 4.6,
+      "sold": 92,
+      "stock": 5,
+      "badge": "NEW",
+      "featured": 6,
+      "detail": {
+        "subtitle": "General-purpose LPVO",
+        "longDesc": ["1-6× variable for DMR-ish work and general purpose rifles. Clear glass for the price tier."],
+        "specs": [{ "label": "Magnification", "value": "1–6×" }],
+        "seller": { "name": "Glass & Rail Co.", "rating": 4.7, "deals": 390 }
+      }
+    },
+    {
+      "id": "gr-plate",
+      "cat": "gear",
+      "name": "Plate Carrier MK3",
+      "desc": "Modular carrier, soft armor inserts, molle everywhere.",
+      "price": 360,
+      "rating": 4.5,
+      "sold": 277,
+      "stock": 22,
+      "featured": 7,
+      "detail": {
+        "subtitle": "Modular plate carrier",
+        "longDesc": ["MK3 modular carrier with soft inserts and molle real estate for pouches."],
+        "specs": [{ "label": "Type", "value": "Plate carrier" }],
+        "seller": { "name": "Kit Locker", "rating": 4.5, "deals": 610 }
+      }
+    },
+    {
+      "id": "gr-helmet",
+      "cat": "gear",
+      "name": "Ballistic Helmet",
+      "desc": "High-cut shell, NVG shroud, side rails. Liner adjustable.",
+      "price": 540,
+      "rating": 4.4,
+      "sold": 149,
+      "stock": 10,
+      "featured": 5,
+      "detail": {
+        "subtitle": "High-cut helmet with rails",
+        "longDesc": ["High-cut ballistic shell, NVG shroud, side rails, adjustable liner."],
+        "specs": [{ "label": "Cut", "value": "High" }],
+        "seller": { "name": "Kit Locker", "rating": 4.5, "deals": 610 }
+      }
+    },
+    {
+      "id": "gr-med",
+      "cat": "gear",
+      "name": "IFAK Trauma Kit",
+      "desc": "Tourniquet, chest seal, gauze, shears. Field-ready pouch.",
+      "price": 95,
+      "was": 120,
+      "rating": 4.9,
+      "sold": 1104,
+      "stock": 60,
+      "badge": "BEST",
+      "featured": 10,
+      "detail": {
+        "subtitle": "Field-ready trauma pouch",
+        "longDesc": ["Tourniquet, chest seal, gauze, shears in a ready pouch. Buy more than you think you need."],
+        "specs": [{ "label": "Type", "value": "IFAK" }],
+        "highlights": ["Best seller", "Pouch included"],
+        "seller": { "name": "Kit Locker", "rating": 4.5, "deals": 610 }
+      }
+    }
+  ]
+}

@@ -1,0 +1,371 @@
+--- a/Source/StrategyInventorySystem/Private/Tools/SIS_ItemModelCapturer.cpp
++++ b/Source/StrategyInventorySystem/Private/Tools/SIS_ItemModelCapturer.cpp
+@@ -7,6 +7,13 @@
+ #include "Components/SIS_ItemInventoryComponent.h"
+ #include "Components/ShapeComponent.h"
+ #include "Engine/Texture2D.h"
++#include "Engine/StaticMesh.h"
++#include "Engine/SkeletalMesh.h"
++#include "Materials/MaterialInterface.h"
++#include "Materials/Material.h"
++#include "MaterialShared.h"
++#include "RHI.h"
++#include "SceneInterface.h"
+ #include "GameFramework/Character.h"
+ #include "GameFramework/CharacterMovementComponent.h"
+ #include "Interface/SIS_ItemObjectInterface.h"
+@@ -134,29 +141,40 @@
+ 	{
+ 		StaticOnceElapsedSeconds += DeltaSeconds;
+ 
+-		const bool bReady = IsPreviewReadyForCapture();
+-		const bool bTimeout = (StaticOnceMaxWaitSeconds > 0.f) && (StaticOnceElapsedSeconds >= StaticOnceMaxWaitSeconds);
+-
+-		if (bReady || bTimeout)
+-		{
+-			CaptureNow();
+-
+-			if (CapturerSubsystem && PendingCacheKey.IsValid() && PendingCacheMID.IsValid())
+-			{
+-				CapturerSubsystem->AddMaterialToCache(PendingCacheKey, PendingCacheMID.Get());
+-			}
+-
+-			PendingCacheKey.Reset();
+-			PendingCacheMID = nullptr;
+-			bStaticOncePending = false;
+-			bCapturePending = false;
+-			StaticOnceElapsedSeconds = 0.f;
+-
+-			if (bAutoReleaseAfterStaticOnce)
+-			{
+-				ResetCapturer();
+-			}
+-		}
++        if (bStaticCaptureSubmitted)
++        {
++            if (!StaticCaptureFence.IsFenceComplete()) return;
++            if (CapturerSubsystem && PendingCacheKey.IsValid() && IsValid(PendingCacheMID))
++                CapturerSubsystem->AddMaterialToCache(PendingCacheKey, PendingCacheMID);
++            const bool bReturnToPool = bReturnStaticWorkerToPool;
++            ResetCapturer();
++            if (bReturnToPool && CapturerSubsystem) CapturerSubsystem->ReleaseDynamicCapturer(this);
++            return;
++        }
++
++        FString BlockReason;
++        if (!IsPreviewReadyForCapture_Debug(BlockReason))
++        {
++            StaticReadyFrames = 0;
++            if (!bStaticWaitWarningLogged && StaticOnceElapsedSeconds >= StaticOnceMaxWaitSeconds)
++            {
++                UE_LOG(LogTemp, Warning, TEXT("SIS capture waiting for resources (%s): %s"), *GetName(), *BlockReason);
++                bStaticWaitWarningLogged = true;
++            }
++            return;
++        }
++        if (StaticReadyFrames++ == 0)
++        {
++            // A completed shader may still have a fallback material in an old scene proxy.
++            for (auto WeakPrim : SceneCaptureComponent->ShowOnlyComponents)
++                if (auto* Prim = WeakPrim.Get()) Prim->MarkRenderStateDirty();
++            StaticCaptureFence.BeginFence();
++            return;
++        }
++        if (StaticReadyFrames < 3 || !StaticCaptureFence.IsFenceComplete()) return;
++        CaptureNow();
++        bStaticCaptureSubmitted = true;
++        StaticCaptureFence.BeginFence();
+ 
+ 		return;
+ 	}
+@@ -347,6 +365,19 @@
+ 		}
+ 	}
+ 
++    // A list may request several thumbnails in one frame. Never replace a pending subject/RT.
++    if (bStaticOncePending)
++    {
++        if (!bForceRegenerate && PendingCacheKey == CacheKey && IsValid(PendingCacheMID)) return PendingCacheMID;
++        if (!CapturerSubsystem) return nullptr;
++        auto* Worker = CapturerSubsystem->AcquireDynamicCapturer();
++        if (!Worker) return nullptr;
++        Worker->bReturnStaticWorkerToPool = true;
++        auto* Result = Worker->CreateStaticCaptureMaterial(ItemTemplate, AttachmentTemplates, bRotate90Degrees, PixelSize, bForceRegenerate);
++        if (!Worker->bStaticOncePending) CapturerSubsystem->ReleaseDynamicCapturer(Worker);
++        return Result;
++    }
++
+ 	CachedItemTemplateGuid = FGuid();
+ 	bIsInUse = true;
+ 
+@@ -369,28 +400,9 @@
+ 
+ 	StartStaticOncePending(CacheKey, MID, true);
+ 
+-	if (IsPreviewReadyForCapture())
+-	{
+-		CaptureNow();
+-
+-		if (CapturerSubsystem)
+-		{
+-			CapturerSubsystem->AddMaterialToCache(CacheKey, MID);
+-		}
+-
+-		PendingCacheKey.Reset();
+-		PendingCacheMID = nullptr;
+-		bStaticOncePending = false;
+-		StaticOnceElapsedSeconds = 0.f;
+-
+-		ResetCapturer();
+-	}
+-	else
+-	{
+-		bStaticOncePending = true;
+-		UpdateMode = ESIS_CaptureUpdateMode::StaticOnce;
+-		UpdateTickAndCaptureFlags();
+-	}
++    // Always defer: creation and shader/texture readiness are separate from render-thread readiness.
++    UpdateMode = ESIS_CaptureUpdateMode::StaticOnce;
++    UpdateTickAndCaptureFlags();
+ 
+ 	return MID;
+ }
+@@ -587,6 +599,10 @@
+ void ASIS_ItemModelCapturer::ResetCapturer()
+ {
+ 	bIsInUse = false;
++	StaticReadyFrames = 0;
++	bStaticCaptureSubmitted = false;
++	bStaticWaitWarningLogged = false;
++	bReturnStaticWorkerToPool = false;
+ 	bCapturePending = false;
+ 	bStaticOncePending = false;
+ 	bAutoReleaseAfterStaticOnce = false;
+@@ -841,117 +857,56 @@
+ 
+ bool ASIS_ItemModelCapturer::IsPreviewReadyForCapture() const
+ {
+-	if (!SceneCaptureComponent || !PreviewActorComponent)
+-	{
+-		return false;
+-	}
+-
+-	AActor* PreviewActor = PreviewActorComponent->GetChildActor();
+-	if (!PreviewActor)
+-	{
+-		return false;
+-	}
+-
+-	const int32 NumShowOnly = SceneCaptureComponent->ShowOnlyComponents.Num();
+-	if (NumShowOnly <= 0)
+-	{
+-		return false;
+-	}
+-
+-	bool bHasRenderable = false;
+-
+-	for (TWeakObjectPtr<UPrimitiveComponent> WeakPrim : SceneCaptureComponent->ShowOnlyComponents)
+-	{
+-		UPrimitiveComponent* Prim = WeakPrim.Get();
+-		if (!Prim)
+-		{
+-			continue;
+-		}
+-
+-		if (!Prim->IsRegistered())
+-		{
+-			return false;
+-		}
+-
+-		bHasRenderable = true;
+-
+-		if (!Prim->IsRenderStateCreated())
+-		{
+-			return false;
+-		}
+-	}
+-
+-	return bHasRenderable;
++    FString Reason;
++    return IsPreviewReadyForCapture_Debug(Reason);
+ }
+ 
+ bool ASIS_ItemModelCapturer::IsPreviewReadyForCapture_Debug(FString& OutBlockReason) const
+ {
+-	OutBlockReason.Reset();
+-
+-	if (!PreviewActorComponent)
+-	{
+-		OutBlockReason = TEXT("No PreviewActorComponent");
+-		return false;
+-	}
+-
+-	AActor* PreviewActor = PreviewActorComponent->GetChildActor();
+-	if (!PreviewActor)
+-	{
+-		OutBlockReason = TEXT("No ChildActor");
+-		return false;
+-	}
+-
+-	TArray<UPrimitiveComponent*> PrimComponents;
+-	PreviewActor->GetComponents<UPrimitiveComponent>(PrimComponents, true);
+-
+-	bool bHasRenderable = false;
+-
+-	for (UPrimitiveComponent* Prim : PrimComponents)
+-	{
+-		if (!Prim)
+-		{
+-			continue;
+-		}
+-
+-		if (Prim->IsA<UShapeComponent>())
+-		{
+-			continue;
+-		}
+-
+-		if (!Prim->IsRegistered())
+-		{
+-			OutBlockReason = FString::Printf(
+-				TEXT("NotRegistered: %s (%s)"),
+-				*Prim->GetName(),
+-				*Prim->GetClass()->GetName()
+-			);
+-			return false;
+-		}
+-
+-		const bool bIsMeshLike = Prim->IsA<UMeshComponent>();
+-		if (bIsMeshLike)
+-		{
+-			bHasRenderable = true;
+-		}
+-
+-		if (!Prim->IsRenderStateCreated())
+-		{
+-			OutBlockReason = FString::Printf(
+-				TEXT("NoRenderState: %s (%s)"),
+-				*Prim->GetName(),
+-				*Prim->GetClass()->GetName()
+-			);
+-			return false;
+-		}
+-	}
+-
+-	if (!bHasRenderable)
+-	{
+-		OutBlockReason = TEXT("No mesh components found");
+-		return false;
+-	}
+-
+-	return true;
++    OutBlockReason.Reset();
++    auto Block = [&OutBlockReason](const FString& Reason) { OutBlockReason = Reason; return false; };
++    if (!SceneCaptureComponent || !PreviewActorComponent || !PreviewActorComponent->GetChildActor())
++        return Block(TEXT("No preview actor or capture component"));
++    if (SceneCaptureComponent->ShowOnlyComponents.IsEmpty()) return Block(TEXT("Empty ShowOnly list"));
++    for (auto WeakPrim : SceneCaptureComponent->ShowOnlyComponents)
++    {
++        auto* Prim = WeakPrim.Get();
++        if (!Prim || !Prim->IsRegistered() || !Prim->IsRenderStateCreated())
++            return Block(TEXT("Primitive registration/render state pending"));
++        auto* Mesh = Cast<UMeshComponent>(Prim);
++        if (!Mesh) continue;
++#if WITH_EDITOR
++        if (auto* Static = Cast<UStaticMeshComponent>(Mesh); Static && Static->GetStaticMesh() && Static->GetStaticMesh()->IsCompiling())
++            return Block(TEXT("Static mesh compilation pending"));
++        if (auto* Skeletal = Cast<USkeletalMeshComponent>(Mesh); Skeletal && Skeletal->GetSkeletalMeshAsset() && Skeletal->GetSkeletalMeshAsset()->IsCompiling())
++            return Block(TEXT("Skeletal mesh compilation pending"));
++#endif
++        for (int32 Index=0; Index<Mesh->GetNumMaterials(); ++Index)
++        {
++            auto* Material = Mesh->GetMaterial(Index);
++            if (!Material) continue; // An intentionally unassigned slot uses the engine default material.
++            const EShaderPlatform Platform = GetWorld() && GetWorld()->Scene ? GetWorld()->Scene->GetShaderPlatform() : GMaxRHIShaderPlatform;
++            auto* Resource = Material->GetMaterialResource(Platform);
++            // A usable map need not contain every optional permutation (e.g. on-demand shaders).
++            // Require finished compilation and a valid rendering map, rather than IsComplete().
++            const auto* ShaderMap = Resource ? Resource->GetGameThreadShaderMap() : nullptr;
++            if (!Resource || !Resource->IsCompilationFinished() || !ShaderMap || !ShaderMap->IsValidForRendering())
++                return Block(FString::Printf(TEXT("Material shader pending: %s"), *Material->GetPathName()));
++            Material->SetForceMipLevelsToBeResident(false, false, 5.f, 0, true);
++            TArray<UTexture*> Textures;
++            Material->GetUsedTextures(Textures);
++            for (auto* Texture : Textures)
++            {
++                if (!Texture) continue;
++#if WITH_EDITOR
++                if (Texture->IsCompiling()) return Block(FString::Printf(TEXT("Texture compilation pending: %s"), *Texture->GetPathName()));
++#endif
++                if (!Texture->GetResource() || Texture->HasPendingInitOrStreaming() || !Texture->IsFullyStreamedIn())
++                    return Block(FString::Printf(TEXT("Texture streaming pending: %s"), *Texture->GetPathName()));
++            }
++        }
++    }
++    return true;
+ }
+ 
+ void ASIS_ItemModelCapturer::StartStaticOncePending(
+@@ -959,6 +914,9 @@
+ 	UMaterialInstanceDynamic* MIDToCache,
+ 	bool bAutoRelease)
+ {
++	StaticReadyFrames = 0;
++	bStaticCaptureSubmitted = false;
++	bStaticWaitWarningLogged = false;
+ 	PendingCacheKey = CacheKey;
+ 	PendingCacheMID = MIDToCache;
+ 	bStaticOncePending = true;
+--- a/Source/StrategyInventorySystem/Public/Tools/SIS_ItemModelCapturer.h
++++ b/Source/StrategyInventorySystem/Public/Tools/SIS_ItemModelCapturer.h
+@@ -14,6 +14,7 @@
+ #include "Components/StaticMeshComponent.h"
+ #include "GameFramework/SpringArmComponent.h"
+ #include "Components/ChildActorComponent.h"
++#include "RenderCommandFence.h"
+ #include "SIS_ItemModelCapturer.generated.h"
+ 
+ class UMaterialInstanceDynamic;
+@@ -488,7 +489,7 @@
+ 	/** Whether the capturer should auto-release after StaticOnce capture completes. */
+ 	bool bAutoReleaseAfterStaticOnce = false;
+ 
+-	/** Maximum wait time before forcing a best-effort StaticOnce capture. */
++	/** Warn after this delay; never cache an unready capture merely because time elapsed. */
+ 	float StaticOnceMaxWaitSeconds = 2.0f;
+ 
+ 	/** Accumulated wait time for StaticOnce readiness. */
+@@ -498,7 +499,15 @@
+ 	FSIS_MaterialCacheKey PendingCacheKey;
+ 
+ 	/** Pending MID to cache after capture completes. */
+-	TWeakObjectPtr<UMaterialInstanceDynamic> PendingCacheMID;
++	UPROPERTY(Transient)
++	TObjectPtr<UMaterialInstanceDynamic> PendingCacheMID = nullptr;
++
++	/** Allow render-state updates to reach the render thread before capture and pool reuse. */
++	FRenderCommandFence StaticCaptureFence;
++	int32 StaticReadyFrames = 0;
++	bool bStaticCaptureSubmitted = false;
++	bool bStaticWaitWarningLogged = false;
++	bool bReturnStaticWorkerToPool = false;
+ 
+ 	/** Last capture time, used for throttling. */
+ 	double LastCaptureTimeSeconds = 0.0;
+--- a/Source/StrategyInventorySystem/StrategyInventorySystem.Build.cs
++++ b/Source/StrategyInventorySystem/StrategyInventorySystem.Build.cs
+@@ -15,6 +15,7 @@
+ 				"Core",
+ 				"CoreUObject",
+ 				"Engine",
++				"RenderCore",
+ 				"GameplayTags",
+ 				"UMG",
+ 				"Slate",
+@@ -27,6 +28,7 @@
+ 			new string[]
+ 			{
+ 				"InputCore",
++				"RHI",
+ 			}
+ 			);
+ 	}

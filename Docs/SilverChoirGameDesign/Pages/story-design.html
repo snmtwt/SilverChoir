@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SilverChoir - 剧情设计</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<p class="eyebrow">剧情设计</p>
+				<h2>主线剧情设计</h2>
+				<p>以章节为单位规划玩家的行动动机、情感转折与长期后果，并确保叙事选择能够落入战术、基地和阵营关系。</p>
+				<div class="document-meta">
+					<span class="badge draft">状态：草案</span>
+					<span class="badge">范围：主线章节</span>
+					<span class="badge">维护方式：按章节扩写</span>
+				</div>
+			</div>
+
+			<div class="story-tabs">
+				<input type="radio" name="story-tab" id="tab-design-thinking" checked>
+				<input type="radio" name="story-tab" id="tab-prologue">
+				<input type="radio" name="story-tab" id="tab-chapter-one">
+				<div class="story-tab-list" role="tablist" aria-label="剧情章节">
+					<label for="tab-design-thinking" role="tab">设计思路</label>
+					<label for="tab-prologue" role="tab">序章</label>
+					<label for="tab-chapter-one" role="tab">第一章</label>
+				</div>
+
+				<div class="story-tab-panels">
+					<div class="story-tab-panel" id="design-thinking-panel" role="tabpanel">
+						<section id="design-thinking">
+							<h2>设计思路</h2>
+							<div class="callout">
+								<div>游戏有两个大结局：</div>
+								<div>1.复国线。加入安图恩复国阵线，得到多个阵营的支持。攻下首都后，会有一次伪政权境外势力的大规模反攻。后续不会再有剧情设计，完全消灭入侵部队后游戏结束</div>
+								<div>2.谈判线。在进入首都前会有一次谈判。玩家如果选择</div>
+							</div>
+							<table>
+								<tbody>
+									<tr><th>叙事主轴</th><td>从一次临时撤离开始，玩家逐步将幸存者队伍建设为能影响安图恩局势的组织。</td></tr>
+									<tr><th>玩家角色</th><td>不是被动见证者，而是资源有限的领导者；每次选择都在“救谁、信谁、为谁承担代价”之间取舍。</td></tr>
+									<tr><th>章节结构</th><td>每章包含明确目标、局势升级、不可逆选择、战后结算和一条延迟出现的后果。</td></tr>
+									<tr><th>系统连接</th><td>剧情结论应改变 Haven 状态、资源压力、阵营关系、任务池或可招募角色，避免只停留在对白中。</td></tr>
+								</tbody>
+							</table>
+						</section>
+					</div>
+
+					<div class="story-tab-panel" id="prologue-panel" role="tabpanel">
+						<section id="prologue">
+							<h2>序章：第一支歌</h2>
+							<div class="callout warning">序章把玩家从“临时幸存者”推向“必须建立组织的人”。通过一次失败撤离、一次被迫救援和一次公开选择，让玩家理解核心命题：活下来不够，还要决定谁值得被带走。</div>
+							<table>
+								<tbody>
+									<tr><th>章节定位</th><td>新手段落、主角动机建立、Haven 基地起点、银色唱诗班名称来源。</td></tr>
+									<tr><th>开场状态</th><td>玩家的小队护送一批平民穿过安图恩外围封锁线，原计划只是撤离，不参与本地势力冲突。</td></tr>
+									<tr><th>事故触发</th><td>撤离车队被错误标记为走私队伍，政府军无人机和地方武装同时开火，通讯频道只剩一段断续的童声合唱录音。</td></tr>
+									<tr><th>核心任务</th><td>在有限时间内选择救援对象：受伤队员、平民儿童、情报箱或燃料车。玩家无法全救，必须接受第一个长期后果。</td></tr>
+									<tr><th>章节收束</th><td>幸存者用残存广播播放那段合唱作为集合信号，外人开始把玩家的避难队称为“银色唱诗班”。</td></tr>
+								</tbody>
+							</table>
+						</section>
+
+						<section id="prologue-beats">
+							<h2>序章节拍</h2>
+							<div class="grid">
+								<div class="card"><h3>1. 撤离合同</h3><p>教学移动、掩护、互动和撤离点，让玩家相信这只是一次普通护送。</p></div>
+								<div class="card"><h3>2. 封锁误判</h3><p>战场突然扩大，多个势力的火力同时出现，安图恩的秩序已经失灵。</p></div>
+								<div class="card"><h3>3. 取舍清单</h3><p>把可救目标拆成互斥路线，每个目标绑定后续资源、角色或声望变化。</p></div>
+								<div class="card"><h3>4. 临时避难所</h3><p>进入 Haven 雏形，结算救下的人、丢失的物资和被迫结下的敌人。</p></div>
+							</div>
+						</section>
+					</div>
+
+					<div class="story-tab-panel" id="chapter-one-panel" role="tabpanel">
+						<section id="chapter-one">
+							<h2>第一章：失序的回声</h2>
+							<div class="callout">序章幸存者抵达临时 Haven 后，玩家第一次需要主动走出避难所：找回失联的补给线，并判断谁在利用那段合唱录音召集人群。</div>
+							<table>
+								<tbody>
+									<tr><th>章节目标</th><td>建立第一条稳定补给线，同时确认 Haven 对外发出的信号究竟吸引来了盟友还是掠夺者。</td></tr>
+									<tr><th>局势升级</th><td>同一批失踪补给分别被地方商人、武装哨卡和难民小组持有，三方都声称自己才是广播的回应者。</td></tr>
+									<tr><th>关键选择</th><td>玩家可优先保障基地生存、公开保护难民，或以情报交换通行权；三条路线分别改变资源、民众信任与阵营关系。</td></tr>
+									<tr><th>章节结算</th><td>Haven 获得第一批稳定来访者，也第一次被外界明确视为一股新势力。</td></tr>
+								</tbody>
+							</table>
+						</section>
+
+						<section id="chapter-one-production">
+							<h2>第一章待细化</h2>
+							<ul class="checklist">
+								<li>确定主要任务地图、回收目标和三方势力的首次登场方式。</li>
+								<li>明确三条选择路线的资源变化、角色变化与后续任务触发条件。</li>
+								<li>补齐章节结尾的对话、广播文本和可复用的环境叙事线索。</li>
+							</ul>
+						</section>
+					</div>
+				</div>
+			</div>
+
+			<p class="footer">SilverChoir 游戏策划文档 · 剧情设计</p>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+	<script>
+		(function () {
+			var chapterTabs = {
+				"#prologue": "tab-prologue",
+				"#chapter-one": "tab-chapter-one"
+			};
+			function selectChapterTab() {
+				var tabId = chapterTabs[window.location.hash];
+				if (tabId) {
+					document.getElementById(tabId).checked = true;
+				}
+			}
+
+			selectChapterTab();
+			window.addEventListener("hashchange", selectChapterTab);
+		}());
+	</script>
+</body>
+</html>

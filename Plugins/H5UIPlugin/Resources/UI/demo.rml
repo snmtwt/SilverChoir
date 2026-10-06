@@ -1,0 +1,30 @@
+<rml>
+<head>
+	<title>H5 UI Plugin</title>
+	<link type="text/rcss" href="demo.rcss"/>
+</head>
+<body>
+	<div class="shell">
+		<div class="eyebrow">NATIVE UE RENDERING</div>
+		<h1>H5 UI Plugin</h1>
+		<p class="summary">HTML and CSS geometry submitted directly to Slate, without a full-screen browser texture.</p>
+
+		<div class="metrics">
+			<div class="metric">
+				<span class="metric-label">Renderer</span>
+				<strong>Slate / RHI</strong>
+			</div>
+			<div class="metric">
+				<span class="metric-label">Resolution</span>
+				<strong>Vector geometry</strong>
+			</div>
+		</div>
+
+		<label for="player-name">Player name</label>
+		<input id="player-name" type="text" placeholder="Type with the keyboard" data-ue-model="player.name" data-ue-event="PlayerNameChanged" data-ue-event-type="change"/>
+		<p class="binding-line">Bound value: <span data-bind="player.name">Not set</span></p>
+
+		<button id="primary-action" data-ue-event="PrimaryAction" data-ue-payload="demo">Send event to Unreal</button>
+	</div>
+</body>
+</rml>

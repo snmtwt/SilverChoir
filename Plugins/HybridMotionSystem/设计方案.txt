@@ -1,0 +1,18 @@
+1.蓝图中只保留需要的变量
+需要的变量包括：
+需要输入的变量：Stance（姿势的默认值，避免第一帧Stance是空）、ChooserTable姿势查询表
+姿势查询表中需要的变量：StateMachineState、Stance、Stance_LastFrame、Gait、Speed2D、MovementMode_LastFrame、AO、FutureFacingDelta、MovementStateLastStateTime、MovementDirectionRecent、MovementDirectionRecent、MovementModeRecent
+2.用户只通过GetAnimationProperties接口传入必要的参数包括：
+EHMS_MovementMode MovementMode
+FGameplayTagContainer Stance;
+EHMS_RotationMode RotationMode;
+EHMS_Gait Gait;
+GroundNormal
+GroundLocation（虽然暂时没用，但是后续会用于滑行）
+以及我需要新增两个变量 是否通过NavMover获取加速度和玩家输入加速度
+3.简化一下代码逻辑
+基于现有逻辑删除不必要的从控制台获取的数据
+动画的瞄准角度完全根据角色控制器的角度获取（玩家控制的角色就是玩家控制器，AI控制的角色就是AI控制器）
+输入的加速度根据GetAnimationProperties来判断是使用传入的玩家输入加速度还是使用导航组件中获取的加速度
+当前速度则从Mover组件中获取
+Update_MovementDirectionData 中方向的计算也简化一下，我只需要通过当前加速度方向（NavMover或玩家输入）和当前正在移动的方向计算出MovementDirection即可。包括RotationOffset和曲线Map都可以删除。由于这个变量目前最重要的是用于ChooserTable查询，因此我需要瞬间计算出移动方向。

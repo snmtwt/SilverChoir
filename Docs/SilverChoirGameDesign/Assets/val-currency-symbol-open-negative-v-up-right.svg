@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512">
+	<defs>
+		<mask id="up-right-negative-v">
+			<rect width="512" height="512" fill="#000000"/>
+			<circle cx="256" cy="256" r="180" fill="#ffffff"/>
+			<g transform="translate(256 256) skewY(-7) translate(-256 -256)">
+				<path d="M124 30 L164 30 L256 380 L348 30 L388 30 L256 490 Z" fill="#000000"/>
+				<path d="M140 240 H372 L380 252 L372 264 H140 L132 252 Z" fill="#000000"/>
+			</g>
+		</mask>
+	</defs>
+	<rect width="512" height="512" fill="#ffffff" mask="url(#up-right-negative-v)"/>
+</svg>

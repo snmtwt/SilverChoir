@@ -1,0 +1,87 @@
+{
+  "defaultLanguage": "zh-CN",
+  "languages": {
+    "zh-CN": {
+      "htmlLanguage": "zh-CN",
+      "documentTitle": "银色唱诗班 - 轨道战术基地控制",
+      "sceneHeading": "区域轨道",
+      "sceneHint": "选择基地层级",
+      "locationHeading": "镜头指令",
+      "locationHint": "选定观察节点",
+      "scenes": {
+        "haven": { "label": "酒馆", "sublabel": "HAVEN / 地表设施" },
+        "underground": { "label": "地下基地", "sublabel": "UNDERGROUND / 核心设施" }
+      },
+      "locations": {
+        "hall": "大厅",
+        "kitchen": "厨房",
+        "office": "办公室",
+        "commandRoom": "指挥室",
+        "readinessRoom": "人员整备室",
+        "squadRoom": "小队会议室",
+        "commanderOffice": "团长办公室"
+      },
+      "currency": {
+        "heading": "战略储备",
+        "name": "银币",
+        "deltaLabel": "周期净值"
+      },
+      "time": {
+        "month": "月",
+        "day": "日",
+        "heading": "战略时序",
+        "paused": "时序冻结",
+        "running": "时序同步",
+        "pauseHint": "播放或暂停时间",
+        "fastHint": "切换 5、10、20 倍时间流速"
+      },
+      "status": {
+        "network": "基地链路稳定",
+        "channel": "SC / ORBITAL COMMAND",
+        "sector": "TACTICAL SECTOR 07",
+        "overlayReady": "大型管理界面挂载区"
+      }
+    },
+    "en-US": {
+      "htmlLanguage": "en",
+      "documentTitle": "Silver Choir - Orbital Base Control",
+      "sceneHeading": "ZONE ORBIT",
+      "sceneHint": "SELECT FACILITY LAYER",
+      "locationHeading": "CAMERA COMMAND",
+      "locationHint": "SELECT OBSERVATION NODE",
+      "scenes": {
+        "haven": { "label": "HAVEN", "sublabel": "SURFACE FACILITY" },
+        "underground": { "label": "UNDERGROUND", "sublabel": "CORE FACILITY" }
+      },
+      "locations": {
+        "hall": "MAIN HALL",
+        "kitchen": "KITCHEN",
+        "office": "OFFICE",
+        "commandRoom": "COMMAND ROOM",
+        "readinessRoom": "READINESS ROOM",
+        "squadRoom": "SQUAD BRIEFING",
+        "commanderOffice": "COMMANDER OFFICE"
+      },
+      "currency": {
+        "heading": "STRATEGIC RESERVE",
+        "name": "SILVER",
+        "deltaLabel": "CYCLE NET"
+      },
+      "time": {
+        "month": "MON",
+        "day": "DAY",
+        "heading": "STRATEGIC SEQUENCE",
+        "paused": "SEQUENCE FROZEN",
+        "running": "SEQUENCE SYNCED",
+        "pauseHint": "Play or pause strategic time",
+        "fastHint": "Cycle 5x, 10x, and 20x time speed"
+      },
+      "status": {
+        "network": "BASE LINK STABLE",
+        "channel": "SC / ORBITAL COMMAND",
+        "sector": "TACTICAL SECTOR 07",
+        "overlayReady": "MANAGEMENT OVERLAY HOST"
+      }
+    }
+  }
+}

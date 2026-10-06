@@ -1,0 +1,19 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="先认识动画查询、对齐窗口与根轨迹，再按章节完成第一段交互动画。"><title>从这里开始 · HMS 使用手册</title><link rel="stylesheet" href="assets/manual.css"></head><body><a class="skip" href="#main">跳到正文</a><aside class="sidebar" aria-label="使用手册章节导航"><div class="brand"><div class="mark" aria-hidden="true">HMS</div><div><b>Hybrid Motion System</b><small>插件使用手册</small></div></div><div class="nav-label">智能对象交互动画</div><nav aria-label="切换章节页面"><a href="manual.html" aria-current="page">01　从这里开始</a><a href="interaction-create.html">02　创建通知与轨迹</a><a href="interaction-timing.html">03　时间参数与时间轴</a><a href="interaction-notifies.html">04　通知含义详解</a><a href="interaction-trajectories.html">05　轨迹曲线怎么读</a><a href="interaction-regenerate.html">06　重新生成与覆盖</a><a href="interaction-runtime.html">07　接入交互运行流程</a><a href="interaction-help.html">08　排查问题与检查清单</a></nav><div class="nav-label">角色与基础运动</div><nav aria-label="角色测试章节"><a href="character-testing.html">09　运动、转身与布娃娃测试</a></nav><div class="nav-label">掩体状态</div><nav aria-label="掩体状态章节"><a href="cover-state.html">10　掩体状态与动画蓝图</a></nav><div class="nav-label">武器动画</div><nav aria-label="武器动画章节"><a href="weapon-animation.html">11　武器姿态与瞄准偏移</a></nav><nav aria-label="掩体探出章节"><a href="cover-peek.html">12　持枪转身探出掩体</a></nav><nav aria-label="动画查询章节"><a href="animation-query.html">13　行为、装备与动作查询</a></nav><div class="nav-label">后续章节 / 待整理</div><div class="later">重定向与编辑器工具 <span>规划</span></div><footer>离线多页面手册 · 无网络依赖<br>内容核对：2026.09.06<br><a href="index.html">已有插件总览 ↗</a></footer></aside><main id="main"><div class="topline"><span>HMS / 使用手册 / 智能对象交互动画</span><span>01 / 08 · UE 5.8</span></div><header class="hero" id="overview">
+    <div class="eyebrow">01 — SMART OBJECT INTERACTION</div>
+    <h1>智能对象交互动画</h1>
+    <p>从一段进入动画开始，标出可以接入的时间、需要对齐的窗口，以及可供检查的根运动轨迹。</p>
+    <div class="chips"><span class="chip">示例：M_Cover</span><span class="chip">对象：测试椅子 / 掩体占位</span><span class="chip">面向动画与关卡制作</span></div>
+    <div class="status">
+      <div><strong>当前可以使用</strong><p>通知与轨迹生成、进入数据库范围更新，以及状态树驱动的移动中查询、连续进入及背对姿态保持测试。</p></div>
+      <div class="pending"><strong>仍待接入与验证</strong><p>循环保持动画、掩体内移动和正式退出流程，以及多方向动作与联网。生成通知不会自动创建整套交互资产。</p></div>
+    </div>
+  </header><div class="reading-route"><a href="interaction-create.html"><strong>第一次使用 → 操作步骤</strong><span>找到菜单，填写参数，检查生成结果。</span></a><a href="interaction-notifies.html"><strong>想理解通知 → 含义详解</strong><span>结合时间轴与截图认识每个窗口。</span></a><a href="interaction-regenerate.html"><strong>再次制作 → 覆盖规则</strong><span>修改参数后更新，理解失败提示。</span></a><a href="interaction-help.html"><strong>遇到问题 → 排查清单</strong><span>按症状检查动画与运行时接线。</span></a></div><nav class="local-toc" aria-label="本页目录">本页内容：<a href="#concept">先区分：查询、对齐与轨迹</a></nav><section id="concept">
+    <span class="section-num">01 / CONCEPTS</span><h2>先区分：查询、对齐与轨迹</h2>
+    <p class="lead">三种数据解决不同的问题。理解它们之后，就能知道该调时间、调目标，还是检查动画本身。</p>
+    <div class="cards">
+      <article class="card"><h3>查询决定“从哪里播”</h3><p>Pose Search 比较角色当前姿态与候选动画，返回一个适合的起播时间。接入限制通知决定哪些时间可以成为新的起点。</p></article>
+      <article class="card"><h3>对齐决定“在哪里落下”</h3><p>Motion Warping 在指定时间窗口内调整根运动，使角色尽量对齐运行时提供的目标位置和朝向。</p></article>
+      <article class="card"><h3>轨迹说明“动画怎么移动”</h3><p>参考曲线记录动画已有的根骨运动，帮助检查位移、旋转和剩余距离。它们不会自行驱动角色或自动配置查询数据库。</p></article>
+    </div>
+    <div class="callout"><p><strong>允许接入开始，是动画中的秒数。</strong>它不要求角色先移动到某个固定世界坐标并停住。连续接入的目标，是在移动中查询合适的帧，然后交给根运动。</p></div>
+  </section><nav class="pager" aria-label="上一章与下一章"><div></div><a class="next" href="interaction-create.html"><small>下一章 →</small><strong>创建通知与轨迹</strong></a></nav><footer class="end"><span>Hybrid Motion System · 中文使用手册<br>双击 manual.html 开始阅读；移动或分享时请保留整个 Documentation 文件夹。</span><a href="#overview">返回本页顶部 ↑</a></footer></main></body></html>

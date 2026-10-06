@@ -1,0 +1,92 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "5.8",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "SilverChoirEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "SilverChoir",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"CoreUObject",
+				"Engine"
+			]
+		}
+	],
+	"Plugins": [
+		{ "Name": "CoverSmartObjects", "Enabled": true },
+		{ "Name": "MovieSceneAnimMixer", "Enabled": true },
+		{ "Name": "CurveExpression", "Enabled": true },
+		{ "Name": "DrawDebugLibrary", "Enabled": true },
+		{
+			"Name": "GameTimeSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "SceneManagementSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "EasyHouseBuilder",
+			"Enabled": true
+		},
+		{
+			"Name": "FreeCameraSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "MapTransitionSystem",
+			"Enabled": true
+		},
+		{
+			"Name": "H5UIPlugin",
+			"Enabled": true
+		},
+		{
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		},
+		{
+			"Name": "Landmass",
+			"Enabled": true
+		},
+		{
+			"Name": "InEditorDocumentation",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			],
+			"PlatformAllowList": [
+				"Win64",
+				"Mac",
+				"Linux"
+			]
+		},
+		{
+			"Name": "AIAssistant",
+			"Enabled": true
+		},
+		{
+			"Name": "StrategyInventorySystem",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/Fab/product/47dee2c1-74b1-42c2-9997-a62c9a58b261"
+		},
+		{
+			"Name": "Mover",
+			"Enabled": true
+		},
+		{
+			"Name": "HybridMotionSystem",
+			"Enabled": true
+		}
+	]
+}

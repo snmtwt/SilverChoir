@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SilverChoir - 资源与经济</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<p class="eyebrow">战略经营层</p>
+				<h2>资源与经济</h2>
+				<p>定义资源种类、来源、消耗、库存压力、交换关系和经济稳定区间。</p>
+				<div class="document-meta">
+					<span class="badge draft">状态：草案</span>
+					<span class="badge">负责人：待指定</span>
+					<span class="badge">最近评审：待填写</span>
+				</div>
+			</div>
+
+			<section id="criminal-economy">
+				<h2>犯罪经济与阵营产业链</h2>
+				<div class="callout">核心链条：莫尔坎庄园生产毒品原料，卡洛维家族负责提炼、运输和城市销售，灰钥协议提供匿名订单与跨国客户，满堂会处理赌债与洗钱；夜莺联合会掌握人物情报和社交接触渠道。各阵营既能合作，也会争夺利润与控制权。</div>
+				<table>
+					<thead><tr><th>阵营</th><th>主要产业</th><th>提供给玩家的资源</th><th>合作代价</th></tr></thead>
+					<tbody>
+						<tr><td>夜莺联合会</td><td>夜场、成人娱乐、情报交易、社交中介</td><td>人物情报、非战斗通行、士气恢复、安全屋</td><td>组织剥削争议、隐私泄露、公众舆论风险</td></tr>
+						<tr><td>卡洛维家族</td><td>致幻剂提炼、地下运输、城市分销</td><td>黑色现金、廉价兵源、恐吓与运输线</td><td>成瘾扩散、民众支持下降、执法压力上升</td></tr>
+						<tr><td>满堂会</td><td>赌场、债务、洗钱、风险投资</td><td>资金周转、隐匿收入、都市关系网</td><td>人情债、强制委托、金融控制</td></tr>
+						<tr><td>灰钥协议</td><td>匿名委托、武器交易、身份数据与人口贩卖</td><td>高级装备、目标定位、匿名情报</td><td>道德路线反转、受害者伤害、黑市依赖</td></tr>
+						<tr><td>莫尔坎庄园</td><td>土地控制、毒品原料种植、乡村运输</td><td>原料、稳定收入、粮食与乡村道路控制权</td><td>土地压迫、毒品种植或改种粮食的收益冲突</td></tr>
+						<tr><td>奥特拉集团</td><td>油田托管、安保承包、制裁规避与技术试验</td><td>石油收入、先进装备、作战机器</td><td>主权流失、环境风险、民众支持下降</td></tr>
+						<tr><td>政府军腐败派</td><td>倒卖军资、边境走私、保护费与扣押物资转售</td><td>制式武器、通行文件、军事情报</td><td>加强现政权控制、引来内部清算、民众敌视</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="criminal-industry-candidates">
+				<h2>犯罪产业候选</h2>
+				<table>
+					<thead><tr><th>产业</th><th>可形成的玩法</th><th>建议归属</th><th>优先级</th></tr></thead>
+					<tbody>
+						<tr><td>古代遗物盗掘与走私</td><td>探索王陵、遗迹争夺、真假文物鉴定、追回国宝。</td><td>圣匣商会或灰钥协议</td><td class="status-cell">高</td></tr>
+						<tr><td>原油盗采与地下炼油</td><td>占领油井、截获油罐车、破坏黑炼油厂、改变燃料价格。</td><td>奥特拉承包商、政府军腐败派</td><td class="status-cell">高</td></tr>
+						<tr><td>港口走私与货柜调包</td><td>检查货柜、护送违禁品、海上拦截、争夺港区仓库。</td><td>盐港联合社</td><td class="status-cell">高</td></tr>
+						<tr><td>瓦尔伪钞与票据诈骗</td><td>追查印钞设备、制造局部通胀、冻结账户、决定是否使用假币。</td><td>满堂会、灰钥协议</td><td class="status-cell">高</td></tr>
+						<tr><td>车辆盗窃与拆车工场</td><td>获得载具、伪造车辆身份、改装装甲车、控制零件供应。</td><td>黑炉工会</td><td class="status-cell">高</td></tr>
+						<tr><td>军用物资倒卖</td><td>劫持补给车、回收战场武器、追查军队内鬼。</td><td>黑炉工会、政府军腐败派</td><td class="status-cell">高</td></tr>
+						<tr><td>证件与土地契约伪造</td><td>制作通行证、进入管制区、夺取房产、篡改区域所有权。</td><td>灰钥协议、腐败官员</td><td class="status-cell">中</td></tr>
+						<tr><td>非法义体与地下医疗</td><td>高风险身体强化、治疗通缉人员、处理医疗伦理选择。</td><td>灰钥协议、地下诊所</td><td class="status-cell">中</td></tr>
+						<tr><td>电网盗窃与基础设施勒索</td><td>制造停电、瘫痪监控、恢复医院供电、控制通信节点。</td><td>灰钥协议下属黑客团体</td><td class="status-cell">中</td></tr>
+						<tr><td>非法采矿与有毒废物倾倒</td><td>获取稀有材料、处理污染区域、调查企业掩盖事故。</td><td>奥特拉集团、地方承包商</td><td class="status-cell">中</td></tr>
+						<tr><td>地下格斗与比赛操纵</td><td>招募特殊战士、下注、操纵比赛、营救被迫参赛者。</td><td>满堂会或独立竞技场</td><td class="status-cell">中</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="candidate-crime-factions">
+				<h2>候选犯罪势力</h2>
+				<div class="grid">
+					<div class="card"><h3>盐港联合社</h3><p>由码头工头、货运公司、走私船主和腐败海关人员构成，控制港口走私、货柜调包与海上运输。</p></div>
+					<div class="card"><h3>黑炉工会</h3><p>由机械师、拆车场、退役军械员和工业区帮派组成，经营被盗载具、军火翻新与非法装甲改造。</p></div>
+					<div class="card"><h3>圣匣商会</h3><p>表面经营古董、拍卖和文物修复，暗中资助盗墓队并向境外收藏家出售安图恩古代遗物。</p></div>
+				</div>
+				<div class="callout warning">以上三者目前仅为产业承载候选，不属于正式阵营目录。只有在对应产业需要独立人物线、区域控制和可招募单位时，才升级为完整阵营。</div>
+			</section>
+
+			<section id="objectives">
+				<h2>本章目标</h2>
+				<div class="callout">完成本章时，应能让未参与讨论的协作者理解设计目的、玩家体验、规则边界和验证方式。</div>
+				<ul>
+					<li>每种资源推动玩家做出什么选择？</li>
+					<li>资源的主要来源与主要消耗是否形成闭环？</li>
+					<li>库存上限、短缺和溢出如何反馈？</li>
+					<li>如何识别经济失控、囤积和软锁？</li>
+				</ul>
+			</section>
+
+			<section id="definition">
+				<h2>核心定义</h2>
+				<table>
+					<tbody>
+						<tr><th>设计结论</th><td class="placeholder">用一到三句话填写本章已经确认的核心规则。</td></tr>
+						<tr><th>玩家价值</th><td class="placeholder">填写这套设计为玩家提供的决策、情绪或成长价值。</td></tr>
+						<tr><th>系统边界</th><td class="placeholder">填写本章负责什么、不负责什么，以及权威数据来源。</td></tr>
+						<tr><th>关联章节</th><td class="placeholder">填写前置输入、后续输出和需要同步更新的其他章节。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="breakdown">
+				<h2>设计拆分</h2>
+				<div class="grid">
+					<div class="card">
+						<h3>核心资源与用途</h3>
+						<p class="placeholder">填写该部分的目标、玩家行为、触发条件、规则边界和可见反馈。</p>
+					</div>
+					<div class="card">
+						<h3>产出、消耗与转换</h3>
+						<p class="placeholder">填写该部分的目标、玩家行为、触发条件、规则边界和可见反馈。</p>
+					</div>
+					<div class="card">
+						<h3>库存、维护与短缺</h3>
+						<p class="placeholder">填写该部分的目标、玩家行为、触发条件、规则边界和可见反馈。</p>
+					</div>
+					<div class="card">
+						<h3>经济目标区间与防软锁</h3>
+						<p class="placeholder">填写该部分的目标、玩家行为、触发条件、规则边界和可见反馈。</p>
+					</div>
+				</div>
+			</section>
+
+			<section id="rules-data">
+				<h2>规则与数据</h2>
+				<table>
+					<thead><tr><th>模块</th><th>规则与流程</th><th>关键参数或内容量</th><th>状态</th></tr></thead>
+					<tbody>
+						<tr><td>核心资源与用途</td><td>填写规则、流程和优先级。</td><td>填写默认值、单位、范围或内容数量。</td><td class="status-cell">待填写</td></tr>
+						<tr><td>产出、消耗与转换</td><td>填写规则、流程和优先级。</td><td>填写默认值、单位、范围或内容数量。</td><td class="status-cell">待填写</td></tr>
+						<tr><td>库存、维护与短缺</td><td>填写规则、流程和优先级。</td><td>填写默认值、单位、范围或内容数量。</td><td class="status-cell">待填写</td></tr>
+						<tr><td>经济目标区间与防软锁</td><td>填写规则、流程和优先级。</td><td>填写默认值、单位、范围或内容数量。</td><td class="status-cell">待填写</td></tr>
+					</tbody>
+				</table>
+				<div class="callout warning">关键数值应注明单位、默认值、最小值、最大值和调整目的。尚未验证的数字不要标记为最终值。</div>
+			</section>
+
+			<section id="experience-edges">
+				<h2>体验与边界情况</h2>
+				<table>
+					<thead><tr><th>场景</th><th>预期行为</th><th>玩家反馈</th><th>处理状态</th></tr></thead>
+					<tbody>
+						<tr><td>正常流程</td><td>填写最常见的完整输入与结果。</td><td>填写界面、动画、声音或文本反馈。</td><td class="status-cell">待填写</td></tr>
+						<tr><td>资源或条件不足</td><td>填写阻止、降级或替代方案。</td><td>填写原因说明和恢复指引。</td><td class="status-cell">待填写</td></tr>
+						<tr><td>中断与恢复</td><td>填写暂停、切换场景、读档或异常退出后的状态。</td><td>填写恢复后的确认反馈。</td><td class="status-cell">待填写</td></tr>
+						<tr><td>极端与冲突状态</td><td>填写同时触发、数值越界、对象失效时的优先级。</td><td>填写兜底表现。</td><td class="status-cell">待填写</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="validation">
+				<h2>待验证与完成标准</h2>
+				<table>
+					<thead><tr><th>待验证问题</th><th>验证方式</th><th>负责人</th><th>结论</th></tr></thead>
+					<tbody>
+						<tr><td>填写本章当前风险最高的设计假设。</td><td>填写原型、试玩、数据分析或评审方式。</td><td>待指定</td><td class="status-cell">待验证</td></tr>
+						<tr><td>填写第二个需要比较方案的问题。</td><td>填写样本、场景和判断门槛。</td><td>待指定</td><td class="status-cell">待验证</td></tr>
+					</tbody>
+				</table>
+				<ul class="checklist">
+					<li>核心规则、触发条件和优先级已经明确。</li>
+					<li>正常流程、失败流程和恢复方式都有玩家反馈。</li>
+					<li>关键参数包含单位、默认值、范围和调整目的。</li>
+					<li>与其他章节的数据输入输出没有互相矛盾。</li>
+					<li>仍未确认的内容具有负责人和验证计划。</li>
+				</ul>
+			</section>
+
+			<p class="footer">SilverChoir 游戏策划文档 · 战略经营层 / 资源与经济</p>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GSM Grid Strategy Map System</title>
+	<link rel="stylesheet" href="Pages/styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<h2>GSM Grid Strategy Map System</h2>
+				<p>面向 UE 5.8 的网格策略地图运行时与编辑器工具。运行时地图、瓦片和棋子数据独立于 2D/3D 展示对象，支持多地图、数据层寻路、棋子同步和读档前深度清理。</p>
+			</div>
+
+			<section id="start">
+				<h2>从这里开始</h2>
+				<div class="grid">
+					<a class="card" href="Pages/data-model.html"><h3>数据模型</h3><p>地图 GUID、瓦片 ID、棋子 GUID、配置资产与数据对象的职责。</p></a>
+					<a class="card" href="Pages/blueprint-api.html"><h3>蓝图 API</h3><p>创建地图、查询、棋子操作、导航和清理节点。</p></a>
+					<a class="card" href="Pages/display.html"><h3>2D 与 3D 展示</h3><p>地图/瓦片/棋子绑定、事件、缩放、拖拽和路径箭头。</p></a>
+					<a class="card" href="Pages/lifecycle.html"><h3>读档与生命周期</h3><p>深度清理语义、旧引用有效性检查和推荐读档顺序。</p></a>
+				</div>
+			</section>
+
+			<section id="quick-start">
+				<h2>最短接入路径</h2>
+				<ol>
+					<li>创建 <code>UGSMMapDataAsset</code>，配置瓦片条目及默认数据/展示类。</li>
+					<li>在游戏入口调用 <code>CreateMapData</code>，保存返回的 <code>MapGuid</code>。</li>
+					<li>让 <code>AGSMMap3D</code> 以默认地图或指定 GUID 注册并加载 3D 瓦片。</li>
+					<li>通过 <code>UGSMMapData</code> 或子系统操作瓦片、棋子与寻路；不要直接把 Actor 当作玩法数据。</li>
+					<li>读档前调用 <code>ClearAllMapData</code>，再创建并恢复新地图数据。</li>
+				</ol>
+			</section>
+
+			<section id="canonical">
+				<h2>权威文档</h2>
+				<p>完整说明、扩展建议和自动化测试命令见 <a href="README.md">Docs/README.md</a>。新代码只应使用 <code>GSM</code> 前缀类型；旧的 <code>GridStrategyMap*</code> 名称不再是推荐 API。</p>
+			</section>
+		</main>
+	</div>
+	<script src="Pages/docs.js"></script>
+</body>
+</html>

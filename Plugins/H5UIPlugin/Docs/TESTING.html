@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>H5 UI Plugin 测试环境与操作指南</title>
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #17212b;
+			--muted: #607080;
+			--line: #d8e0e8;
+			--soft: #f4f7fa;
+			--panel: #ffffff;
+			--dark: #17222d;
+			--green: #138a65;
+			--green-soft: #e6f6f0;
+			--blue: #2476b8;
+			--blue-soft: #eaf4fb;
+			--coral: #c94f67;
+			--coral-soft: #fcecf0;
+			--amber: #9b6811;
+			--amber-soft: #fff6df;
+		}
+
+		* {
+			box-sizing: border-box;
+			letter-spacing: 0;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			font-family: "Segoe UI", "Microsoft YaHei UI", Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.7;
+			color: var(--ink);
+			background: #ffffff;
+		}
+
+		a {
+			color: var(--blue);
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		code,
+		pre {
+			font-family: Consolas, "Cascadia Mono", monospace;
+		}
+
+		code {
+			padding: 2px 5px;
+			font-size: 0.9em;
+			color: #184d78;
+			background: #edf4f8;
+			border-radius: 3px;
+		}
+
+		pre {
+			margin: 14px 0 20px;
+			padding: 18px 20px;
+			overflow: auto;
+			font-size: 13px;
+			line-height: 1.65;
+			color: #eaf2f8;
+			background: #16212b;
+			border-left: 4px solid #5ed1a8;
+			border-radius: 5px;
+		}
+
+		pre code {
+			padding: 0;
+			color: inherit;
+			background: transparent;
+		}
+
+		.topbar {
+			color: #ffffff;
+			background: var(--dark);
+			border-bottom: 4px solid #5ed1a8;
+		}
+
+		.topbar-inner {
+			max-width: 1420px;
+			margin: 0 auto;
+			padding: 28px 34px 26px;
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			gap: 28px;
+		}
+
+		.title-block p {
+			margin: 7px 0 0;
+			font-size: 14px;
+			color: #b9c7d4;
+		}
+
+		h1 {
+			margin: 0;
+			font-size: 30px;
+			line-height: 1.25;
+		}
+
+		.version-list {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			gap: 8px;
+		}
+
+		.version-list span {
+			padding: 5px 9px;
+			font-size: 12px;
+			color: #dce8f2;
+			background: #243442;
+			border: 1px solid #405366;
+			border-radius: 4px;
+		}
+
+		.layout {
+			max-width: 1420px;
+			margin: 0 auto;
+			padding: 34px;
+			display: flex;
+			align-items: flex-start;
+			gap: 38px;
+		}
+
+		.sidebar {
+			position: sticky;
+			top: 22px;
+			width: 250px;
+			flex: 0 0 250px;
+			padding-right: 24px;
+			border-right: 1px solid var(--line);
+		}
+
+		.sidebar strong {
+			display: block;
+			margin-bottom: 10px;
+			font-size: 13px;
+			color: var(--muted);
+			text-transform: uppercase;
+		}
+
+		.sidebar a {
+			display: block;
+			padding: 7px 9px;
+			margin-bottom: 3px;
+			font-size: 14px;
+			color: #344657;
+			border-left: 3px solid transparent;
+		}
+
+		.sidebar a:hover {
+			color: var(--green);
+			background: var(--green-soft);
+			border-left-color: var(--green);
+			text-decoration: none;
+		}
+
+		.sidebar-meta {
+			margin-top: 22px;
+			padding-top: 18px;
+			font-size: 12px;
+			color: var(--muted);
+			border-top: 1px solid var(--line);
+		}
+
+		.main {
+			min-width: 0;
+			flex: 1;
+			max-width: 1040px;
+		}
+
+		.summary {
+			display: flex;
+			align-items: center;
+			gap: 26px;
+			padding: 24px;
+			margin-bottom: 34px;
+			background: var(--soft);
+			border: 1px solid var(--line);
+			border-radius: 7px;
+		}
+
+		.summary-copy {
+			flex: 1;
+		}
+
+		.summary h2 {
+			margin-top: 0;
+		}
+
+		.summary p:last-child {
+			margin-bottom: 0;
+		}
+
+		.summary img {
+			width: 360px;
+			height: auto;
+			border: 1px solid #344457;
+			border-radius: 6px;
+		}
+
+		section {
+			padding: 10px 0 34px;
+			margin-bottom: 26px;
+			border-bottom: 1px solid var(--line);
+		}
+
+		section:last-of-type {
+			border-bottom: 0;
+		}
+
+		h2 {
+			margin: 0 0 13px;
+			font-size: 23px;
+			line-height: 1.35;
+		}
+
+		h3 {
+			margin: 26px 0 10px;
+			font-size: 17px;
+		}
+
+		p {
+			margin: 0 0 14px;
+		}
+
+		ol,
+		ul {
+			padding-left: 24px;
+		}
+
+		li {
+			margin-bottom: 8px;
+		}
+
+		.step-heading {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.step-number {
+			width: 30px;
+			height: 30px;
+			flex: 0 0 30px;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 13px;
+			font-weight: 700;
+			color: #ffffff;
+			background: var(--green);
+			border-radius: 5px;
+		}
+
+		.table-wrap {
+			width: 100%;
+			overflow-x: auto;
+			margin: 14px 0 22px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 14px;
+		}
+
+		th,
+		td {
+			padding: 11px 13px;
+			text-align: left;
+			vertical-align: top;
+			border: 1px solid var(--line);
+		}
+
+		th {
+			color: #304253;
+			background: #edf2f6;
+		}
+
+		tbody tr:nth-child(even) td {
+			background: #fafcfd;
+		}
+
+		.flow {
+			display: flex;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 9px;
+			padding: 18px;
+			margin: 14px 0 20px;
+			background: #f7f9fb;
+			border: 1px solid var(--line);
+			border-radius: 6px;
+		}
+
+		.flow-node {
+			min-width: 150px;
+			padding: 10px 12px;
+			font-size: 13px;
+			font-weight: 600;
+			text-align: center;
+			color: #1b4b70;
+			background: var(--blue-soft);
+			border: 1px solid #a9cde7;
+			border-radius: 5px;
+		}
+
+		.flow-node.green {
+			color: #176246;
+			background: var(--green-soft);
+			border-color: #99d5be;
+		}
+
+		.flow-arrow {
+			font-size: 20px;
+			color: #7c8c9a;
+		}
+
+		.callout {
+			padding: 14px 16px;
+			margin: 16px 0;
+			font-size: 14px;
+			border-left: 4px solid var(--blue);
+			background: var(--blue-soft);
+		}
+
+		.callout.warning {
+			border-left-color: var(--amber);
+			background: var(--amber-soft);
+		}
+
+		.callout.success {
+			border-left-color: var(--green);
+			background: var(--green-soft);
+		}
+
+		.media-preview {
+			max-width: 760px;
+			margin: 18px 0 22px;
+		}
+
+		.media-preview video {
+			display: block;
+			width: 100%;
+			aspect-ratio: 16 / 9;
+			background: #0d1218;
+			border: 1px solid #344457;
+			border-radius: 6px;
+		}
+
+		.media-preview figcaption {
+			padding-top: 8px;
+			font-size: 12px;
+			color: var(--muted);
+		}
+
+		.coverage-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			padding: 0;
+			list-style: none;
+		}
+
+		.coverage-list li {
+			padding: 6px 9px;
+			margin: 0;
+			font-size: 12px;
+			color: #264456;
+			background: #edf4f7;
+			border: 1px solid #cbdbe3;
+			border-radius: 4px;
+		}
+
+		.result-strip {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 12px;
+			margin-top: 16px;
+		}
+
+		.result-item {
+			min-width: 170px;
+			padding: 14px;
+			background: #ffffff;
+			border: 1px solid var(--line);
+			border-top: 3px solid var(--green);
+			border-radius: 5px;
+		}
+
+		.result-item strong,
+		.result-item span {
+			display: block;
+		}
+
+		.result-item strong {
+			font-size: 18px;
+		}
+
+		.result-item span {
+			font-size: 12px;
+			color: var(--muted);
+		}
+
+		.footer {
+			padding: 24px 34px;
+			font-size: 12px;
+			text-align: center;
+			color: #7d8d9c;
+			background: #f2f5f7;
+			border-top: 1px solid var(--line);
+		}
+
+		@media (max-width: 980px) {
+			.topbar-inner,
+			.layout,
+			.summary {
+				display: block;
+			}
+
+			.version-list {
+				justify-content: flex-start;
+				margin-top: 18px;
+			}
+
+			.sidebar {
+				position: static;
+				width: 100%;
+				padding: 0 0 22px;
+				margin-bottom: 28px;
+				border-right: 0;
+				border-bottom: 1px solid var(--line);
+			}
+
+			.sidebar a {
+				display: inline-block;
+				margin-right: 5px;
+			}
+
+			.summary img {
+				width: 100%;
+				margin-top: 20px;
+			}
+		}
+
+		@media (max-width: 620px) {
+			.topbar-inner,
+			.layout {
+				padding: 22px 18px;
+			}
+
+			h1 {
+				font-size: 25px;
+			}
+
+			.summary {
+				padding: 18px;
+			}
+
+			.flow {
+				align-items: stretch;
+			}
+
+			.flow-node {
+				width: 100%;
+			}
+
+			.flow-arrow {
+				width: 100%;
+				text-align: center;
+				transform: rotate(90deg);
+			}
+		}
+
+		@media print {
+			.topbar {
+				color: #000000;
+				background: #ffffff;
+			}
+
+			.title-block p,
+			.version-list span {
+				color: #333333;
+			}
+
+			.layout {
+				display: block;
+				padding: 20px;
+			}
+
+			.sidebar,
+			.media-preview video {
+				display: none;
+			}
+
+			section {
+				break-inside: avoid;
+			}
+		}
+	</style>
+</head>
+<body>
+	<header class="topbar">
+		<div class="topbar-inner">
+			<div class="title-block">
+				<h1>H5 UI Plugin 测试环境与操作指南</h1>
+				<p>在空关卡中加载 Showcase 与 Vue 3 页面，验证原生 HTML/CSS/JavaScript、组件化界面、输入、UE 交互、视频与性能统计。</p>
+			</div>
+			<div class="version-list" aria-label="适用版本">
+				<span>Unreal Engine 5.8</span>
+				<span>H5 UI Plugin 0.3</span>
+				<span>Win64</span>
+			</div>
+		</div>
+	</header>
+
+	<div class="layout">
+		<nav class="sidebar" aria-label="文档目录">
+			<strong>目录</strong>
+			<a href="#overview">快速开始</a>
+			<a href="#level">1. 创建空关卡</a>
+			<a href="#widget">2. 创建全屏 Widget</a>
+			<a href="#data">3. 初始化数据</a>
+			<a href="#events">4. 接收页面事件</a>
+			<a href="#javascript">5. JavaScript 验证</a>
+			<a href="#vue">6. Vue 3 验证</a>
+			<a href="#viewport">7. 添加到屏幕</a>
+			<a href="#cases">8. 测试案例操作</a>
+			<a href="#media">9. 视频验证</a>
+			<a href="#coverage">10. 覆盖范围</a>
+			<a href="#api">11. 生命周期 API</a>
+			<a href="#troubleshooting">故障排查</a>
+			<a href="#results">验证结果</a>
+			<div class="sidebar-meta">
+				Showcase：<br />
+				<code>h5ui://plugin/showcase.html</code><br /><br />
+				Vue 3：<br />
+				<code>h5ui://plugin/vue-basic/vue-basic.html</code>
+			</div>
+		</nav>
+
+		<main class="main">
+			<div class="summary" id="overview">
+				<div class="summary-copy">
+					<h2>最快验证路径</h2>
+					<p>创建一个 Widget Blueprint，拖入 <strong>H5 UI View</strong>，将 URL 设置为 <code>h5ui://plugin/showcase.html</code>，再从关卡蓝图创建并添加到 Viewport。</p>
+					<p>Showcase 和 Vue 3 示例都已随插件提供，不需要复制页面、样式、图片、脚本或视频文件。</p>
+				</div>
+				<img src="../Resources/UI/media/showcase.png" alt="H5 UI Plugin Showcase 海报" />
+			</div>
+
+			<section id="level">
+				<h2 class="step-heading"><span class="step-number">1</span>创建空关卡</h2>
+				<ol>
+					<li>在 Unreal Editor 中选择 <strong>File &gt; New Level &gt; Empty Level</strong>。</li>
+					<li>保存为 <code>L_H5UIPluginTest</code>。</li>
+					<li>确认 <strong>Edit &gt; Plugins &gt; H5 UI Plugin</strong> 已启用。当前 SilverChoir 工程已经启用。</li>
+				</ol>
+			</section>
+
+			<section id="widget">
+				<h2 class="step-heading"><span class="step-number">2</span>创建全屏 Widget</h2>
+				<ol>
+					<li>在内容浏览器中选择 <strong>Add &gt; User Interface &gt; Widget Blueprint</strong>。</li>
+					<li>命名为 <code>WBP_H5UIPluginTest</code>。</li>
+					<li>打开 Designer，从 Palette 的 <strong>H5 UI Plugin</strong> 分类拖入 <strong>H5 UI View</strong>。</li>
+					<li>控件命名为 <code>HtmlView</code>，勾选 <strong>Is Variable</strong>。</li>
+					<li>Anchors 设置为全屏拉伸，Left、Top、Right、Bottom 全部设为 <code>0</code>。</li>
+				</ol>
+
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>属性</th><th>值</th><th>作用</th></tr></thead>
+						<tbody>
+							<tr><td>URL</td><td><code>h5ui://plugin/showcase.html</code></td><td>加载插件自带测试页面</td></tr>
+							<tr><td>Auto Load</td><td><code>true</code></td><td>控件建立后自动加载</td></tr>
+							<tr><td>Receive Input</td><td><code>true</code></td><td>接收鼠标和键盘输入</td></tr>
+							<tr><td>Consume Input</td><td><code>true</code></td><td>页面处理输入后阻止继续传递</td></tr>
+							<tr><td>Pass Through Transparent Mouse Input</td><td><code>true</code></td><td>透明 RCSS 区域不拦截游戏鼠标</td></tr>
+							<tr><td>Pass Through Keyboard Without Editable Focus</td><td><code>true</code></td><td>没有文本编辑焦点时把键盘交给游戏</td></tr>
+							<tr><td>Enable JavaScript</td><td><code>true</code></td><td>为该视图创建独立脚本运行时</td></tr>
+							<tr><td>Target Frame Rate</td><td><code>60</code></td><td>活动页面目标更新频率</td></tr>
+							<tr><td>Default Size</td><td><code>1920 x 1080</code></td><td>布局尚未获得实际尺寸时的默认值</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section id="data">
+				<h2 class="step-heading"><span class="step-number">3</span>初始化页面数据</h2>
+				<p>选中 Designer 中的 <code>HtmlView</code>，在 Details 的 Events 中点击 <strong>On Ready For Bindings</strong> 旁的加号，然后按顺序连接以下节点：</p>
+
+				<div class="flow" aria-label="初始化蓝图流程">
+					<div class="flow-node green">On Ready For Bindings</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Set Data...</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node green">Synchronize Models</div>
+				</div>
+
+				<pre><code>Set Data String  Name=player.name        Value=Silver Pilot
+Set Data Number  Name=player.level       Value=27
+Set Data Boolean Name=system.connected   Value=true
+Set Data String  Name=session.status     Value=Ready
+Set Data String  Name=player.callsign    Value=CHOIR-7
+Set Data String  Name=mission.region     Value=central
+Set Data String  Name=mission.notes      Value=Maintain formation and verify the media feed.
+Set Data Number  Name=mission.signal     Value=65
+Set Data Number  Name=mission.readiness  Value=82
+Set Data String  Name=last.event         Value=ReadyForBindings
+Synchronize Models</code></pre>
+
+				<div class="callout warning"><strong>注意：</strong><code>Name</code> 是 FName，必须填写完整路径，例如 <code>player.name</code>，不能只填 <code>name</code>。</div>
+			</section>
+
+			<section id="events">
+				<h2 class="step-heading"><span class="step-number">4</span>接收 HTML 页面事件</h2>
+				<p>在 <code>H5 UI View</code> 的 Events 中添加 <strong>On UI Event</strong>。使用 <strong>Break H5UI Event</strong> 取得 Name、Payload 和 Element Id。</p>
+
+				<div class="flow" aria-label="事件蓝图流程">
+					<div class="flow-node green">On UI Event</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Break H5UI Event</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Print String</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Set last.event</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node green">Synchronize Models</div>
+				</div>
+
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>事件 Name</th><th>Blueprint 行为</th><th>可见结果</th></tr></thead>
+						<tbody>
+							<tr><td><code>FocusName</code></td><td>调用 Focus Element By Id，ID=<code>player-name</code></td><td>键盘焦点移动到 Display name</td></tr>
+							<tr><td><code>RefreshStats</code></td><td>读取 Get Performance Stats 并写入 <code>perf.*</code></td><td>右侧 Runtime 数字刷新</td></tr>
+							<tr><td><code>ReloadView</code></td><td>调用 Reload</td><td>页面重新加载并再次触发 Ready</td></tr>
+							<tr><td><code>ResetDemo</code></td><td>重新写入默认数据并同步</td><td>页面数据恢复初始状态</td></tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h3>性能字段映射</h3>
+				<pre><code>perf.update   &lt;- Update Milliseconds
+perf.submit   &lt;- Submit Milliseconds
+perf.javascript &lt;- JavaScript Milliseconds
+perf.jsTimers &lt;- JavaScript Timers
+perf.batches  &lt;- Draw Batches
+perf.vertices &lt;- Vertices
+perf.viewport &lt;- ViewSize.X + " x " + ViewSize.Y</code></pre>
+			</section>
+
+			<section id="javascript">
+				<h2 class="step-heading"><span class="step-number">5</span>验证 JavaScript</h2>
+				<p>Showcase 底部的 <strong>JavaScript</strong> 面板由外部 <code>showcase.js</code> 驱动，页面内部状态变化不需要经过 Blueprint。</p>
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>操作</th><th>标准 JavaScript 能力</th><th>UE 事件</th></tr></thead>
+						<tbody>
+							<tr><td>Increment</td><td><code>addEventListener</code>、<code>textContent</code>、<code>dataset</code></td><td><code>JavaScriptCounterChanged</code></td></tr>
+							<tr><td>Run timer</td><td><code>setTimeout</code>、<code>classList</code></td><td><code>JavaScriptTimerCompleted</code></td></tr>
+							<tr><td>Add node</td><td><code>createElement</code>、<code>appendChild</code></td><td><code>JavaScriptNodeCreated</code></td></tr>
+						</tbody>
+					</table>
+				</div>
+				<p>在 Blueprint 中也可以调用 <strong>Execute JavaScript</strong>，读取 <code>Success</code>、<code>Result</code> 和 <code>Error</code> 输出：</p>
+				<pre><code>document.getElementById('js-status').textContent = 'Called from Blueprint';
+ue.setData('last.event', 'JavaScript wrote UE data');
+ue.getData('last.event');</code></pre>
+				<div class="callout success">为 HtmlView 绑定 <strong>On JavaScript Error</strong> 并连接 Print String，可直接看到页面脚本或 Execute JavaScript 的语法与运行错误。</div>
+			</section>
+
+			<section id="vue">
+				<h2 class="step-heading"><span class="step-number">6</span>验证 Vue 3</h2>
+				<p>插件现已内置 Vue 3 自定义渲染器。Vue 的组件树和响应式系统运行在 QuickJS 中，节点创建、属性更新和事件绑定通过 H5UI DOM 写入 RmlUi，并继续由 Slate 原生提交几何，不会切换到 CEF 页面纹理。</p>
+
+				<h3>直接加载内置示例</h3>
+				<ol>
+					<li>选中 <code>WBP_H5UIPluginTest</code> 中的 <code>HtmlView</code>。</li>
+					<li>将 URL 改为 <code>h5ui://plugin/vue-basic/vue-basic.html</code>。</li>
+					<li>保持 <strong>Auto Load</strong>、<strong>Receive Input</strong> 和 <strong>Enable JavaScript</strong> 开启。</li>
+					<li>编译 Widget 并进入 PIE。这个页面不依赖 Blueprint 初始化数据。</li>
+				</ol>
+
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>操作</th><th>验证的 Vue 能力</th><th>预期结果</th></tr></thead>
+						<tbody>
+							<tr><td>打开页面</td><td>SFC 挂载、子组件、<code>v-for</code></td><td>显示三个状态组件，右上角为 <code>Ready</code></td></tr>
+							<tr><td>修改 Pilot name</td><td>事件绑定、<code>ref</code>、<code>computed</code></td><td>标题中的 Welcome 文本随输入更新</td></tr>
+							<tr><td>点击 Increment</td><td>响应式状态与异步更新队列</td><td>按钮中的计数从 <code>0</code> 依次增加</td></tr>
+							<tr><td>点击 Toggle details</td><td><code>v-if</code> 条件渲染</td><td>说明文字在两种状态之间切换</td></tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h3>Vue SFC 工程与构建</h3>
+				<p>Vue 开发工作区位于 <code>Plugins/H5UIPlugin/WebSDK</code>。示例使用标准 <code>.vue</code> 单文件组件，但入口需要调用 Silver 提供的 <code>createH5UIApp</code>：</p>
+				<pre><code>import { createH5UIApp } from '@h5ui-plugin/vue';
+import App from './App.vue';
+
+createH5UIApp(App).mount('#app');</code></pre>
+				<p>安装依赖并生成 UE 可加载资源：</p>
+				<pre><code>cd Plugins/H5UIPlugin/WebSDK
+pnpm install
+pnpm build</code></pre>
+				<p>构建结果会写入 <code>Resources/UI/sdk/h5ui-vue.global.js</code> 和 <code>Resources/UI/vue-basic/</code>。页面脚本输出为经典 IIFE，因此当前不依赖尚未实现的 ES Modules。</p>
+
+				<div class="callout success"><strong>已验证：</strong>UE 5.8 自动化测试会真实加载 Vue 产物、确认应用挂载，并点击 Increment 验证计数从 0 更新到 1。</div>
+				<div class="callout warning"><strong>本阶段边界：</strong>当前只完成 Vue 3 自定义渲染器和常用组件化能力；尚未实现 ECharts、Canvas、WebGL，也不保证依赖完整浏览器 DOM 或 <code>runtime-dom</code> 特性的第三方 Vue 组件可以直接运行。</div>
+			</section>
+
+			<section id="viewport">
+				<h2 class="step-heading"><span class="step-number">7</span>添加到屏幕并启用输入</h2>
+				<p>打开 <code>L_H5UIPluginTest</code> 的 Level Blueprint，在 <strong>Event BeginPlay</strong> 后建立以下流程：</p>
+
+				<div class="flow" aria-label="关卡蓝图流程">
+					<div class="flow-node green">Event BeginPlay</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Create Widget<br />WBP_H5UIPluginTest</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Add to Viewport</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Set Input Mode Game and UI</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node green">Show Mouse Cursor = true</div>
+				</div>
+
+				<pre><code>Create Widget (Class=WBP_H5UIPluginTest, Owning Player=Get Player Controller)
+-&gt; Promote to variable TestWidget
+-&gt; Add to Viewport
+
+Get Player Controller
+-&gt; Set Input Mode Game and UI (Widget to Focus 留空，Hide Cursor During Capture=false)
+-&gt; Set Show Mouse Cursor=true</code></pre>
+
+				<div class="callout warning"><strong>不要使用 Set Input Mode UI Only：</strong>该模式会从 UE 层阻止输入进入游戏，插件无法让事件继续穿透。</div>
+				<div class="callout success">进入 PIE 后，透明页面区域的鼠标和非编辑状态的键盘会传给游戏。点击输入框后键盘交给 HTML；点击透明区域或非编辑控件后，键盘重新交给游戏。点击页面中的 <strong>Edit pilot</strong>，还可以验证 UE 回调后主动聚焦输入框。</div>
+			</section>
+
+			<section id="cases">
+				<h2 class="step-heading"><span class="step-number">8</span>测试案例操作</h2>
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>操作</th><th>预期页面结果</th><th>预期 UE 结果</th></tr></thead>
+						<tbody>
+							<tr><td>在 Display name 输入字符</td><td>输入框内容变化；同步后标题名称变化</td><td><code>PlayerNameChanged</code>，Payload 为当前文本</td></tr>
+							<tr><td>修改 Access code</td><td>字符以密码形式显示</td><td><code>AccessCodeChanged</code></td></tr>
+							<tr><td>编辑 Briefing notes</td><td>多行文本可输入、选择、复制和粘贴</td><td><code>NotesChanged</code></td></tr>
+							<tr><td>切换 Deployment region</td><td>下拉选项改变</td><td><code>RegionChanged</code>，Payload 为选项 value</td></tr>
+							<tr><td>切换 Checkbox / Radio</td><td>选中状态变化</td><td><code>TelemetryChanged</code> / <code>RouteChanged</code></td></tr>
+							<tr><td>拖动 Signal gain</td><td>滑块移动；同步后右侧数值变化</td><td><code>SignalChanged</code></td></tr>
+							<tr><td>点击 Launch mission</td><td>按钮出现 Hover、Active 和 Transform 状态</td><td><code>StartMission</code>，Payload=<code>silver-dawn</code></td></tr>
+							<tr><td>点击 Edit pilot</td><td>Display name 获得键盘焦点</td><td><code>FocusName</code> 后调用 FocusElementById</td></tr>
+							<tr><td>点击 Refresh stats</td><td>Runtime 面板数字刷新</td><td><code>RefreshStats</code> 后读取性能结构</td></tr>
+							<tr><td>点击 JavaScript 三个按钮</td><td>计数、延迟状态与动态节点均变化</td><td>收到三个 <code>JavaScript*</code> 事件</td></tr>
+							<tr><td>滚动 Activity</td><td>列表在固定裁剪区域内滚动</td><td>无需 UE 回调</td></tr>
+							<tr><td>点击 Reload view</td><td>页面重新建立</td><td><code>ReloadView</code>，再次触发 OnReadyForBindings</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section id="media">
+				<h2 class="step-heading"><span class="step-number">9</span>验证视频播放</h2>
+				<p>Showcase 使用以下原生节点。视频帧由 UE Media Framework 解码并保留在 Media Texture 中：</p>
+				<pre><code>&lt;video
+  src="h5ui://plugin/media/showcase.mp4"
+  autoplay
+  loop
+  muted&gt;
+&lt;/video&gt;</code></pre>
+
+				<figure class="media-preview">
+					<video controls="controls" muted="muted" preload="metadata" poster="../Resources/UI/media/showcase.png">
+						<source src="../Resources/UI/media/showcase.mp4" type="video/mp4" />
+						当前浏览器无法播放该 MP4。
+					</video>
+					<figcaption>这里播放的是与 UE Showcase 相同的本地 MP4，仅用于确认源文件内容。</figcaption>
+				</figure>
+
+				<div class="callout">UE 中应当自动播放、循环且静音。视频黑屏时先检查 Output Log 中的 Media Framework 信息，并确认 Win64 的 WmfMedia 可用。</div>
+			</section>
+
+			<section id="coverage">
+				<h2 class="step-heading"><span class="step-number">10</span>当前覆盖范围</h2>
+				<ul class="coverage-list" aria-label="已覆盖功能">
+					<li>HTML 根节点兼容</li><li>外部 RCSS</li><li>Flexbox</li><li>盒模型</li>
+					<li>CSS 选择器</li><li>字体</li><li>圆角</li><li>裁剪</li><li>滚动</li>
+					<li>图片纹理</li><li>Hover / Active</li><li>Transition</li><li>Transform</li>
+					<li>Keyframe Animation</li><li>Button</li><li>Text</li><li>Password</li>
+					<li>Textarea</li><li>Select</li><li>Checkbox</li><li>Radio</li><li>Range</li><li>Progress</li>
+					<li>data-bind</li><li>data-ue-model</li><li>data-ue-event</li><li>data-ue-payload</li>
+					<li>键盘输入</li><li>剪贴板</li><li>外部 / 内联 JavaScript</li><li>DOM 查询与修改</li>
+					<li>事件与 Promise</li><li>Timer / Animation Frame</li><li>window.ue 桥接</li><li>Vue 3 自定义渲染器</li>
+					<li>Vue SFC</li><li>子组件</li><li>v-for / v-if</li><li>响应式状态</li><li>本地 MP4</li><li>性能统计</li>
+				</ul>
+
+				<div class="callout warning"><strong>当前限制：</strong>尚未支持 ES Modules、fetch/XHR/WebSocket、完整浏览器 DOM、CEF 子视图、CSS Grid、Canvas/WebGL、ECharts、手柄、触摸和完整中文 IME 候选窗。</div>
+			</section>
+
+			<section id="api">
+				<h2 class="step-heading"><span class="step-number">11</span>补充测试生命周期 API</h2>
+				<p><code>Load HTML String</code> 和 <code>Close</code> 不适合由页面内部触发，可在 Level Blueprint 绑定测试按键：</p>
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>API</th><th>测试方式</th><th>预期结果</th></tr></thead>
+						<tbody>
+							<tr><td>Load URL</td><td>加载 <code>h5ui://plugin/showcase.html</code></td><td>显示完整 Showcase</td></tr>
+							<tr><td>Load HTML String</td><td>传入严格闭合的简单 HTML 与 Base URL</td><td>当前文档被内存页面替换</td></tr>
+							<tr><td>Reload</td><td>点击 Reload view 并在 UE 分支调用 Reload</td><td>重新加载并触发 Ready</td></tr>
+							<tr><td>Close</td><td>绑定一个测试按键调用 Close</td><td>页面卸载，状态变为 Unloaded</td></tr>
+							<tr><td>On Load Failed</td><td>临时加载不存在的 URL</td><td>输出明确错误文本</td></tr>
+							<tr><td>Execute JavaScript</td><td>读取或修改带 ID 的页面节点</td><td>返回结果，页面立即更新</td></tr>
+						</tbody>
+					</table>
+				</div>
+				<p>调用 <code>Close</code> 后，执行 <code>Load URL(h5ui://plugin/showcase.html)</code> 即可恢复。</p>
+			</section>
+
+			<section id="troubleshooting">
+				<h2>故障排查</h2>
+				<div class="table-wrap">
+					<table>
+						<thead><tr><th>现象</th><th>检查项</th></tr></thead>
+						<tbody>
+							<tr><td>页面空白</td><td>URL 必须完整写为 <code>h5ui://plugin/showcase.html</code>；绑定 On Load Failed 输出错误。</td></tr>
+							<tr><td>无法键盘输入</td><td>确认 Receive Input 已开启，使用 Set Input Mode Game and UI，并点击输入框取得焦点。</td></tr>
+							<tr><td>游戏收不到鼠标或键盘</td><td>不要使用 Set Input Mode UI Only；确认两个 Pass Through 属性已开启，并为透明 HTML 根层设置 <code>pointer-events: none</code>。</td></tr>
+							<tr><td>视频黑屏</td><td>确认 WmfMedia 可用，检查 Output Log 中的 Media Framework 错误。</td></tr>
+							<tr><td>中文输入法没有候选窗</td><td>当前仅接收 Slate 已提交字符，完整 IME Composition Adapter 尚未实现。</td></tr>
+							<tr><td>性能数据一直是 0</td><td>处理 RefreshStats 事件，将 Get Performance Stats 结果写入 <code>perf.*</code> 并同步。</td></tr>
+							<tr><td>JavaScript 面板停在 Starting</td><td>确认 Enable JavaScript 已开启，并绑定 On JavaScript Error 查看具体错误。</td></tr>
+							<tr><td>Vue 页面空白</td><td>确认 URL 为 <code>h5ui://plugin/vue-basic/vue-basic.html</code>，Enable JavaScript 已开启，并查看 On JavaScript Error。</td></tr>
+							<tr><td>Vue 构建后仍显示旧内容</td><td>在 <code>WebSDK</code> 目录重新执行 <code>pnpm build</code>，然后对 HtmlView 调用 Reload。</td></tr>
+							<tr><td>按钮有事件但 Last event 不变化</td><td>On UI Event 中设置 <code>last.event</code> 后必须调用 Synchronize Models。</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section id="results">
+				<h2>已经完成的验证</h2>
+				<p>Showcase 与 Vue 3 示例已通过 UE 5.8 Win64 自动化测试，覆盖原生渲染、外部脚本、DOM、Timer、UE 桥接、Vue SFC 挂载、响应式更新以及失控脚本中断与恢复。</p>
+				<div class="result-strip">
+					<div class="result-item"><strong>Success</strong><span>NativeSmoke 自动化</span></div>
+					<div class="result-item"><strong>Vue 3</strong><span>SFC 挂载与响应式点击</span></div>
+					<div class="result-item"><strong>4 ms</strong><span>默认脚本连续执行预算</span></div>
+					<div class="result-item"><strong>50 ms</strong><span>页面脚本初始化预算</span></div>
+					<div class="result-item"><strong>16 MB</strong><span>默认单视图 JS 内存限制</span></div>
+					<div class="result-item"><strong>1080p / 4K</strong><span>几何数量保持一致</span></div>
+				</div>
+			</section>
+
+			<section id="files">
+				<h2>相关文件</h2>
+				<ul>
+					<li><a href="../Resources/UI/showcase.html">Showcase HTML 源文件</a></li>
+					<li><a href="../Resources/UI/showcase.css">Showcase CSS 样式</a></li>
+					<li><a href="../Resources/UI/showcase.js">Showcase JavaScript 脚本</a></li>
+					<li><a href="../Resources/UI/media/showcase.png">Showcase PNG</a></li>
+					<li><a href="../Resources/UI/media/showcase.mp4">Showcase MP4</a></li>
+					<li><a href="../Resources/UI/vue-basic/vue-basic.html">Vue 3 示例页面</a></li>
+					<li><a href="../Resources/UI/sdk/h5ui-vue.global.js">H5UI Vue 全局 SDK</a></li>
+					<li><a href="../WebSDK/examples/vue-basic/src/App.vue">Vue 3 SFC 示例源码</a></li>
+					<li><a href="../README.md">插件 README</a></li>
+					<li><a href="../ROADMAP.md">插件路线图</a></li>
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<footer class="footer">H5 UI Plugin · 本文档可直接通过 file:// 打开，不依赖网络资源。</footer>
+</body>
+</html>

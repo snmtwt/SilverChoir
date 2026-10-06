@@ -1,0 +1,10 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "Game Time System",
+  "Description": "Independent game calendar with adjustable speed, pause and Blueprint scheduled task objects.",
+  "Category": "Gameplay",
+  "CanContainContent": true,
+  "Modules": [{ "Name": "GameTimeSystem", "Type": "Runtime", "LoadingPhase": "Default" }]
+}

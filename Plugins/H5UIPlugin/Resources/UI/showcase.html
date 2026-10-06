@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>H5 UI Plugin Showcase</title>
+	<link rel="stylesheet" type="text/css" href="showcase.css"/>
+</head>
+<body>
+	<div id="showcase-viewport" class="viewport">
+		<header class="topbar">
+			<div class="brand">
+				<span id="brand-mark" class="brand-mark">S</span>
+				<div>
+					<strong>Silver Command</strong>
+					<span class="brand-subtitle">Native interface runtime</span>
+				</div>
+			</div>
+			<div class="connection">
+				<span class="connection-dot"></span>
+				<span data-bind="system.connected">offline</span>
+			</div>
+		</header>
+
+		<main id="showcase-content" class="content">
+			<div class="hero">
+				<div class="hero-copy">
+					<span class="eyebrow">OPERATION SILVER DAWN</span>
+					<h1>Welcome, <span data-bind="player.name">Pilot</span></h1>
+					<p>Flight level <strong data-bind="player.level">0</strong> is cleared for deployment. Command status: <strong data-bind="session.status">Standby</strong>.</p>
+					<div class="button-row">
+						<button id="launch-mission" class="button button-primary" data-ue-event="StartMission" data-ue-payload="silver-dawn">Launch mission</button>
+						<button class="button button-secondary" data-ue-event="FocusName">Edit pilot</button>
+						<button class="button button-secondary" data-ue-event="RefreshStats">Refresh stats</button>
+					</div>
+				</div>
+				<div class="hero-media">
+					<img src="media/showcase.png" alt="Silver command interface"/>
+				</div>
+			</div>
+
+			<div class="workspace">
+				<div class="main-column">
+					<div class="panel">
+						<div class="panel-header">
+							<div>
+								<span class="section-index">01</span>
+								<h2>Pilot profile</h2>
+							</div>
+							<span class="panel-state">Editable</span>
+						</div>
+						<div class="panel-body">
+							<div class="form-row">
+								<div class="field">
+									<label for="player-name">Display name</label>
+									<input id="player-name" type="text" placeholder="Enter a pilot name" data-ue-model="player.name" data-ue-event="PlayerNameChanged" data-ue-event-type="change"/>
+								</div>
+								<div class="field">
+									<label for="access-code">Access code</label>
+									<input id="access-code" type="password" value="silver-01" data-ue-event="AccessCodeChanged" data-ue-event-type="change"/>
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="field">
+									<label for="region">Deployment region</label>
+									<select id="region" data-ue-model="mission.region" data-ue-event="RegionChanged" data-ue-event-type="change">
+										<option value="north">Northern Reach</option>
+										<option value="central" selected="selected">Central Basin</option>
+										<option value="coast">Coastal Array</option>
+									</select>
+								</div>
+								<div class="field">
+									<label for="callsign">Callsign</label>
+									<input id="callsign" type="text" value="CHOIR-7" data-ue-model="player.callsign" data-ue-event="CallsignChanged" data-ue-event-type="change"/>
+								</div>
+							</div>
+
+							<div class="field field-wide">
+								<label for="briefing-notes">Briefing notes</label>
+								<textarea id="briefing-notes" rows="4" data-ue-model="mission.notes" data-ue-event="NotesChanged" data-ue-event-type="change">Maintain formation and confirm the media feed before launch.</textarea>
+							</div>
+
+							<div class="control-strip">
+								<label class="choice choice-checkbox" for="telemetry">
+									<input id="telemetry" type="checkbox" checked="checked" data-ue-model="mission.telemetry" data-ue-event="TelemetryChanged" data-ue-event-type="change"/>
+									<span class="choice-indicator"><span class="choice-mark"></span></span>
+									<span>Telemetry</span>
+								</label>
+								<label class="choice choice-radio" for="route-safe">
+									<input id="route-safe" type="radio" name="route" value="safe" checked="checked" data-ue-model="mission.route" data-ue-event="RouteChanged" data-ue-event-type="change"/>
+									<span class="choice-indicator"><span class="choice-mark"></span></span>
+									<span>Safe route</span>
+								</label>
+								<label class="choice choice-radio" for="route-fast">
+									<input id="route-fast" type="radio" name="route" value="fast" data-ue-model="mission.route" data-ue-event="RouteChanged" data-ue-event-type="change"/>
+									<span class="choice-indicator"><span class="choice-mark"></span></span>
+									<span>Fast route</span>
+								</label>
+							</div>
+
+							<div class="range-row">
+								<div>
+									<label for="signal-range">Signal gain</label>
+									<span class="range-value" data-bind="mission.signal">65</span>
+								</div>
+								<input id="signal-range" type="range" min="0" max="100" value="65" data-ue-model="mission.signal" data-ue-event="SignalChanged" data-ue-event-type="change"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel">
+						<div class="panel-header">
+							<div>
+								<span class="section-index section-index-coral">02</span>
+								<h2>Live media</h2>
+							</div>
+							<span class="panel-state panel-state-live">Live</span>
+						</div>
+						<div class="media-frame">
+							<video id="showcase-video" src="media/showcase.mp4" autoplay="autoplay" loop="loop" muted="muted"></video>
+						</div>
+					</div>
+
+					<div class="panel">
+						<div class="panel-header">
+							<div>
+								<span class="section-index section-index-blue">03</span>
+								<h2>Activity</h2>
+							</div>
+							<span class="panel-state">Recent</span>
+						</div>
+						<div class="activity-list">
+							<div class="activity-row"><span class="activity-time">09:42</span><strong>Navigation</strong><span>Route vector synchronized</span></div>
+							<div class="activity-row"><span class="activity-time">09:39</span><strong>Telemetry</strong><span>All channels nominal</span></div>
+							<div class="activity-row"><span class="activity-time">09:35</span><strong>Media</strong><span>Primary stream connected</span></div>
+							<div class="activity-row"><span class="activity-time">09:30</span><strong>Command</strong><span>Briefing package received</span></div>
+							<div class="activity-row"><span class="activity-time">09:22</span><strong>Security</strong><span>Access token renewed</span></div>
+							<div class="activity-row"><span class="activity-time">09:18</span><strong>Weather</strong><span>Crosswind model updated</span></div>
+							<div class="activity-row"><span class="activity-time">09:11</span><strong>Fuel</strong><span>Reserve threshold confirmed</span></div>
+							<div class="activity-row"><span class="activity-time">09:04</span><strong>System</strong><span>Native interface initialized</span></div>
+						</div>
+					</div>
+
+					<section id="component-lab" class="panel compatibility-panel">
+						<header class="panel-header">
+							<div>
+								<span class="section-index section-index-blue">04</span>
+								<h2>Native HTML lab</h2>
+							</div>
+							<span class="panel-state">No custom tags</span>
+						</header>
+						<div class="panel-body compatibility-body">
+							<article class="tag-surface">
+								<header class="tag-surface-header">
+									<div>
+										<span class="eyebrow">STANDARD TAGS</span>
+										<h3>Document, text, table, image, and progress</h3>
+									</div>
+									<nav class="tag-nav"><a href="#native-form">Form tags</a><a href="#native-content">Text tags</a></nav>
+								</header>
+								<div class="tag-surface-content">
+									<div class="heading-sample">
+										<h4>H4 command heading</h4>
+										<h5>H5 secondary heading</h5>
+										<h6>H6 compact heading</h6>
+										<p><span class="tag-label">span</span> and paragraph text use the native text layout and <a href="#native-content">anchor navigation</a>.</p>
+									</div>
+									<div class="tag-data-row">
+										<div class="tag-list-sample">
+											<h4>Lists</h4>
+											<ul><li>Unordered mission item</li><li>Native text flow</li></ul>
+											<ol><li>First ordered item</li><li>Second ordered item</li></ol>
+										</div>
+										<div class="tag-table-wrap">
+											<table id="compatibility-table">
+												<thead><tr><th>Tag</th><th>State</th><th>Value</th></tr></thead>
+												<tbody>
+													<tr><td>progress</td><td>ready</td><td>76%</td></tr>
+													<tr><td>image</td><td>loaded</td><td>Slate</td></tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="tag-media-row">
+										<img class="tag-thumbnail" src="media/showcase.png" alt="H5 UI native image"/>
+										<div class="tag-progress-block">
+											<label for="compatibility-progress">Resource readiness</label>
+											<progress id="compatibility-progress" max="100" value="76"></progress>
+											<svg id="compatibility-svg" aria-label="SVG DOM capability"><title>SVG markup is accepted as a DOM element</title></svg>
+											<span class="svg-note">SVG DOM tag accepted; use raster or Unreal textures for visual art.</span>
+										</div>
+									</div>
+								</div>
+							</article>
+
+							<article id="native-form" class="tag-surface">
+								<header class="tag-surface-header">
+									<div><span class="eyebrow">NATIVE FORM TAGS</span><h3>Form, fieldset, legend, inputs, select, and output</h3></div>
+								</header>
+								<form id="native-tag-form" class="native-tag-form">
+									<fieldset>
+										<legend>Additional native input types</legend>
+										<div class="native-form-row">
+											<label for="native-email">Email<input id="native-email" type="email" value="pilot@silver.local"/></label>
+											<label for="native-number">Number<input id="native-number" type="number" min="0" max="99" value="7"/></label>
+											<label for="native-date">Date<input id="native-date" type="date" value="2048-06-17"/></label>
+										</div>
+										<div class="native-form-row">
+											<label for="native-select">Native select<select id="native-select"><option value="alpha" selected="selected">Alpha sector</option><option value="beta">Beta sector</option></select></label>
+										<label for="native-color">Color<input id="native-color" type="color" value="#5ed1a8"/></label>
+											<label for="native-file">File<input id="native-file" type="file"/></label>
+										</div>
+										<output id="native-output" for="native-number">Output elements keep semantic result text.</output>
+									</fieldset>
+								</form>
+							</article>
+
+							<article id="native-interactions" class="tag-surface">
+								<header class="tag-surface-header"><div><span class="eyebrow">NATIVE INTERACTIONS</span><h3>Native inputs, dialog, tooltip, and animation</h3></div></header>
+								<div class="native-interaction-grid">
+									<section class="native-interaction-group">
+										<h4>Radio and checkbox inputs</h4>
+										<label class="native-choice native-radio-choice"><input type="radio" name="native-role" value="scout" checked="checked"/><span class="native-choice-indicator"><span class="native-choice-mark"></span></span><span>Scout</span></label>
+										<label class="native-choice native-radio-choice"><input type="radio" name="native-role" value="guard"/><span class="native-choice-indicator"><span class="native-choice-mark"></span></span><span>Guard</span></label>
+										<label class="native-choice native-checkbox-choice"><input id="native-shield" type="checkbox" checked="checked"/><span class="native-choice-indicator"><span class="native-choice-mark"></span></span><span>Shield</span></label>
+										<label class="native-choice native-checkbox-choice"><input id="native-repair" type="checkbox"/><span class="native-choice-indicator"><span class="native-choice-mark"></span></span><span>Repair</span></label>
+									</section>
+									<section class="native-interaction-group">
+										<h4>Native select and password</h4>
+										<select id="native-interaction-select"><option value="north" selected="selected">Northern Reach</option><option value="coast">Coastal Array</option></select>
+										<input id="native-interaction-password" type="password" placeholder="Native password field"/>
+									</section>
+									<section class="native-interaction-group native-tooltip-host">
+										<h4>Dialog, tooltip, and animation</h4>
+										<div class="native-action-row"><button id="native-open-dialog" class="button button-small button-primary" type="button">Open dialog</button><button id="native-tooltip-trigger" class="button button-small button-secondary" type="button" title="Native title attribute">Show tooltip</button></div>
+										<span id="native-tooltip" class="native-tooltip">Tooltip is rendered by standard span elements.</span>
+										<div id="native-animation-watch" class="native-animation-watch">Animation watch</div>
+									</section>
+								</div>
+								<output id="native-interaction-output" class="native-interaction-output">Waiting for native HTML interaction.</output>
+							</article>
+
+							<article id="native-content" class="tag-surface">
+								<header class="tag-surface-header"><div><span class="eyebrow">NATIVE CONTENT TAGS</span><h3>Figure, definition list, quote, code, and inline text</h3></div></header>
+								<div class="native-content-grid">
+									<figure><img src="media/showcase.png" alt="Native figure image"/><figcaption>figure and figcaption use normal document flow.</figcaption></figure>
+									<div>
+										<details open="open"><summary>details and summary</summary><p>Static native semantic content remains available without a custom component.</p></details>
+										<dl><dt>dt: RML</dt><dd>dd: Native geometry and text layout.</dd><dt>dt: Slate</dt><dd>dd: Final Unreal UI submission.</dd></dl>
+										<blockquote>"The page stays native from document to draw geometry." <cite>H5 UI runtime</cite></blockquote>
+									</div>
+								</div>
+								<div class="native-inline-sample"><mark>mark</mark> <small>small</small> <strong>strong</strong> <em>em</em> <b>b</b> <i>i</i> <u>u</u> <s>s</s> H<sub>2</sub>O X<sup>2</sup> <time datetime="2048-06-17">2048-06-17</time> <abbr title="Unreal Engine">UE</abbr> <kbd>Ctrl</kbd> <samp>ready</samp></div>
+								<pre><code>const native = 'HTML only';</code></pre>
+								<hr/>
+								<address>Silver Command, Native UI Deck</address>
+							</article>
+						</div>
+					</section>
+				</div>
+
+				<aside class="side-column">
+					<div class="panel compact-panel">
+						<div class="panel-header">
+							<div>
+								<span id="runtime-index" class="section-index"><font dir="auto" style="vertical-align: inherit;">04</font></span>
+								<h2>Runtime</h2>
+							</div>
+						</div>
+						<div class="stat-list">
+							<div class="stat-row"><span>Update</span><strong><span id="perf-update" data-bind="perf.update">0.000</span> ms</strong></div>
+							<div class="stat-row"><span>Submit</span><strong><span id="perf-submit" data-bind="perf.submit">0.000</span> ms</strong></div>
+							<div class="stat-row"><span>JavaScript</span><strong><span id="perf-javascript" data-bind="perf.javascript">0.000</span> ms</strong></div>
+							<div class="stat-row"><span>JS timers</span><strong id="perf-js-timers" data-bind="perf.jsTimers">0</strong></div>
+							<div class="stat-row"><span>Batches</span><strong id="perf-batches" data-bind="perf.batches">0</strong></div>
+							<div class="stat-row"><span>Vertices</span><strong id="perf-vertices" data-bind="perf.vertices">0</strong></div>
+							<div class="stat-row"><span>Viewport</span><strong id="perf-viewport" data-bind="perf.viewport">0 x 0</strong></div>
+						</div>
+					</div>
+
+					<div class="panel compact-panel">
+						<div class="panel-header">
+							<div>
+								<span class="section-index section-index-coral">05</span>
+								<h2>Readiness</h2>
+							</div>
+						</div>
+						<div class="readiness">
+							<div class="readiness-score"><strong data-bind="mission.readiness">82</strong><span>%</span></div>
+							<progress id="readiness-progress" max="100" value="82" data-bind-value="mission.readiness"></progress>
+							<p>Launch envelope is within operational limits.</p>
+						</div>
+					</div>
+
+					<div class="panel compact-panel">
+						<div class="panel-header">
+							<div>
+								<span class="section-index section-index-blue">06</span>
+								<h2>Last event</h2>
+							</div>
+						</div>
+						<div id="last-event-output" class="event-output" data-bind="last.event">Waiting for Unreal</div>
+						<div class="compact-actions">
+							<button class="button button-small button-secondary" data-ue-event="ResetDemo">Reset data</button>
+							<button class="button button-small button-secondary" data-ue-event="ReloadView">Reload view</button>
+						</div>
+					</div>
+
+					<div class="panel compact-panel">
+						<div class="panel-header">
+							<div>
+								<span class="section-index section-index-coral">07</span>
+								<h2>JavaScript</h2>
+							</div>
+							<span class="panel-state">QuickJS</span>
+						</div>
+						<div class="javascript-demo">
+							<div class="javascript-summary">
+								<span>Event counter</span>
+								<strong id="js-counter">0</strong>
+							</div>
+							<div id="js-status" class="javascript-status">Starting JavaScript...</div>
+							<div id="js-dynamic-host" class="javascript-dynamic-host">DOM nodes appear here</div>
+						</div>
+						<div class="compact-actions javascript-actions">
+							<button id="js-increment" class="button button-small button-primary">Increment</button>
+							<button id="js-deferred" class="button button-small button-secondary">Run timer</button>
+							<button id="js-create-node" class="button button-small button-secondary">Add node</button>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</main>
+
+		<footer class="footer">
+			<span>H5 UI Plugin 0.2</span>
+			<span>Native Slate geometry</span>
+			<span>UE Media Framework</span>
+		</footer>
+	</div>
+	<dialog id="native-dialog" class="native-dialog">
+		<div class="native-dialog-card">
+			<h3>Native dialog tag</h3>
+			<p>This overlay is a standard HTML <code>dialog</code> element.</p>
+			<button id="native-close-dialog" class="button button-secondary" type="button">Close dialog</button>
+		</div>
+	</dialog>
+	<script src="sdk/h5ui-bridge.js"></script>
+	<script src="showcase.js"></script>
+</body>
+</html>

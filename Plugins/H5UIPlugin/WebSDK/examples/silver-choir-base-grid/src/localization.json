@@ -1,0 +1,87 @@
+{
+  "defaultLanguage": "zh-CN",
+  "languages": {
+    "zh-CN": {
+      "htmlLanguage": "zh-CN",
+      "documentTitle": "银色唱诗班 - 战术网格基地控制",
+      "sceneHeading": "场景通道",
+      "sceneHint": "切换基地部署区",
+      "locationHeading": "镜头节点",
+      "locationHint": "快速定位",
+      "scenes": {
+        "haven": { "label": "酒馆", "sublabel": "HAVEN / 地表设施" },
+        "underground": { "label": "地下基地", "sublabel": "UNDERGROUND / 核心设施" }
+      },
+      "locations": {
+        "hall": "大厅",
+        "kitchen": "厨房",
+        "office": "办公室",
+        "commandRoom": "指挥室",
+        "readinessRoom": "人员整备室",
+        "squadRoom": "小队会议室",
+        "commanderOffice": "团长办公室"
+      },
+      "currency": {
+        "heading": "行动资金",
+        "name": "银币",
+        "deltaLabel": "周期结算"
+      },
+      "time": {
+        "month": "月",
+        "day": "日",
+        "heading": "战术时钟",
+        "paused": "全域暂停",
+        "running": "指令运行",
+        "pauseHint": "播放或暂停时间",
+        "fastHint": "切换 5、10、20 倍时间流速"
+      },
+      "status": {
+        "network": "战术网格已同步",
+        "channel": "SC / LATTICE COMMAND",
+        "sector": "GRID NODE C-12",
+        "overlayReady": "大型管理界面挂载区"
+      }
+    },
+    "en-US": {
+      "htmlLanguage": "en",
+      "documentTitle": "Silver Choir - Lattice Base Control",
+      "sceneHeading": "SCENE CHANNEL",
+      "sceneHint": "SWITCH FACILITY DEPLOYMENT",
+      "locationHeading": "CAMERA NODES",
+      "locationHint": "QUICK FOCUS",
+      "scenes": {
+        "haven": { "label": "HAVEN", "sublabel": "SURFACE FACILITY" },
+        "underground": { "label": "UNDERGROUND", "sublabel": "CORE FACILITY" }
+      },
+      "locations": {
+        "hall": "MAIN HALL",
+        "kitchen": "KITCHEN",
+        "office": "OFFICE",
+        "commandRoom": "COMMAND ROOM",
+        "readinessRoom": "READINESS ROOM",
+        "squadRoom": "SQUAD BRIEFING",
+        "commanderOffice": "COMMANDER OFFICE"
+      },
+      "currency": {
+        "heading": "OPERATIONS FUND",
+        "name": "SILVER",
+        "deltaLabel": "CYCLE SETTLEMENT"
+      },
+      "time": {
+        "month": "MON",
+        "day": "DAY",
+        "heading": "TACTICAL CLOCK",
+        "paused": "GLOBAL PAUSE",
+        "running": "COMMAND RUNNING",
+        "pauseHint": "Play or pause strategic time",
+        "fastHint": "Cycle 5x, 10x, and 20x time speed"
+      },
+      "status": {
+        "network": "TACTICAL LATTICE SYNCED",
+        "channel": "SC / LATTICE COMMAND",
+        "sector": "GRID NODE C-12",
+        "overlayReady": "MANAGEMENT OVERLAY HOST"
+      }
+    }
+  }
+}

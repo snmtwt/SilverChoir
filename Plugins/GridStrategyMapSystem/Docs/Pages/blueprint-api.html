@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GSM 蓝图 API</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<h2>蓝图 API</h2>
+				<p><code>UGSMBlueprintLibrary</code> 提供从任意 World Context 获取子系统、创建/查询地图和读档清理的入口。地图与棋子的细粒度操作位于 <code>UGSMMapData</code>。</p>
+			</div>
+
+			<section id="maps">
+				<h2>地图创建与查询</h2>
+				<table>
+					<thead><tr><th>节点</th><th>返回/输出</th><th>说明</th></tr></thead>
+					<tbody>
+						<tr><td><code>CreateMapData</code></td><td><code>MapGuid</code>、<code>OutMapData</code></td><td>按配置资产创建数据地图。默认槽为空时，非默认创建也会成为默认地图。</td></tr>
+						<tr><td><code>GetDefaultMapData</code></td><td><code>UGSMMapData</code></td><td>获取默认地图，高频访问优先使用它。</td></tr>
+						<tr><td><code>GetMapDataByGuid</code></td><td><code>UGSMMapData</code></td><td>获取非默认或指定 GUID 地图。</td></tr>
+						<tr><td><code>GetTileData</code></td><td><code>UGSMTileData</code></td><td>按 <code>MapGuid + TileId</code> 查询瓦片数据。</td></tr>
+						<tr><td><code>GetGSMMapSubsystem</code></td><td><code>UGSMMapSubsystem</code></td><td>需要子系统完整 API 时使用。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="map-3d-interaction">
+				<h2>3D 地图拖拽与缩放</h2>
+				<p>每项操作分为“默认地图”和“按 GUID 地图”两个节点。默认地图节点没有 GUID 引脚；按 GUID 节点只查询指定地图。地图数据或 3D 地图无效时节点返回 <code>false</code>，输出值会被重置，不需要在蓝图中重复进行空值检查。</p>
+				<table>
+					<thead><tr><th>默认地图节点</th><th>按 GUID 节点</th><th>用途</th></tr></thead>
+					<tbody>
+						<tr><td><code>AddDefaultMap3DZoomAtWorldLocation</code></td><td><code>AddMap3DZoomAtWorldLocationByGuid</code></td><td>围绕世界位置进行增量缩放，并输出实际缩放值。</td></tr>
+						<tr><td><code>SetDefaultMap3DScaleAtWorldLocation</code></td><td><code>SetMap3DScaleAtWorldLocationByGuid</code></td><td>围绕世界位置设置目标缩放，并输出限制后的实际缩放值。</td></tr>
+						<tr><td><code>GetDefaultMap3DScale</code></td><td><code>GetMap3DScaleByGuid</code></td><td>查询当前地图缩放。</td></tr>
+						<tr><td><code>ResolveDefaultMap3DZoomPivotWorldLocation</code></td><td><code>ResolveMap3DZoomPivotWorldLocationByGuid</code></td><td>将期望的缩放中心解析到地图可用平面。</td></tr>
+						<tr><td><code>BeginDefaultMap3DDragAtWorldLocation</code></td><td><code>BeginMap3DDragAtWorldLocationByGuid</code></td><td>以指定世界位置开始拖拽。</td></tr>
+						<tr><td><code>DragDefaultMap3DToWorldLocation</code></td><td><code>DragMap3DToWorldLocationByGuid</code></td><td>更新世界位置拖拽，并输出地图内容中心。</td></tr>
+						<tr><td><code>PanDefaultMap3DByWorldDelta</code></td><td><code>PanMap3DByWorldDeltaByGuid</code></td><td>按世界偏移直接平移地图。</td></tr>
+						<tr><td><code>BeginDefaultMap3DDragWithMouse</code></td><td><code>BeginMap3DDragWithMouseByGuid</code></td><td>使用玩家控制器的鼠标射线开始拖拽。</td></tr>
+						<tr><td><code>DragDefaultMap3DToMousePosition</code></td><td><code>DragMap3DToMousePositionByGuid</code></td><td>在按住拖拽输入时持续更新鼠标拖拽。</td></tr>
+						<tr><td><code>GetMouseLocationOnDefaultMap3DDragPlane</code></td><td><code>GetMouseLocationOnMap3DDragPlaneByGuid</code></td><td>纯函数，获取鼠标射线与地图拖拽平面的交点。</td></tr>
+						<tr><td><code>EndDefaultMap3DDrag</code> / <code>GetDefaultMap3DDragState</code></td><td><code>EndMap3DDragByGuid</code> / <code>GetMap3DDragStateByGuid</code></td><td>结束拖拽或查询当前拖拽状态。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="pieces">
+				<h2>棋子操作</h2>
+				<p>推荐从 <code>UGSMMapData</code> 调用。添加棋子会返回最终 GUID 和完整数据对象；移动只需要目标瓦片与新的 <code>FGSMPiecePlacement</code>。</p>
+				<ul>
+					<li><code>AddPieceToTileById</code> / <code>AddPieceToTile</code></li>
+					<li><code>UpdatePiece</code></li>
+					<li><code>MovePieceByGuidToTileId</code> / <code>MovePieceByGuidToTile</code></li>
+					<li><code>MovePieceDataToTileId</code> / <code>MovePieceDataToTile</code></li>
+					<li><code>RemovePieceByGuid</code> / <code>ClearAllPieceData</code></li>
+				</ul>
+				<p>这些函数都会触发瓦片的棋子添加、更新或移除事件，从而同步已存在的 3D/2D 表现。</p>
+			</section>
+
+			<section id="navigation">
+				<h2>数据层导航</h2>
+				<ul>
+					<li><code>UGSMMapData::FindPathByTileIds</code></li>
+					<li><code>UGSMMapData::FindPathByTiles</code></li>
+					<li><code>UGSMMapSubsystem::FindPathByMapGuid</code></li>
+					<li><code>UGSMMapSubsystem::FindPathOnDefaultMap</code></li>
+				</ul>
+				<p>返回 <code>FGSMPathResult</code>，其中 <code>PathTiles</code> 是瓦片数据对象。寻路不要求地图已经创建 3D 展示。</p>
+			</section>
+
+			<section id="cleanup">
+				<h2>读档清理</h2>
+				<table>
+					<thead><tr><th>节点</th><th>使用时机</th></tr></thead>
+					<tbody>
+						<tr><td><code>RemoveMapData(MapGuid)</code></td><td>关闭或替换一张指定地图。</td></tr>
+						<tr><td><code>RemoveMapDataObject(MapData)</code></td><td>手上只有地图数据对象时。</td></tr>
+						<tr><td><code>ClearDefaultMapData</code></td><td>只卸载默认地图。</td></tr>
+						<tr><td><code>ClearAllMapData</code></td><td>读档、回主菜单、整体重开地图前。返回实际清理数量。</td></tr>
+					</tbody>
+				</table>
+			</section>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+</body>
+</html>

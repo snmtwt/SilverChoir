@@ -1,0 +1,21 @@
+{
+  "tool": "built-in image_gen",
+  "prompts": [
+    {
+      "file": "portrait1.png",
+      "prompt": "Generate one square game UI character portrait asset, head and shoulders centered, face fully visible, beautiful fictional adult East Asian woman age 26, refined influencer/model aesthetic, luminous natural skin, striking eyes, black high ponytail and subtle bangs, calm confident expression. Realistic premium AAA sci-fi tactical RPG character render, charcoal high-collar tactical jacket, muted cyan rim lighting, plain dark navy background. Strong readable face at tiny avatar sizes. No text, no logos, no frames. Save as an individual portrait."
+    },
+    {
+      "file": "portrait2.png",
+      "prompt": "Use case: stylized-concept. Generate one square game UI avatar portrait, head and shoulders centered, face fully visible: beautiful fictional adult woman age 25, refined East Asian model facial features, silver-white chin-length bob haircut, dark eyes, composed gentle expression. Realistic premium AAA near-future tactical RPG character render, attractive influencer aesthetic with natural skin detail, charcoal high-collar tactical jacket, soft studio key light and muted cyan rim lighting, plain dark navy background. Face large and legible at tiny UI sizes, no text, no logos, no frames. One individual portrait only."
+    },
+    {
+      "file": "portrait3.png",
+      "prompt": "Use case: stylized-concept. Generate one square game UI avatar portrait, head and shoulders centered, face fully visible: beautiful fictional adult woman age 28, refined model facial features, chestnut wavy shoulder-length hair, hazel eyes, confident expression. Realistic premium AAA near-future tactical RPG character render, attractive influencer aesthetic with natural skin detail, charcoal high-collar tactical jacket, soft studio key light and muted cyan rim lighting, plain dark navy background. Face large and legible at tiny UI sizes, no text, no logos, no frames. One individual portrait only."
+    },
+    {
+      "file": "portrait4.png",
+      "prompt": "Use case: stylized-concept. Generate one square game UI avatar portrait, head and shoulders centered, face fully visible: handsome fictional adult East Asian man age 29, refined fashion-model facial features, clean shaven, short textured black hair, defined jaw, calm expression. Realistic premium AAA near-future tactical RPG character render, attractive influencer aesthetic with natural skin detail, charcoal high-collar tactical jacket, soft studio key light and muted cyan rim lighting, plain dark navy background. Face large and legible at tiny UI sizes, no text, no logos, no frames. One individual portrait only."
+    }
+  ]
+}

@@ -1,0 +1,530 @@
+:root {
+	--bg: #f5f7fa;
+	--panel: #ffffff;
+	--ink: #202938;
+	--muted: #667085;
+	--line: #d8dee8;
+	--brand: #176b87;
+	--brand-strong: #0f5269;
+	--brand-soft: #e8f4f7;
+	--accent: #a15c07;
+	--accent-soft: #fff5df;
+	--ok: #18794e;
+	--todo: #8a5a00;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+	line-height: 1.7;
+}
+
+a {
+	color: var(--brand);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: 310px minmax(0, 1fr);
+	min-height: 100vh;
+}
+
+.sidebar {
+	position: sticky;
+	top: 0;
+	height: 100vh;
+	overflow-y: auto;
+	border-right: 1px solid #cfe0e7;
+	background: #eef6f8;
+	padding: 22px 14px 28px;
+}
+
+.sidebar h1 {
+	margin: 0 8px 4px;
+	color: #123f50;
+	font-size: 20px;
+	line-height: 1.3;
+}
+
+.version {
+	margin: 0 8px 18px;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.nav-group {
+	margin: 16px 0;
+}
+
+.nav-title {
+	margin: 0 8px 8px;
+	color: var(--muted);
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.nav-tree {
+	display: grid;
+	gap: 2px;
+}
+
+.nav-accordion {
+	border-left: 1px solid #c7dce4;
+	margin-left: 6px;
+}
+
+.nav-accordion summary {
+	cursor: pointer;
+	list-style: none;
+	position: relative;
+	border-radius: 6px;
+	padding: 7px 28px 7px calc(12px + var(--nav-indent));
+	color: #294b59;
+	font-size: 13px;
+	font-weight: 700;
+	user-select: none;
+}
+
+.nav-accordion summary::-webkit-details-marker {
+	display: none;
+}
+
+.nav-accordion summary::after {
+	position: absolute;
+	right: 11px;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	border-right: 1.5px solid #5f7f8c;
+	border-bottom: 1.5px solid #5f7f8c;
+	content: "";
+	transform: translateY(-60%) rotate(-45deg);
+}
+
+.nav-accordion[open] > summary::after {
+	transform: translateY(-70%) rotate(45deg);
+}
+
+.nav-accordion summary:hover,
+.nav-accordion.open-path > summary {
+	background: #dceff3;
+	color: var(--brand-strong);
+}
+
+.nav-link {
+	display: block;
+	position: relative;
+	margin: 1px 0;
+	border-radius: 6px;
+	padding: 6px 10px 6px calc(24px + var(--nav-indent));
+	color: #405766;
+	font-size: 13px;
+}
+
+.nav-link::before {
+	position: absolute;
+	left: calc(13px + var(--nav-indent));
+	top: 50%;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background: #8eafb9;
+	content: "";
+	transform: translateY(-50%);
+}
+
+.nav-link:hover,
+.nav-link.active {
+	background: #dceff3;
+	color: var(--brand-strong);
+	text-decoration: none;
+}
+
+.nav-link.active {
+	font-weight: 700;
+	box-shadow: inset 3px 0 0 var(--brand);
+}
+
+.page-toc {
+	margin: 22px 8px 0;
+	border-top: 1px solid #cfe0e7;
+	padding-top: 14px;
+}
+
+.page-toc .nav-link {
+	padding-left: 18px;
+}
+
+.page-toc .nav-link::before {
+	left: 7px;
+}
+
+main {
+	width: 100%;
+	max-width: 1180px;
+	padding: 36px 44px 72px;
+}
+
+.page-filename {
+	display: block;
+	max-width: min(420px, calc(100% - 88px));
+	width: fit-content;
+	margin: -18px 0 18px auto;
+	border: 1px solid #b9d0d8;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.92);
+	padding: 4px 9px;
+	color: #315765;
+	font-family: Consolas, "Cascadia Mono", monospace;
+	font-size: 12px;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+	box-shadow: 0 4px 14px rgba(18, 63, 80, 0.08);
+}
+
+.page-filename:hover {
+	border-color: var(--brand);
+	color: var(--brand-strong);
+	text-decoration: none;
+}
+
+.hero {
+	border-bottom: 1px solid var(--line);
+	padding-bottom: 26px;
+	margin-bottom: 30px;
+}
+
+.eyebrow {
+	margin: 0 0 8px;
+	color: var(--brand);
+	font-size: 13px;
+	font-weight: 700;
+}
+
+.hero h2 {
+	margin: 0 0 10px;
+	font-size: 34px;
+	line-height: 1.2;
+}
+
+.hero p {
+	max-width: 900px;
+	margin: 0;
+	color: var(--muted);
+	font-size: 16px;
+}
+
+.document-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.badge {
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: #fff;
+	padding: 3px 9px;
+	color: var(--muted);
+	font-size: 12px;
+}
+
+.badge.draft {
+	border-color: #e5c98d;
+	background: var(--accent-soft);
+	color: var(--todo);
+}
+
+section {
+	margin: 34px 0;
+	scroll-margin-top: 24px;
+}
+
+h2 {
+	margin: 0 0 14px;
+	font-size: 26px;
+	line-height: 1.3;
+}
+
+h3 {
+	margin: 22px 0 9px;
+	font-size: 19px;
+}
+
+p {
+	margin: 0 0 12px;
+}
+
+ul,
+ol {
+	padding-left: 22px;
+}
+
+.callout {
+	border-left: 4px solid var(--brand);
+	border-radius: 6px;
+	background: var(--brand-soft);
+	padding: 14px 16px;
+	margin: 14px 0;
+}
+
+.callout.warning {
+	border-left-color: var(--accent);
+	background: var(--accent-soft);
+}
+
+.grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+	gap: 14px;
+	margin: 16px 0;
+}
+
+.card {
+	border: 1px solid var(--line);
+	border-radius: 8px;
+	background: var(--panel);
+	padding: 16px;
+}
+
+a.card {
+	color: inherit;
+}
+
+a.card:hover {
+	border-color: #8fb9c8;
+	background: #fbfeff;
+	text-decoration: none;
+}
+
+.card h3 {
+	margin: 0 0 8px;
+	font-size: 17px;
+}
+
+.card p:last-child {
+	margin-bottom: 0;
+	color: var(--muted);
+	font-size: 14px;
+}
+
+.chapter-links {
+	display: grid;
+	gap: 7px;
+	margin-top: 12px;
+}
+
+.chapter-links a {
+	display: block;
+	border-top: 1px solid #edf0f4;
+	padding-top: 7px;
+	font-size: 14px;
+}
+
+.placeholder {
+	border: 1px dashed #aab8c6;
+	border-radius: 6px;
+	background: #fafbfd;
+	padding: 12px 14px;
+	color: var(--muted);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 12px 0 18px;
+	background: #fff;
+}
+
+.table-scroll {
+	width: 100%;
+	margin: 12px 0 18px;
+	overflow-x: auto;
+	overscroll-behavior-inline: contain;
+}
+
+.table-scroll table {
+	margin: 0;
+}
+
+th,
+td {
+	border: 1px solid var(--line);
+	padding: 10px 12px;
+	text-align: left;
+	vertical-align: top;
+}
+
+th {
+	background: #edf3f5;
+	font-weight: 700;
+}
+
+.status-cell {
+	width: 90px;
+	white-space: nowrap;
+	color: var(--todo);
+}
+
+.currency-symbol-entry {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.currency-symbol-preview {
+	display: grid;
+	place-items: center;
+	width: 96px;
+	height: 96px;
+	flex: 0 0 96px;
+	border: 1px solid #35454d;
+	border-radius: 6px;
+	background: #182126;
+}
+
+.currency-symbol-preview img {
+	display: block;
+	width: 76px;
+	height: 76px;
+	object-fit: contain;
+}
+
+.checklist {
+	display: grid;
+	gap: 8px;
+	padding-left: 0;
+	list-style: none;
+}
+
+.checklist li {
+	border: 1px solid var(--line);
+	border-radius: 6px;
+	background: #fff;
+	padding: 9px 12px 9px 38px;
+	position: relative;
+}
+
+.checklist li::before {
+	position: absolute;
+	left: 13px;
+	top: 11px;
+	width: 14px;
+	height: 14px;
+	border: 1px solid #9aa9b8;
+	border-radius: 3px;
+	content: "";
+}
+
+code {
+	border-radius: 4px;
+	background: #edf1f5;
+	padding: 1px 5px;
+	font-family: Consolas, "Cascadia Mono", monospace;
+}
+
+.footer {
+	margin-top: 44px;
+	border-top: 1px solid var(--line);
+	padding-top: 20px;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.story-tabs {
+	margin: 28px 0 0;
+}
+
+.story-tabs > input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.story-tab-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	border-bottom: 1px solid var(--line);
+	margin-bottom: 24px;
+}
+
+.story-tab-list label {
+	cursor: pointer;
+	border: 1px solid var(--line);
+	border-bottom: 0;
+	border-radius: 8px 8px 0 0;
+	background: #edf3f5;
+	padding: 8px 16px;
+	color: var(--muted);
+	font-weight: 700;
+}
+
+.story-tab-panel {
+	display: none;
+}
+
+#tab-design-thinking:checked ~ .story-tab-list label[for="tab-design-thinking"],
+#tab-prologue:checked ~ .story-tab-list label[for="tab-prologue"],
+#tab-chapter-one:checked ~ .story-tab-list label[for="tab-chapter-one"] {
+	background: #fff;
+	color: var(--brand-strong);
+	box-shadow: inset 0 3px 0 var(--brand);
+}
+
+#tab-design-thinking:checked ~ .story-tab-panels #design-thinking-panel,
+#tab-prologue:checked ~ .story-tab-panels #prologue-panel,
+#tab-chapter-one:checked ~ .story-tab-panels #chapter-one-panel {
+	display: block;
+}
+
+@media (max-width: 900px) {
+	.layout {
+		display: block;
+	}
+
+	.sidebar {
+		position: static;
+		height: auto;
+		border-right: 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	main {
+		padding: 26px 20px 48px;
+	}
+
+	.page-filename {
+		max-width: none;
+		margin: 0 0 16px;
+		display: inline-block;
+	}
+
+	.hero h2 {
+		font-size: 28px;
+	}
+
+	.relation-table-scroll table {
+		min-width: 880px;
+	}
+
+	.propagation-table-scroll table {
+		min-width: 680px;
+	}
+}

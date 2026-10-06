@@ -1,0 +1,68 @@
+/* Full-viewport native H5 decoration. Foreground UI is independently anchored in UMG. */
+@keyframes scan {
+  0% { top: 6%; opacity: 0; }
+  12% { opacity: 0.16; }
+  88% { opacity: 0.08; }
+  100% { top: 94%; opacity: 0; }
+}
+@keyframes orbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes beacon {
+  0% { opacity: 0.2; }
+  100% { opacity: 0.7; }
+}
+html, body { width: 100%; height: 100%; margin: 0; }
+body { background-color: #020407; overflow: hidden; pointer-events: none; }
+.screen { position: relative; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+.grid { position: absolute; background-color: #0c2233; opacity: 0.22; }
+.grid-v { top: 6%; bottom: 6%; width: 1px; }
+.grid-v1 { left: 25%; }
+.grid-v2 { left: 50%; }
+.grid-v3 { left: 75%; }
+.grid-h { left: 3%; width: 94%; height: 1px; }
+.grid-h1 { top: 28%; }
+.grid-h2 { top: 72%; }
+.top-rule, .bottom-rule { position: absolute; left: 0; width: 100%; height: 1px; background-color: #10283a; }
+.top-rule { top: 6%; }
+.bottom-rule { bottom: 6%; }
+.edge { position: absolute; top: 6%; bottom: 6%; width: 1px; background-color: #091b29; }
+.edge-left { left: 3%; }
+.edge-right { right: 3%; }
+.scan-line { position: absolute; left: 3%; top: 6%; width: 94%; height: 1px; background-color: #258bd0; opacity: 0; animation: scan 9s linear infinite; }
+/* Equal height-based axes keep the orbit circular on ultrawide monitors. */
+.signal-core { position: absolute; top: 50%; left: 50%; width: 46vh; height: 46vh; transform: translate(-50%, -50%); opacity: 0.72; }
+.orbit { position: absolute; box-sizing: border-box; border: 1px solid #17405d; border-radius: 50%; }
+.orbit-halo { left: -9%; top: -9%; width: 118%; height: 118%; border-color: #0b2233; }
+.orbit-outer { left: 0; top: 0; width: 100%; height: 100%; animation: orbit 38s linear infinite; }
+.orbit-mid { left: 13%; top: 13%; width: 74%; height: 74%; border-color: #26668f; animation: orbit 24s linear infinite reverse; }
+.orbit-inner { left: 31%; top: 31%; width: 38%; height: 38%; border-color: #386f94; background-color: #040c14; }
+.orbit span { position: absolute; left: 49%; top: -3px; width: 6px; height: 6px; background-color: #4c9bd0; border-radius: 50%; }
+.axis { position: absolute; background-color: #12364f; }
+.axis-h { left: -10%; top: 50%; width: 120%; height: 1px; }
+.axis-v { left: 50%; top: -10%; width: 1px; height: 120%; }
+.range-ring { left: 23%; top: 23%; width: 54%; height: 54%; border-color: #102e43; }
+.inner-detail { left: 40%; top: 40%; width: 20%; height: 20%; border-color: #17374b; }
+.dial-tick { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.dial-tick span { position: absolute; left: 50%; top: -5%; width: 1px; height: 5px; background-color: #28516a; }
+.dial-major span { height: 11px; width: 2px; background-color: #4987aa; }
+.arc-detail { left: -3%; top: -3%; width: 106%; height: 106%; border: 2px solid transparent; border-top-color: #357394; border-bottom-color: #163c55; transform: rotate(28deg); }
+.radar-sweep { position: absolute; left: 0; top: 0; width: 100%; height: 100%; animation: orbit 12s linear infinite; }
+.sweep-ray { position: absolute; left: 50%; top: 4%; width: 1px; height: 46%; background-color: #4795b9; }
+.sweep-tail { position: absolute; left: 5%; top: 5%; width: 90%; height: 90%; border-radius: 50%; border: 12px solid transparent; border-top-color: #102938; transform: rotate(-45deg); opacity: 0.55; }
+.contact { position: absolute; width: 5px; height: 5px; background-color: #5bafc8; animation: beacon 2.6s ease-in-out alternate infinite; }
+.contact-a { left: 65%; top: 26%; }
+.contact-b { left: 27%; top: 59%; animation-delay: -0.8s; }
+.contact-c { left: 68%; top: 72%; animation-delay: -1.6s; }
+.contact span { position: absolute; left: -5px; top: -5px; width: 13px; height: 13px; border: 1px solid #285a71; transform: rotate(45deg); }
+.beacon { position: absolute; width: 4px; height: 4px; background-color: #398fd0; animation: beacon 1.8s ease-in-out alternate infinite; }
+.beacon-top { right: 3%; top: 3%; }
+.beacon-bottom { left: 3%; bottom: 3%; }
+.bracket { position: absolute; width: 14px; height: 14px; border-color: #245a7d; }
+.bracket-tl { left: 3%; top: 11%; border-left: 1px solid #245a7d; border-top: 1px solid #245a7d; }
+.bracket-br { right: 3%; bottom: 11%; border-right: 1px solid #245a7d; border-bottom: 1px solid #245a7d; }
+/* Reserve separate title and button columns on 4:3 and narrower screens. */
+@media (max-aspect-ratio: 3/2) {
+  .signal-core { width: 27vw; height: 27vw; }
+}

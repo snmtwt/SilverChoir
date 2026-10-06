@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="940" viewBox="0 0 1440 940">
+	<rect width="1440" height="940" fill="#f5f7f8"/>
+
+	<text x="54" y="70" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="34" font-weight="700">瓦尔 Val · 货币符号概念</text>
+	<text x="54" y="112" fill="#5b6870" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="18">面向纸币、硬币、价格标签、银行界面与国际结算的六种设计方向</text>
+	<line x1="54" y1="143" x2="1386" y2="143" stroke="#cbd3d8" stroke-width="2"/>
+
+	<!-- 01: single crossbar -->
+	<g transform="translate(50 180)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#168064" stroke-width="3"/>
+		<rect x="22" y="20" width="70" height="28" rx="4" fill="#168064"/>
+		<text x="57" y="40" text-anchor="middle" fill="#ffffff" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">推荐</text>
+		<text x="22" y="82" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">01 · 衡线体</text>
+		<g transform="translate(210 172)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<path d="M-62 -70 L0 72 L62 -70" stroke-width="18"/>
+			<path d="M-39 5 H39" stroke="#168064" stroke-width="12"/>
+		</g>
+		<text x="22" y="270" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">最简洁，像成熟国际货币；小尺寸清晰。</text>
+		<text x="22" y="296" fill="#168064" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">现代感 5 · 古典感 3 · 易用性 5</text>
+	</g>
+
+	<!-- 02: double crossbar -->
+	<g transform="translate(510 180)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">02 · 双衡线体</text>
+		<g transform="translate(210 172)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<path d="M-62 -70 L0 72 L62 -70" stroke-width="18"/>
+			<path d="M-43 -7 H43 M-37 18 H37" stroke="#2d6b9f" stroke-width="9"/>
+		</g>
+		<text x="22" y="270" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">更像储备货币，庄重，但小字号稍显拥挤。</text>
+		<text x="22" y="296" fill="#2d6b9f" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">现代感 5 · 古典感 2 · 易用性 4</text>
+	</g>
+
+	<!-- 03: central mint stem -->
+	<g transform="translate(970 180)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">03 · 铸印体</text>
+		<g transform="translate(210 172)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<path d="M-66 -67 L0 72 L66 -67" stroke-width="17"/>
+			<path d="M0 -84 V72" stroke="#8f5d2f" stroke-width="11"/>
+			<path d="M-35 -2 H35" stroke="#8f5d2f" stroke-width="9"/>
+		</g>
+		<text x="22" y="270" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">像铸币模具与天平轴，古今融合最明显。</text>
+		<text x="22" y="296" fill="#8f5d2f" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">现代感 4 · 古典感 4 · 易用性 4</text>
+	</g>
+
+	<!-- 04: global ring -->
+	<g transform="translate(50 530)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">04 · 通商环体</text>
+		<g transform="translate(210 172)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<circle r="78" stroke="#694f91" stroke-width="10"/>
+			<path d="M-47 -49 L0 57 L47 -49" stroke-width="15"/>
+			<path d="M-29 4 H29" stroke-width="9"/>
+		</g>
+		<text x="22" y="270" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">环形代表跨国体系，适合国际金融组织。</text>
+		<text x="22" y="296" fill="#694f91" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">现代感 4 · 古典感 2 · 易用性 3</text>
+	</g>
+
+	<!-- 05: crown terminals -->
+	<g transform="translate(510 530)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">05 · 王冠体</text>
+		<g transform="translate(210 172)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<path d="M-68 -55 L0 72 L68 -55" stroke-width="17"/>
+			<path d="M-68 -55 L-88 -78 M-68 -55 L-43 -75 M68 -55 L88 -78 M68 -55 L43 -75" stroke="#b28224" stroke-width="10"/>
+			<path d="M-35 5 H35" stroke-width="9"/>
+		</g>
+		<text x="22" y="270" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">保留王权来源，适合旧版纸币与官方徽章。</text>
+		<text x="22" y="296" fill="#9a6d19" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">现代感 2 · 古典感 5 · 易用性 3</text>
+	</g>
+
+	<!-- 06: runic diamond -->
+	<g transform="translate(970 530)">
+		<rect width="420" height="310" rx="8" fill="#ffffff" stroke="#cbd3d8" stroke-width="2"/>
+		<text x="22" y="48" fill="#182126" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="23" font-weight="700">06 · 古契体</text>
+		<g transform="translate(210 172)" fill="none" stroke="#182126" stroke-linecap="square" stroke-linejoin="miter">
+			<path d="M0 -82 L73 0 L0 82 L-73 0 Z" stroke="#9c3f3f" stroke-width="10"/>
+			<path d="M-43 -42 L0 52 L43 -42" stroke-width="15"/>
+			<path d="M-27 4 H27" stroke-width="8"/>
+		</g>
+		<text x="22" y="270" fill="#46545c" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="16">像商路契约印记，奇幻感强，适合特殊币种。</text>
+		<text x="22" y="296" fill="#9c3f3f" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="14" font-weight="700">现代感 2 · 古典感 5 · 易用性 2</text>
+	</g>
+
+	<text x="54" y="894" fill="#5b6870" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="15">建议：现代界面采用 01；纸币防伪纹样可使用 03；古代奥伦与历史文物不沿用瓦尔符号。</text>
+</svg>

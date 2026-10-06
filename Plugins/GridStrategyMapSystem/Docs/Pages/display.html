@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GSM 2D 与 3D 展示</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<h2>2D 与 3D 展示</h2>
+				<p>展示层从数据层读取并订阅事件。展示可随关卡、控件或镜头状态重建；它不会拥有权威地图或棋子状态。</p>
+			</div>
+
+			<section id="map3d">
+				<h2>AGSMMap3D</h2>
+				<p>3D 地图在启动时向 <code>UGSMMapSubsystem</code> 注册，获取地图数据，生成 <code>AGSMTile3D</code>，并维持一个地图数据对象只对应一个 3D 地图对象的约束。</p>
+				<p>缩放采用归一化语义：<code>1</code> 表示按凹槽范围完整展示全部瓦片，大于 <code>1</code> 表示继续放大。配置资产的默认中心 XY 是从 1 开始的格子坐标；<code>(3,3)</code> 对应默认标签下的 <code>C3</code>，<code>(0,0)</code> 表示整图中心。中心定位受防留白约束，靠近边缘时优先保证地图不会被平移出凹槽。</p>
+				<table>
+					<thead><tr><th>变量/函数</th><th>用途</th></tr></thead>
+					<tbody>
+						<tr><td><code>bUseDefaultMapData</code></td><td>为真时绑定默认地图；为假时按 <code>MapGuid</code> 查询。</td></tr>
+						<tr><td><code>LoadMapFromData</code></td><td>按已创建的地图数据生成展示。</td></tr>
+						<tr><td><code>LoadMapFromConfig</code></td><td>兼容/编辑器入口；新游戏流程仍应先创建数据地图。</td></tr>
+						<tr><td><code>AddZoomAtWorldLocation</code></td><td>以世界位置为中心缩放。</td></tr>
+						<tr><td><code>BeginDragMapWithMouse</code>、<code>DragMapToMousePosition</code>、<code>EndDragMap</code></td><td>鼠标拖拽地图。</td></tr>
+						<tr><td><code>NotifyAllTilesUpdate</code></td><td>遍历当前地图生成的全部有效 3D 瓦片，并调用各瓦片的 <code>UpdateTile3D</code>。</td></tr>
+						<tr><td><code>PathArrowActorClass</code></td><td>用于 3D 路径箭头的展示类。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="tile3d">
+				<h2>AGSMTile3D</h2>
+				<p><code>BindTileData</code> 将 3D 瓦片与对应 <code>UGSMTileData</code> 互相绑定。瓦片数据保存棋子，3D 瓦片只订阅并表现变化。</p>
+				<ul>
+					<li><code>OnTileInitialized</code>：瓦片基础初始化完成，且与 <code>UGSMTileData</code> 成功双向绑定后触发；此时可安全读取 <code>GetTileData</code>。</li>
+					<li><code>UpdateTile3D</code>：统一更新入口，可在蓝图瓦片子类中重载；需要保留基础刷新时调用父实现。</li>
+					<li><code>OnPieceDataAdded(PieceData, RelativeTileXY, RelativeTileYaw)</code></li>
+					<li><code>OnPieceDataUpdated(PieceData)</code></li>
+					<li><code>OnPieceDataRemoved(PieceData)</code></li>
+				</ul>
+				<p>重写上述蓝图事件或 Native Event，可制作单位生成、更新、移除以及专属摆放规则。不要绕开数据层直接维护持久棋子列表。</p>
+			</section>
+
+			<section id="piece3d">
+				<h2>AGSMPiece3D</h2>
+				<p>3D 棋子通过 <code>BindPieceData</code> 连接 <code>UGSMPieceData</code>。可在 <code>ReceivePieceDataBound</code> 中设置模型、动画或材质。相对瓦片位置、Yaw 与缩放的权威值来自 <code>FGSMPiecePlacement</code>。</p>
+			</section>
+
+			<section id="piece-queue-tools">
+				<h2>3D 棋子排队工具库</h2>
+				<p><code>UGSMPiecePlacementBlueprintLibrary</code> 专门计算瓦片上的棋子世界位置。排队结果会跟随瓦片旋转、Actor 缩放和地图当前缩放，Z 暂用瓦片自身高度；需要贴合地形时，再把结果位置传给地形 Z 节点。</p>
+				<ul>
+					<li><code>CalculateCenteredQueueWorldLocations</code>：围绕瓦片中心按最大列数、最大行数、间隔和角度紧凑排队；最后不足一整行时，该行单独居中。</li>
+					<li><code>CalculateEdgeQueueWorldLocations</code>：以两个瓦片角作为首行起终点，按指定换行方向排列；列距和行距根据瓦片范围自动计算，最后一行从起点开始占用槽位。</li>
+					<li><code>CalculateMapTerrainWorldZAtXY</code>：直接输入排队结果的三维世界位置，使用其中 XY 在当前缩放后的地图地形网格体上插值计算世界 Z。</li>
+				</ul>
+				<p>两种排队函数最多返回 <code>一行最大棋子数 × 最大棋子行数</code> 个位置。地形 Z 节点的<code>高度偏移</code>会追加在采样高度上，适合将棋子底部抬离地表。</p>
+			</section>
+
+			<section id="widget2d">
+				<h2>UGSMMapWidget2D</h2>
+				<p>调用 <code>SetMapData</code> 后，控件会订阅所有瓦片数据的棋子事件。项目蓝图负责把事件转换为具体 UMG 瓦片和棋子控件。</p>
+				<ul>
+					<li><code>ReceiveMapDataLoaded</code> 与 <code>RefreshMap2D</code>：初始绑定或刷新。</li>
+					<li><code>ReceivePieceAdded2D</code>、<code>ReceivePieceUpdated2D</code>、<code>ReceivePieceRemoved2D</code>：棋子同步。</li>
+					<li>地图被清空时控件会自动解除 <code>MapData</code> 引用。</li>
+				</ul>
+			</section>
+
+			<section id="arrow">
+				<h2>路径箭头</h2>
+				<p><code>AGSMPathArrow3D</code> 可按 <code>FGSMPathResult</code>、瓦片数组或世界点生成路径箭头，并支持缓存刷新与清空。它只负责显示；路径的求解仍在数据层。</p>
+			</section>
+
+			<section id="board-menu">
+				<h2>棋盘与右键菜单</h2>
+				<p><code>UGSMBoardMeshComponent</code> 只生成棋盘底座和凹槽范围，<code>AGSMMap3D</code> 可用它约束可见区域。右键菜单由 <code>UGSMTileContextMenu</code> 和 <code>UGSMTileMenuButton</code> 的蓝图子类实现；菜单需要名为 <code>MenuButtonVerticalBox</code> 的容器，并应从 <code>AGSMTile3D::GetTileData</code> 读取权威玩法数据。</p>
+			</section>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+</body>
+</html>

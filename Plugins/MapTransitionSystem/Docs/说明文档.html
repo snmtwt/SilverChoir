@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Map Transition System 插件使用手册</title>
+	<style>
+		:root {
+			--bg: #f6f7f9;
+			--panel: #ffffff;
+			--ink: #1f2937;
+			--muted: #667085;
+			--line: #d9dee7;
+			--brand: #2563eb;
+			--brand-soft: #e8f0ff;
+			--ok: #087443;
+			--warn: #a15c07;
+			--code-bg: #111827;
+			--code-ink: #e5e7eb;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background: var(--bg);
+			color: var(--ink);
+			font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+			line-height: 1.65;
+		}
+
+		a {
+			color: var(--brand);
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		.layout {
+			display: grid;
+			grid-template-columns: 280px minmax(0, 1fr);
+			min-height: 100vh;
+		}
+
+		.sidebar {
+			position: sticky;
+			top: 0;
+			height: 100vh;
+			overflow-y: auto;
+			border-right: 1px solid var(--line);
+			background: #ffffff;
+			padding: 24px 18px;
+		}
+
+		.sidebar h1 {
+			margin: 0 0 6px;
+			font-size: 20px;
+			line-height: 1.25;
+		}
+
+		.sidebar .version {
+			margin: 0 0 20px;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		.nav-group {
+			margin: 18px 0;
+		}
+
+		.nav-title {
+			margin: 0 0 8px;
+			color: var(--muted);
+			font-size: 12px;
+			font-weight: 700;
+			letter-spacing: 0;
+			text-transform: uppercase;
+		}
+
+		.nav-link {
+			display: block;
+			border-radius: 6px;
+			padding: 7px 10px;
+			color: #344054;
+			font-size: 14px;
+		}
+
+		.nav-link:hover {
+			background: var(--brand-soft);
+			text-decoration: none;
+		}
+
+		main {
+			max-width: 1120px;
+			padding: 34px 42px 72px;
+		}
+
+		.hero {
+			border-bottom: 1px solid var(--line);
+			padding-bottom: 28px;
+			margin-bottom: 28px;
+		}
+
+		.hero h2 {
+			margin: 0 0 10px;
+			font-size: 34px;
+			line-height: 1.15;
+		}
+
+		.hero p {
+			max-width: 850px;
+			margin: 0;
+			color: var(--muted);
+			font-size: 16px;
+		}
+
+		section {
+			margin: 34px 0;
+			scroll-margin-top: 24px;
+		}
+
+		h2 {
+			margin: 0 0 14px;
+			font-size: 26px;
+			line-height: 1.25;
+		}
+
+		h3 {
+			margin: 24px 0 10px;
+			font-size: 20px;
+		}
+
+		p {
+			margin: 0 0 12px;
+		}
+
+		.grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			gap: 14px;
+			margin: 16px 0;
+		}
+
+		.card {
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: var(--panel);
+			padding: 16px;
+		}
+
+		.card h3 {
+			margin-top: 0;
+			font-size: 17px;
+		}
+
+		.badge {
+			display: inline-block;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			background: #fff;
+			padding: 2px 9px;
+			color: var(--muted);
+			font-size: 12px;
+			vertical-align: middle;
+		}
+
+		.callout {
+			border-left: 4px solid var(--brand);
+			border-radius: 6px;
+			background: var(--brand-soft);
+			padding: 14px 16px;
+			margin: 16px 0;
+		}
+
+		.callout.warning {
+			border-left-color: var(--warn);
+			background: #fff6e6;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 12px 0 18px;
+			background: #fff;
+		}
+
+		th,
+		td {
+			border: 1px solid var(--line);
+			padding: 10px 12px;
+			text-align: left;
+			vertical-align: top;
+		}
+
+		th {
+			background: #f0f3f8;
+			font-weight: 700;
+		}
+
+		code {
+			border-radius: 4px;
+			background: #eef2f7;
+			padding: 1px 5px;
+			font-family: Consolas, "Cascadia Mono", monospace;
+			font-size: 0.95em;
+		}
+
+		pre {
+			overflow-x: auto;
+			border-radius: 8px;
+			background: var(--code-bg);
+			color: var(--code-ink);
+			padding: 16px;
+			font-family: Consolas, "Cascadia Mono", monospace;
+			font-size: 14px;
+			line-height: 1.55;
+		}
+
+		details.api {
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: var(--panel);
+			margin: 12px 0;
+			overflow: hidden;
+		}
+
+		details.api[open] {
+			border-color: #b8c7e8;
+			box-shadow: 0 6px 18px rgba(31, 41, 55, 0.06);
+		}
+
+		details.api summary {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			gap: 12px;
+			align-items: center;
+			cursor: pointer;
+			padding: 14px 16px;
+			background: #fff;
+			list-style: none;
+		}
+
+		details.api summary::-webkit-details-marker {
+			display: none;
+		}
+
+		details.api summary::after {
+			content: "+";
+			width: 26px;
+			height: 26px;
+			border-radius: 50%;
+			background: var(--brand-soft);
+			color: var(--brand);
+			text-align: center;
+			font-weight: 700;
+			line-height: 26px;
+		}
+
+		details.api[open] summary::after {
+			content: "-";
+		}
+
+		.api-name {
+			font-weight: 700;
+			font-size: 17px;
+		}
+
+		.api-meta {
+			display: block;
+			margin-top: 3px;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		.api-body {
+			border-top: 1px solid var(--line);
+			padding: 16px;
+		}
+
+		.copy-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-top: 12px;
+		}
+
+		.copy-button {
+			border: 1px solid #b7c7e6;
+			border-radius: 6px;
+			background: #fff;
+			color: var(--brand);
+			cursor: pointer;
+			padding: 6px 10px;
+			font: inherit;
+			font-size: 13px;
+			line-height: 1.2;
+		}
+
+		.copy-button:hover {
+			background: var(--brand-soft);
+		}
+
+		.copy-button.copied {
+			border-color: #a7d9bf;
+			color: var(--ok);
+			background: #ecfdf3;
+		}
+
+		.flow {
+			counter-reset: step;
+			margin: 16px 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		.flow li {
+			position: relative;
+			margin: 0 0 12px;
+			padding: 12px 14px 12px 48px;
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #fff;
+		}
+
+		.flow li::before {
+			counter-increment: step;
+			content: counter(step);
+			position: absolute;
+			left: 14px;
+			top: 13px;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			background: var(--brand);
+			color: #fff;
+			text-align: center;
+			font-weight: 700;
+			line-height: 24px;
+		}
+
+		.footer {
+			margin-top: 48px;
+			border-top: 1px solid var(--line);
+			padding-top: 18px;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		@media (max-width: 860px) {
+			.layout {
+				display: block;
+			}
+
+			.sidebar {
+				position: static;
+				height: auto;
+			}
+
+			main {
+				padding: 26px 18px 52px;
+			}
+
+			.hero h2 {
+				font-size: 28px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar">
+			<h1>Map Transition System</h1>
+			<p class="version">插件使用手册 · HTML 版</p>
+
+			<div class="nav-group">
+				<p class="nav-title">快速开始</p>
+				<a class="nav-link" href="#overview">插件定位</a>
+				<a class="nav-link" href="#concepts">核心概念</a>
+				<a class="nav-link" href="#basic-flow">普通切图流程</a>
+				<a class="nav-link" href="#manual-flow">手动通知完成流程</a>
+			</div>
+
+			<div class="nav-group">
+				<p class="nav-title">蓝图接口</p>
+				<a class="nav-link" href="#blueprint-library">蓝图函数库总览</a>
+				<a class="nav-link" href="#api-get-subsystem">获取地图切换子系统</a>
+				<a class="nav-link" href="#api-switch-map">按切换请求切换地图</a>
+				<a class="nav-link" href="#api-switch-map-object">按地图对象切换地图</a>
+				<a class="nav-link" href="#api-mark-ready">通知地图已准备好</a>
+				<a class="nav-link" href="#api-notify-map">通知地图加载完成</a>
+				<a class="nav-link" href="#api-progress">设置切换进度</a>
+			</div>
+
+			<div class="nav-group">
+				<p class="nav-title">扩展点</p>
+				<a class="nav-link" href="#request-struct">切换请求结构体</a>
+				<a class="nav-link" href="#handler">地图资源处理类</a>
+				<a class="nav-link" href="#loading-widget">加载界面</a>
+				<a class="nav-link" href="#haven-example">Haven 地图示例</a>
+				<a class="nav-link" href="#troubleshooting">常见问题</a>
+			</div>
+		</aside>
+
+		<main>
+			<section id="submaps-v11">
+				<h2>1.1 新增：动态子地图</h2>
+				<p>现在可以通过子地图数据资产，在当前地图内按指定位置和旋转加载地图实例，并按 ID、名称和 Gameplay Tag 查询、卸载。原有整图切换接口保持不变。</p>
+				<p>配置步骤、全部蓝图节点、异步状态及使用边界见 <a href="子地图使用说明.md">子地图使用说明</a>。</p>
+			</section>
+			<header class="hero">
+				<h2>Map Transition System 插件使用手册</h2>
+				<p>
+					这份文档面向蓝图使用者和玩法程序。插件负责统一地图切换、加载 UI、资源预处理、主地图加载后的完成通知，以及地图处理类回调。
+				</p>
+			</header>
+
+			<section id="overview">
+				<h2>插件定位</h2>
+				<p>
+					`MapTransitionSystem` 是一个运行时地图切换插件。它把“打开地图前准备资源”“显示加载界面”“打开目标地图”“等待目标地图准备完成”“通知处理类并关闭 UI”收拢成一条统一流程。
+				</p>
+				<div class="grid">
+					<div class="card">
+						<h3>适合处理</h3>
+						<p>主菜单进入游戏、关卡间传送、带加载 UI 的地图切换、需要等待子关卡或异步初始化完成的地图。</p>
+					</div>
+					<div class="card">
+						<h3>不直接处理</h3>
+						<p>具体存档逻辑、地图内 Gameplay 初始化细节、加载 UI 的视觉表现。这些由处理类、目标地图或 Widget 自己实现。</p>
+					</div>
+				</div>
+			</section>
+
+			<section id="concepts">
+				<h2>核心概念</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>概念</th>
+							<th>类型</th>
+							<th>用途</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>地图切换子系统</td>
+							<td><code>UMTS_MapTransitionSubsystem</code></td>
+							<td>真实持有切图状态、加载 UI、处理类实例和完成流程。</td>
+						</tr>
+						<tr>
+							<td>蓝图函数库</td>
+							<td><code>UMTS_MapTransitionBlueprintLibrary</code></td>
+							<td>提供可在任意蓝图中直接调用的入口，会自动从当前世界寻找子系统。</td>
+						</tr>
+						<tr>
+							<td>切换请求</td>
+							<td><code>FMTS_MapTransitionRequest</code></td>
+							<td>描述目标地图、处理类、加载 UI、完成延迟、是否需要手动通知等参数。</td>
+						</tr>
+						<tr>
+							<td>地图资源处理类</td>
+							<td><code>UMTS_MapTransitionHandler</code></td>
+							<td>承载预加载资源、地图加载完成、切图失败等事件。</td>
+						</tr>
+						<tr>
+							<td>加载界面</td>
+							<td><code>UMTS_MapLoadingWidget</code></td>
+							<td>显示当前切图阶段、进度、标题、提示文本等状态。</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="basic-flow">
+				<h2>普通切图流程</h2>
+				<p>当目标地图没有额外子关卡、异步初始化或 BeginPlay 后置流程时，使用默认模式即可。</p>
+				<ol class="flow">
+					<li>调用 <code>按地图对象切换地图</code> 或 <code>按切换请求切换地图</code>。</li>
+					<li>保持 <code>需要主动通知加载完成</code> 为 <code>false</code>。</li>
+					<li>插件调用处理类 <code>PreloadMapResources</code>，显示加载 UI。</li>
+					<li>插件执行 <code>OpenLevel</code> 打开目标主地图。</li>
+					<li>主地图完成加载后，插件自动进入 <code>OnMapLoaded</code>，然后关闭加载 UI。</li>
+				</ol>
+			</section>
+
+			<section id="manual-flow">
+				<h2>手动通知完成流程</h2>
+				<p>
+					当目标地图加载完成后，还需要继续加载流式子关卡、等待 Actor 初始化、准备镜头或 UI 时，启用手动通知模式。
+				</p>
+				<div class="callout">
+					<strong>关键参数：</strong>在切换地图时将 <code>需要主动通知加载完成</code> 设置为 <code>true</code>。此时插件会在主地图加载后保留加载 UI，并等待你主动调用 <code>通知地图加载完成</code>。
+				</div>
+				<ol class="flow">
+					<li>从任意蓝图调用 <code>按地图对象切换地图</code>，勾选 <code>需要主动通知加载完成</code>。</li>
+					<li>插件打开目标主地图，并在主地图加载完成后进入等待状态。</li>
+					<li>在目标地图的 <code>GameMode BeginPlay</code>、关卡蓝图或任意初始化对象里加载子关卡和地图资源。</li>
+					<li>你的异步初始化完成后，调用 <code>通知地图加载完成</code>。</li>
+					<li>插件调用地图处理类 <code>OnMapLoaded</code>，执行完成延迟，并关闭加载 UI。</li>
+				</ol>
+			</section>
+
+			<section id="blueprint-library">
+				<h2>蓝图函数库总览</h2>
+				<p>
+					蓝图函数库类为 <code>UMTS_MapTransitionBlueprintLibrary</code>，蓝图分类为 <code>地图切换</code>。下面的接口文档按手风琴方式组织，点击接口标题即可展开入参、出参和说明。
+				</p>
+
+				<details id="api-get-subsystem" class="api" open>
+					<summary>
+						<span>
+							<span class="api-name">获取地图切换子系统</span>
+							<span class="api-meta"><code>GetMapTransitionSubsystem</code> · BlueprintPure</span>
+						</span>
+						<span class="badge">工具接口</span>
+					</summary>
+					<div class="api-body">
+						<p>从当前世界上下文获取 <code>UMTS_MapTransitionSubsystem</code>。一般不需要手动调用，除非你要直接访问子系统上的事件或状态。</p>
+						<table>
+							<thead>
+								<tr>
+									<th>入参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>世界上下文</td>
+									<td><code>const UObject*</code></td>
+									<td>通常由蓝图节点自动从调用对象填入。</td>
+								</tr>
+							</tbody>
+						</table>
+						<table>
+							<thead>
+								<tr>
+									<th>出参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>返回值</td>
+									<td><code>UMTS_MapTransitionSubsystem*</code></td>
+									<td>当前 GameInstance 下的地图切换子系统；无有效世界时返回空。</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</details>
+
+				<details id="api-switch-map" class="api">
+					<summary>
+						<span>
+							<span class="api-name">按切换请求切换地图</span>
+							<span class="api-meta"><code>SwitchMap</code> · BlueprintCallable</span>
+						</span>
+						<span class="badge">完整入口</span>
+					</summary>
+					<div class="api-body">
+						<p>
+							使用完整 <code>FMTS_MapTransitionRequest</code> 发起地图切换。适合需要配置目标地图名、目标地图对象、加载标题、提示、进度平滑速度、是否绝对切图等完整参数的情况。
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>入参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>世界上下文</td>
+									<td><code>const UObject*</code></td>
+									<td>当前蓝图对象或可获取 World 的对象。</td>
+								</tr>
+								<tr>
+									<td>切换请求</td>
+									<td><code>FMTS_MapTransitionRequest</code></td>
+									<td>完整切图配置。至少需要设置 <code>TargetMap</code> 或 <code>TargetMapName</code>。</td>
+								</tr>
+							</tbody>
+						</table>
+						<table>
+							<thead>
+								<tr>
+									<th>出参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>返回值</td>
+									<td><code>bool</code></td>
+									<td>是否成功发起切换。返回 <code>false</code> 通常表示目标地图无效、GameInstance 不可用或已有切换正在进行。</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="callout warning">
+							如果请求中的 <code>需要主动通知加载完成</code> 为 <code>true</code>，主地图加载后不会自动关闭 UI，必须由目标地图调用 <code>通知地图加载完成</code>。
+						</div>
+					</div>
+				</details>
+
+				<details id="api-switch-map-object" class="api">
+					<summary>
+						<span>
+							<span class="api-name">按地图对象切换地图</span>
+							<span class="api-meta"><code>SwitchMapByObject</code> · BlueprintCallable</span>
+						</span>
+						<span class="badge">常用入口</span>
+					</summary>
+					<div class="api-body">
+						<p>
+							用软引用地图对象发起切换。这个节点是日常蓝图最推荐的入口：参数直观，能够直接指定处理类、加载界面和是否等待手动通知。
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>入参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>世界上下文</td>
+									<td><code>const UObject*</code></td>
+									<td>当前蓝图对象或可获取 World 的对象。</td>
+								</tr>
+								<tr>
+									<td>目标地图</td>
+									<td><code>TSoftObjectPtr&lt;UWorld&gt;</code></td>
+									<td>要打开的目标主地图。</td>
+								</tr>
+								<tr>
+									<td>地图资源处理类</td>
+									<td><code>TSubclassOf&lt;UMTS_MapTransitionHandler&gt;</code></td>
+									<td>用于预加载资源、接收地图加载完成事件和失败事件。为空时使用默认处理类。</td>
+								</tr>
+								<tr>
+									<td>加载界面类</td>
+									<td><code>TSubclassOf&lt;UMTS_MapLoadingWidget&gt;</code></td>
+									<td>切图过程中显示的加载 UI。为空则不创建加载界面。</td>
+								</tr>
+								<tr>
+									<td>加载完成后延迟关闭秒数</td>
+									<td><code>float</code></td>
+									<td>处理类 <code>OnMapLoaded</code> 执行后，等待多少秒再关闭加载 UI。</td>
+								</tr>
+								<tr>
+									<td>需要主动通知加载完成</td>
+									<td><code>bool</code></td>
+									<td><code>false</code> 表示主地图加载完成后自动完成；<code>true</code> 表示等待目标地图调用 <code>通知地图加载完成</code>。</td>
+								</tr>
+							</tbody>
+						</table>
+						<table>
+							<thead>
+								<tr>
+									<th>出参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>返回值</td>
+									<td><code>bool</code></td>
+									<td>是否成功发起切换。</td>
+								</tr>
+							</tbody>
+						</table>
+						<pre>推荐蓝图流程：
+按地图对象切换地图
+  目标地图 = Haven 主地图
+  地图资源处理类 = BP_MTSHandler_NewGame
+  加载界面类 = 你的 Loading Widget
+  需要主动通知加载完成 = true</pre>
+					</div>
+				</details>
+
+				<details id="api-mark-ready" class="api">
+					<summary>
+						<span>
+							<span class="api-name">通知地图已准备好</span>
+							<span class="api-meta"><code>MarkMapReady</code> · BlueprintCallable</span>
+						</span>
+						<span class="badge">完成通知</span>
+					</summary>
+					<div class="api-body">
+						<p>
+							通知插件目标地图已经准备好，可以继续执行地图处理类的 <code>OnMapLoaded</code> 和后续关闭 UI 流程。它是底层语义更通用的完成通知接口。
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>入参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>世界上下文</td>
+									<td><code>const UObject*</code></td>
+									<td>当前蓝图对象或可获取 World 的对象。</td>
+								</tr>
+								<tr>
+									<td>就绪来源</td>
+									<td><code>FName</code></td>
+									<td>用于记录是谁发出的完成通知，例如 <code>HavenGameMode</code>、<code>HavenSubsystem</code>。</td>
+								</tr>
+							</tbody>
+						</table>
+						<table>
+							<thead>
+								<tr>
+									<th>出参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>无</td>
+									<td><code>void</code></td>
+									<td>重复调用会被忽略，只有第一次有效。</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</details>
+
+				<details id="api-notify-map" class="api">
+					<summary>
+						<span>
+							<span class="api-name">通知地图加载完成</span>
+							<span class="api-meta"><code>NotifyMapLoadCompleted</code> · BlueprintCallable</span>
+						</span>
+						<span class="badge">推荐完成通知</span>
+					</summary>
+					<div class="api-body">
+						<p>
+							面向蓝图流程的完成通知接口。语义上更适合在目标地图完成流式子关卡、UI、镜头、Actor 初始化后调用。当前内部等价于调用 <code>MarkMapReady</code>。
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>入参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>世界上下文</td>
+									<td><code>const UObject*</code></td>
+									<td>当前蓝图对象或可获取 World 的对象。</td>
+								</tr>
+								<tr>
+									<td>完成来源</td>
+									<td><code>FName</code></td>
+									<td>建议填写调用者名称，便于调试和加载 UI 状态展示。</td>
+								</tr>
+							</tbody>
+						</table>
+						<table>
+							<thead>
+								<tr>
+									<th>出参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>无</td>
+									<td><code>void</code></td>
+									<td>通知后插件进入 <code>OnMapLoaded</code> 和完成流程。</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</details>
+
+				<details id="api-progress" class="api">
+					<summary>
+						<span>
+							<span class="api-name">设置切换进度</span>
+							<span class="api-meta"><code>SetTransitionProgress</code> · BlueprintCallable</span>
+						</span>
+						<span class="badge">UI 状态</span>
+					</summary>
+					<div class="api-body">
+						<p>
+							手动更新加载 UI 显示的进度和加载内容。适合处理类或目标地图在异步初始化过程中给玩家反馈。
+						</p>
+						<table>
+							<thead>
+								<tr>
+									<th>入参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>世界上下文</td>
+									<td><code>const UObject*</code></td>
+									<td>当前蓝图对象或可获取 World 的对象。</td>
+								</tr>
+								<tr>
+									<td>进度</td>
+									<td><code>float</code></td>
+									<td>目标进度，建议使用 <code>0.0</code> 到 <code>1.0</code>。插件会按当前阶段限制可显示上限。</td>
+								</tr>
+								<tr>
+									<td>加载内容</td>
+									<td><code>FText</code></td>
+									<td>显示在加载 UI 上的当前步骤文案。</td>
+								</tr>
+							</tbody>
+						</table>
+						<table>
+							<thead>
+								<tr>
+									<th>出参</th>
+									<th>类型</th>
+									<th>说明</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>无</td>
+									<td><code>void</code></td>
+									<td>更新会广播给当前加载 Widget 和监听者。</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</details>
+			</section>
+
+			<section id="request-struct">
+				<h2>切换请求结构体</h2>
+				<p><code>FMTS_MapTransitionRequest</code> 是完整切图配置。使用 <code>按切换请求切换地图</code> 时会直接传入它。</p>
+				<table>
+					<thead>
+						<tr>
+							<th>字段</th>
+							<th>类型</th>
+							<th>说明</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>目标地图</td>
+							<td><code>TSoftObjectPtr&lt;UWorld&gt;</code></td>
+							<td>推荐设置。插件会从软引用解析出地图包路径并打开。</td>
+						</tr>
+						<tr>
+							<td>目标地图名</td>
+							<td><code>FName</code></td>
+							<td>当不使用地图对象时可直接填写地图名或包路径。</td>
+						</tr>
+						<tr>
+							<td>地图资源处理类</td>
+							<td><code>TSubclassOf&lt;UMTS_MapTransitionHandler&gt;</code></td>
+							<td>处理预加载、加载完成、失败回调。</td>
+						</tr>
+						<tr>
+							<td>加载界面类</td>
+							<td><code>TSubclassOf&lt;UMTS_MapLoadingWidget&gt;</code></td>
+							<td>加载过程中创建并添加到视口的 Widget。</td>
+						</tr>
+						<tr>
+							<td>加载标题 / 副标题 / 提示</td>
+							<td><code>FText</code></td>
+							<td>传给加载 UI 的展示文本。</td>
+						</tr>
+						<tr>
+							<td>加载完成后延迟关闭秒数</td>
+							<td><code>float</code></td>
+							<td>用于让完成动画或提示停留一段时间。</td>
+						</tr>
+						<tr>
+							<td>需要主动通知加载完成</td>
+							<td><code>bool</code></td>
+							<td>决定主地图加载完成后是自动进入 <code>OnMapLoaded</code>，还是等待目标地图主动通知。</td>
+						</tr>
+						<tr>
+							<td>进度平滑速度</td>
+							<td><code>float</code></td>
+							<td>加载 UI 进度追向目标进度的速度。设为 <code>0</code> 表示不平滑。</td>
+						</tr>
+						<tr>
+							<td>绝对切图</td>
+							<td><code>bool</code></td>
+							<td>传给 <code>OpenLevel</code> 的绝对 Travel 参数。</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="handler">
+				<h2>地图资源处理类</h2>
+				<p>
+					处理类基类为 <code>UMTS_MapTransitionHandler</code>。你可以创建蓝图子类，在里面实现地图切换前后的业务逻辑。
+				</p>
+				<table>
+					<thead>
+						<tr>
+							<th>事件 / 函数</th>
+							<th>触发时机</th>
+							<th>建议用途</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>PreloadMapResources</code></td>
+							<td>发起切图后、打开地图前。</td>
+							<td>预读存档、准备临时数据、设置加载 UI 初始状态。</td>
+						</tr>
+						<tr>
+							<td><code>OnMapLoaded</code></td>
+							<td>地图被认定为完成加载后。</td>
+							<td>关闭前最后应用资源、派发玩法事件、同步 UI 状态。</td>
+						</tr>
+						<tr>
+							<td><code>OnMapTransitionFailed</code></td>
+							<td>切换请求无效、资源预加载失败等失败情况。</td>
+							<td>弹出错误提示、恢复菜单、记录日志。</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="loading-widget">
+				<h2>加载界面</h2>
+				<p>
+					加载界面基类为 <code>UMTS_MapLoadingWidget</code>。插件会在切图开始时创建它，并在流程完成或失败后移除。
+				</p>
+				<p>
+					Widget 会接收 <code>FMTS_MapTransitionPayload</code>，其中包含阶段、进度、标题、副标题、提示、完成来源以及是否阻塞输入等信息。
+				</p>
+				<div class="callout">
+					建议加载 Widget 只关心展示，不要在 Widget 内部直接完成地图切换。完成通知应放在目标地图、GameMode、子系统或明确的初始化对象中。
+				</div>
+			</section>
+
+			<section id="haven-example">
+				<h2>Haven 地图示例</h2>
+				<p>当前 Haven 的推荐蓝图逻辑如下：</p>
+				<ol class="flow">
+					<li>主菜单或入口蓝图调用 <code>按地图对象切换地图</code>，目标地图选择 Haven 主地图。</li>
+					<li>勾选 <code>需要主动通知加载完成</code>。</li>
+					<li>Haven 主地图加载完成后，在 <code>GameMode BeginPlay</code> 或其他初始化对象中调用 GFramework 的异步节点 <code>根据配置文件加载所有子关卡</code>。</li>
+					<li><code>根据配置文件加载所有子关卡</code> 的 <code>完成</code> 引脚连接到 <code>通知地图加载完成</code>。</li>
+					<li>插件随后触发地图处理类 <code>OnMapLoaded</code>，加载 UI 关闭。</li>
+				</ol>
+				<pre>蓝图接线示意：
+按地图对象切换地图(需要主动通知加载完成 = true)
+    ↓ OpenLevel 到 Haven
+Haven BeginPlay
+    ↓
+根据配置文件加载所有子关卡
+    完成 → 通知地图加载完成
+    失败 → 可显示错误或返回主菜单</pre>
+			</section>
+
+			<section id="troubleshooting">
+				<h2>常见问题</h2>
+				<h3>加载 UI 一直不关闭</h3>
+				<p>
+					检查当前切图请求是否勾选了 <code>需要主动通知加载完成</code>。如果勾选了，必须在目标地图初始化结束后调用 <code>通知地图加载完成</code>。
+				</p>
+				<h3>切图节点返回 false</h3>
+				<p>
+					通常是目标地图为空、目标地图名为空、GameInstance 不可用，或已有地图切换正在进行。先确认请求参数完整，再检查是否重复触发。
+				</p>
+				<h3>处理类 OnMapLoaded 没有触发</h3>
+				<p>
+					如果是普通流程，确认主地图确实完成 OpenLevel；如果是手动通知流程，确认 <code>通知地图加载完成</code> 被执行，且执行时仍处于地图切换状态。
+				</p>
+				<h3>进度条不到 100%</h3>
+				<p>
+					插件在部分阶段会限制进度上限，以避免 UI 在真实完成前显示满。完成流程执行后会进入 Completed 状态。
+				</p>
+			</section>
+
+			<p class="footer">
+				文档位置：Plugins/MapTransitionSystem/Docs/说明文档.html。此文件为静态 HTML，可直接双击打开。
+			</p>
+		</main>
+	</div>
+	<script>
+		(function () {
+			function copyText(text) {
+				if (navigator.clipboard && window.isSecureContext) {
+					return navigator.clipboard.writeText(text);
+				}
+
+				var textArea = document.createElement("textarea");
+				textArea.value = text;
+				textArea.setAttribute("readonly", "");
+				textArea.style.position = "fixed";
+				textArea.style.left = "-9999px";
+				document.body.appendChild(textArea);
+				textArea.select();
+				document.execCommand("copy");
+				document.body.removeChild(textArea);
+				return Promise.resolve();
+			}
+
+			document.querySelectorAll("details.api").forEach(function (api) {
+				var functionName = api.querySelector(".api-meta code");
+				var body = api.querySelector(".api-body");
+				if (!functionName || !body || body.querySelector("[data-copy]")) {
+					return;
+				}
+
+				var actions = document.createElement("div");
+				actions.className = "copy-actions";
+				var button = document.createElement("button");
+				button.className = "copy-button";
+				button.type = "button";
+				button.setAttribute("data-copy", functionName.textContent.trim());
+				button.textContent = "复制 " + functionName.textContent.trim();
+				actions.appendChild(button);
+				body.appendChild(actions);
+			});
+
+			document.addEventListener("click", function (event) {
+				var button = event.target.closest("[data-copy]");
+				if (!button) {
+					return;
+				}
+
+				var text = button.getAttribute("data-copy");
+				if (!text) {
+					return;
+				}
+
+				copyText(text).then(function () {
+					var originalText = button.textContent;
+					button.textContent = "已复制 " + text;
+					button.classList.add("copied");
+					window.setTimeout(function () {
+						button.textContent = originalText;
+						button.classList.remove("copied");
+					}, 1400);
+				});
+			});
+		}());
+	</script>
+</body>
+</html>
+

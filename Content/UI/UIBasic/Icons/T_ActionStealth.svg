@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <clipPath id="slash-clearance">
+      <path d="M44 0H512V468ZM0 44V512H468Z"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#slash-clearance)" fill="#FFFFFF">
+    <path d="M90 206H150L232 138Q248 125 248 146V366Q248 387 232 374L150 306H90Q76 306 76 292V220Q76 206 90 206Z"/>
+    <g fill="none" stroke="#FFFFFF" stroke-width="32" stroke-linecap="round">
+      <path d="M296 196C335 227 335 285 296 316"/>
+      <path d="M345 144C421 202 421 310 345 368"/>
+    </g>
+  </g>
+  <path d="M88 88L424 424" fill="none" stroke="#FFFFFF" stroke-width="34" stroke-linecap="round"/>
+</svg>

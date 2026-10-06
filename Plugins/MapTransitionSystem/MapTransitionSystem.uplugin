@@ -1,0 +1,16 @@
+{
+	"FileVersion": 3,
+	"Version": 5,
+	"VersionName": "1.4.0",
+	"FriendlyName": "Map Transition System",
+	"Description": "Map transitions with loading UI, plus data-asset-driven dynamic submaps with placement, ID/name/tag queries and unloading.",
+	"Category": "Gameplay",
+	"CreatedBy": "MapTransitionSystem",
+	"Modules": [
+		{
+			"Name": "MapTransitionSystem",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

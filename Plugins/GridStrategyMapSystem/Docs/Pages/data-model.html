@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GSM 数据模型</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<h2>数据模型与配置</h2>
+				<p>数据对象是游戏状态的唯一来源。展示对象可以随场景创建或销毁，不影响地图、瓦片、棋子和寻路数据。</p>
+			</div>
+
+			<section id="ownership">
+				<h2>所有权</h2>
+				<table>
+					<thead><tr><th>对象</th><th>拥有者</th><th>责任</th></tr></thead>
+					<tbody>
+						<tr><td><code>UGSMMapSubsystem</code></td><td>GameInstance</td><td>默认地图快速访问、非默认地图 GUID Map、3D 地图注册和全局清理。</td></tr>
+						<tr><td><code>UGSMMapData</code></td><td>子系统</td><td>一张地图的瓦片、棋子、数据层寻路和地图级事件。</td></tr>
+						<tr><td><code>UGSMTileData</code></td><td>地图数据</td><td>一个瓦片的配置副本、玩法扩展字段和所属棋子。</td></tr>
+						<tr><td><code>UGSMPieceData</code></td><td>地图数据</td><td>棋子 GUID、所属地图/瓦片、放置参数和可选 3D 类型。</td></tr>
+						<tr><td><code>AGSMMap3D</code> 等</td><td>World</td><td>可重建的视觉与输入表现，不承担存档权威性。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="ids">
+				<h2>标识规则</h2>
+				<ul>
+					<li>地图：<code>FGuid MapGuid</code>。默认地图走直接变量；其余地图走 GUID Map。</li>
+					<li>瓦片：<code>FName TileId</code>。未填写时按坐标生成 <code>Tile_X_Y</code>，必须在地图内唯一。</li>
+					<li>棋子：<code>FGuid PieceGuid</code>。调用方可传入稳定 GUID；传入无效 GUID 时插件自动生成。</li>
+				</ul>
+				<div class="callout">存档键推荐使用 <code>MapGuid + TileId + PieceGuid</code>。<code>MapId</code> 是场景展示与兼容入口，不是新玩法数据的主键。</div>
+			</section>
+
+			<section id="asset">
+				<h2>UGSMMapDataAsset</h2>
+				<p>数据资产定义结构和默认类，不保存运行时状态。创建地图数据时，插件会为每个 <code>TileEntries</code> 条目实例化一个瓦片数据对象。</p>
+				<table>
+					<thead><tr><th>配置项</th><th>用途</th></tr></thead>
+					<tbody>
+						<tr><td><code>MapDataClass</code></td><td>地图数据蓝图/C++ 子类；用于地图级玩法状态。</td></tr>
+						<tr><td><code>DefaultTileDataClass</code></td><td>瓦片数据默认子类；适合所有权、建筑、单位列表、地形阶段等字段。</td></tr>
+						<tr><td><code>DefaultPieceDataClass</code></td><td>棋子数据默认子类。</td></tr>
+						<tr><td><code>DefaultTileActorClass</code></td><td>瓦片 3D 默认展示类；可由单个瓦片条目覆盖。</td></tr>
+						<tr><td><code>DefaultPiece3DClass</code></td><td>添加棋子时未传 3D 类所使用的默认展示类。</td></tr>
+						<tr><td><code>TileEntries</code></td><td>瓦片坐标、ID、展示类、数据类、点击权限与导航配置。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="extensions">
+				<h2>扩展位置</h2>
+				<p>需要持久化的玩法状态，请继承 <code>UGSMMapData</code>、<code>UGSMTileData</code> 或 <code>UGSMPieceData</code>。需要网格、动画、材质或交互表现时，再继承相应的 3D Actor。不要把持久游戏状态只写进 <code>AGSMTile3D</code> 或 <code>AGSMPiece3D</code>。</p>
+			</section>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+</body>
+</html>

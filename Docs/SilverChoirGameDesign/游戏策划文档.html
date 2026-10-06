@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SilverChoir 游戏策划文档</title>
+	<link rel="stylesheet" href="Pages/styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<p class="eyebrow">GAME DESIGN DOCUMENT</p>
+				<h2>SilverChoir 游戏策划文档</h2>
+				<p>用于统一记录游戏愿景、玩法规则、内容规格、数值假设、体验目标和制作决策。每个章节均为独立 HTML，可由对应负责人持续维护。</p>
+				<div class="document-meta">
+					<span class="badge draft">状态：框架草案</span>
+					<span class="badge">文档类型：主策划文档</span>
+					<span class="badge">更新方式：按章节维护</span>
+				</div>
+			</div>
+
+			<section id="purpose">
+							<h2>文档目标</h2>
+							<div class="callout">这套文档先建立完整目录和可填写区域，不预设尚未确认的玩法结论。正式内容应优先写清玩家体验、规则边界、关键参数、异常处理和验收方法。</div>
+							<table>
+								<tbody>
+									<tr><th>服务对象</th><td>策划、程序、美术、音频、测试以及需要了解设计边界的协作者。</td></tr>
+									<tr><th>内容粒度</th><td>主文档记录可执行的设计规则；具体表格、配置和资源清单可从章节继续链接。</td></tr>
+									<tr><th>维护原则</th><td>先记录已决定内容，再记录假设和待验证问题；避免把讨论中的想法写成既定规则。</td></tr>
+									<tr><th>状态标记</th><td>建议使用“草案 / 待验证 / 已确认 / 已实现 / 已废弃”。</td></tr>
+								</tbody>
+							</table>
+						</section>
+
+						<section id="directory">
+							<h2>章节目录</h2>
+							<div class="grid">
+								<div class="card"><h3>产品定义</h3><p>明确做什么、为谁做，以及哪些方向不做。</p><div class="chapter-links"><a href="Pages/vision-scope.html">设计愿景与范围</a></div></div>
+								<div class="card"><h3>核心体验</h3><p>描述玩家反复进行的行为、目标、反馈和完整游戏状态。</p><div class="chapter-links"><a href="Pages/core-loop.html">核心循环</a><a href="Pages/player-goals-progression.html">玩家目标与成长</a><a href="Pages/game-flow-states.html">游戏流程与状态</a></div></div>
+								<div class="card"><h3>世界与叙事</h3><p>把世界规则、阵营角色和剧情任务转化为可被玩法验证的内容。</p><div class="chapter-links"><a href="Pages/world-setting.html">世界观与规则</a><a href="Pages/factions-characters.html">阵营与角色</a><a href="Pages/narrative-missions.html">叙事、剧情与任务</a></div></div>
+								<div class="card"><h3>剧情设计</h3><p>规划主线章节、角色弧光和会持续回响的玩家选择。</p><div class="chapter-links"><a href="Pages/story-design.html">设计思路、序章与章节</a></div></div>
+								<div class="card"><h3>战略经营层</h3><p>覆盖 Haven、战略地图、策略时间、任务事件和资源经济。</p><div class="chapter-links"><a href="Pages/haven-base.html">Haven 基地</a><a href="Pages/strategic-map-time.html">战略地图与时间</a><a href="Pages/missions-events.html">任务与事件</a><a href="Pages/economy-resources.html">资源与经济</a></div></div>
+								<div class="card"><h3>单位与小队</h3><p>定义单位、小队编成、成长、装备和载具的关系。</p><div class="chapter-links"><a href="Pages/units-squads.html">单位、小队与编成</a><a href="Pages/growth-equipment-vehicles.html">成长、装备与载具</a></div></div>
+								<div class="card"><h3>战术战斗层</h3><p>定义战斗循环、地图目标、敌人规则和 AI 体验。</p><div class="chapter-links"><a href="Pages/combat-rules.html">战斗循环与规则</a><a href="Pages/tactical-maps-objectives.html">战术地图与目标</a><a href="Pages/enemies-ai.html">敌人与 AI</a></div></div>
+								<div class="card"><h3>内容与数值</h3><p>管理内容模板、数量目标、平衡假设、难度和奖励。</p><div class="chapter-links"><a href="Pages/content-catalog.html">内容目录与模板</a><a href="Pages/balance-difficulty-rewards.html">平衡、难度与奖励</a></div></div>
+								<div class="card"><h3>体验与表现</h3><p>统一界面、操作、无障碍、美术和音频的设计方向。</p><div class="chapter-links"><a href="Pages/ui-controls-accessibility.html">UI、操作与无障碍</a><a href="Pages/art-audio-direction.html">美术与音频方向</a></div></div>
+								<div class="card"><h3>制作与验证</h3><p>记录范围、里程碑、生产流程、测试指标、风险和历史决策。</p><div class="chapter-links"><a href="Pages/production-milestones.html">范围与里程碑</a><a href="Pages/content-pipeline.html">内容生产管线</a><a href="Pages/playtest-metrics.html">测试与指标</a><a href="Pages/risks-decisions.html">风险与决策记录</a><a href="Pages/glossary-changelog.html">术语与变更记录</a></div></div>
+							</div>
+						</section>
+
+						<section id="workflow">
+							<h2>推荐填写顺序</h2>
+							<ol>
+								<li>先完成“设计愿景与范围”和“核心循环”，固定项目方向。</li>
+								<li>再明确战略层、单位小队和战术层之间的输入输出关系。</li>
+								<li>用内容目录和数值章节定义需要生产多少内容、如何验证强度。</li>
+								<li>最后补齐表现、生产、测试、风险和变更记录，形成可执行基线。</li>
+							</ol>
+						</section>
+
+						<section id="writing-rules">
+							<h2>填写规范</h2>
+							<ul class="checklist">
+								<li>每条规则说明触发条件、执行结果和边界情况。</li>
+								<li>每个关键数值注明单位、默认值、允许范围和调整目的。</li>
+								<li>每个系统说明玩家可见反馈，不只描述后台数据变化。</li>
+								<li>未确认内容保留“待验证”状态，并写明验证方法。</li>
+								<li>跨章节规则只确定一个权威来源，其余章节使用链接引用。</li>
+							</ul>
+			</section>
+
+			<p class="footer">文档目录：Docs/SilverChoirGameDesign · 架构说明仍位于 Docs/SilverChoirCore</p>
+		</main>
+	</div>
+	<script src="Pages/docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>GSM 读档与生命周期</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<h2>读档与生命周期</h2>
+				<p>清理 API 是深度清理。它不仅从子系统移除地图，还会同步解除展示、清空瓦片/棋子容器并使旧对象失效。</p>
+			</div>
+
+			<section id="clear">
+				<h2>深度清理顺序</h2>
+				<ol>
+					<li>从默认槽位、GUID Map 与活动 3D 地图注册表移除目标地图。</li>
+					<li>逐个移除棋子数据，向瓦片和展示层发送移除通知。</li>
+					<li>解绑 3D 瓦片与 3D 地图，销毁其展示内容。</li>
+					<li>清空瓦片的棋子容器、地图关联与地图的瓦片索引。</li>
+					<li>广播 <code>OnMapDataCleared</code>；2D 控件据此自动解除绑定。</li>
+					<li>使地图、瓦片、棋子对象的 GUID/ID、所属关系与展示引用失效。</li>
+				</ol>
+			</section>
+
+			<section id="load">
+				<h2>推荐读档流程</h2>
+				<pre><code>ClearAllMapData
+  -> 读取存档中的地图配置与玩法状态
+  -> CreateMapData
+  -> 恢复地图/瓦片子类字段
+  -> AddPieceToTile... 恢复棋子
+  -> AGSMMap3D / UGSMMapWidget2D 注册并绑定新数据</code></pre>
+				<p>若存档需要稳定地图身份，保存创建时返回的 <code>MapGuid</code> 或建立自己的存档键映射。瓦片用 <code>TileId</code>，棋子用 <code>PieceGuid</code>。</p>
+			</section>
+
+			<section id="validity">
+				<h2>旧引用的处理</h2>
+				<p>深度清理后，旧 UObject 仍可能被蓝图变量、异步回调或 UI 缓存暂时引用，但它不再表示有效数据。使用以下函数判断：</p>
+				<ul>
+					<li><code>UGSMMapData::IsMapDataValid</code></li>
+					<li><code>UGSMTileData::IsTileDataValid</code></li>
+					<li><code>UGSMPieceData::IsPieceDataValid</code></li>
+				</ul>
+				<div class="callout">不要只依赖 <code>IsValid(Object)</code>。对象可能仍是可访问 UObject，但其 GSM 身份已失效。</div>
+			</section>
+
+			<section id="replacement">
+				<h2>默认地图替换</h2>
+				<p>调用 <code>CreateMapData(..., true, ...)</code> 创建新的默认地图时，已有默认地图会先被深度清理，并记录日志。未勾选默认地图而默认槽为空时，新地图会自动成为默认地图，确保默认地图始终可用。</p>
+			</section>
+
+			<section id="shutdown">
+				<h2>GameInstance 结束</h2>
+				<p><code>UGSMMapSubsystem::Deinitialize</code> 会调用 <code>ClearAllMapData</code>，因此 GameInstance 关闭时同样会执行完整解除绑定流程。</p>
+			</section>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+</body>
+</html>

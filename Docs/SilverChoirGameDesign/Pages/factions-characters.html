@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SilverChoir - 阵营与角色</title>
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="layout">
+		<aside class="sidebar"></aside>
+		<main>
+			<div class="hero">
+				<p class="eyebrow">世界与叙事</p>
+				<h2>阵营与角色</h2>
+				<p>定义安图恩各势力的目标、资源、人物魅力、可交易筹码和冲突边界，使阵营选择能够真正进入任务、经营、战斗和结局。</p>
+				<div class="document-meta">
+					<span class="badge draft">状态：扩展草案</span>
+					<span class="badge">负责人：待指定</span>
+					<span class="badge">最近评审：待填写</span>
+				</div>
+			</div>
+
+			<section id="design-goals">
+				<h2>本章目标</h2>
+				<div class="callout">每个阵营都应同时回答三个问题：玩家为什么想接近它，接近它会牺牲什么，它加入后会怎样改变战略地图和小队构成。</div>
+				<ul class="checklist">
+					<li>把阵营从背景设定推进为可被玩家利用、背叛、收编或清除的系统对象。</li>
+					<li>每个话事人都要有清晰的第一印象、弱点、底线和与玩家谈判的筹码。</li>
+					<li>每条阵营线至少提供一种任务玩法变化、一种经营收益变化、一种公众支持度或敌对关系变化。</li>
+					<li>阵营单位不只做数值差异，还要影响潜入、火力、士气、城市通行、装备价格或政治后果。</li>
+				</ul>
+			</section>
+
+			<section id="faction-index">
+				<h2>阵营目录</h2>
+				<div class="grid">
+					<a class="card" href="faction-silver-choir.html"><h3>银色唱诗班</h3><p>玩家所属的旧时代雇佣兵遗产，表面绝迹，暗中重组。</p></a>
+					<a class="card" href="faction-nightingale.html"><h3>夜莺联合会</h3><p>夜场、情报、人脉与成员庇护网络，通常简称“夜莺”。</p></a>
+					<a class="card" href="faction-cartel.html"><h3>卡洛维家族</h3><p>负责致幻剂提炼、运输和城市销售，街头称其为“红花”。</p></a>
+					<a class="card" href="faction-fullhouse.html"><h3>满堂会</h3><p>赌场、债务、洗钱、体面暴力与隐藏武器通行能力。</p></a>
+					<a class="card" href="faction-darkweb.html"><h3>灰钥协议</h3><p>匿名委托与黑市交易网络，后期暴露人口贩卖业务。</p></a>
+					<a class="card" href="faction-manor.html"><h3>莫尔坎庄园</h3><p>控制土地与毒品原料种植的古老家族，中期发生继承路线冲突。</p></a>
+					<a class="card" href="faction-tech-group.html"><h3>奥特拉资源系统集团</h3><p>境外资本与油田交易，提供先进技术，也侵蚀安图恩主权。</p></a>
+					<a class="card" href="faction-restoration-army.html"><h3>安图恩复国阵线</h3><p>由原政府残部与抵抗者组成，民间常称“旧旗阵线”。</p></a>
+					<a class="card" href="faction-security-bureau.html"><h3>安图恩城市警卫总署</h3><p>城市治安体系，民间简称“城盾局”，可被民意推动转向玩家。</p></a>
+					<a class="card" href="faction-government-army.html"><h3>政府军</h3><p>外国扶持的现政权武装，装备精良，却缺乏广泛民众支持。</p></a>
+				</div>
+			</section>
+
+			<section id="summary-table">
+				<h2>阵营功能总表</h2>
+				<table>
+					<thead><tr><th>阵营</th><th>核心吸引力</th><th>加入收益</th><th>主要代价</th><th>建议剧情阶段</th></tr></thead>
+					<tbody>
+						<tr><td>银色唱诗班</td><td>玩家身份、组织复兴、旧账清算</td><td>主线基地、核心角色池、雇佣兵合法性</td><td>旧敌人追踪，历史污点被揭开</td><td>全程</td></tr>
+						<tr><td>夜莺联合会</td><td>魅力角色、夜场网络、情报交易</td><td>全女战斗小队，同区域士气提升</td><td>道德争议、公众舆论风险、敌对势力渗透</td><td>早中期</td></tr>
+						<tr><td>卡洛维家族</td><td>廉价兵源、恐惧统治、黑色现金流</td><td>廉价低战力单位，士气不降、死战不退</td><td>民众支持度下降，敌对执法压力提高</td><td>早中期</td></tr>
+						<tr><td>满堂会</td><td>赌场、黑金、体面暴力</td><td>西装暴徒，隐藏武器进入非军事管制区</td><td>欠债、人情债、与其他黑帮冲突</td><td>中期</td></tr>
+						<tr><td>灰钥协议</td><td>任务中介、武器采购、斯文败类反差</td><td>降低灰钥市场武器价格，解锁高端装备情报</td><td>人口贩卖真相引发路线抉择</td><td>早期到后期反转</td></tr>
+						<tr><td>莫尔坎庄园</td><td>家族、土地、继承权冲突</td><td>重火力小组，稳定资金或民意路线</td><td>继续毒品种植或转粮食造成收益差异</td><td>中期主章节</td></tr>
+						<tr><td>奥特拉集团</td><td>先进装备、油田收益、境外资本</td><td>油田管理收益，四足火力平台候选单位</td><td>出卖国家利益，民众支持度下降</td><td>中后期</td></tr>
+						<tr><td>安图恩复国阵线</td><td>抵抗叙事、政治正当性、基础兵源</td><td>中规中矩的基本作战单位</td><td>与政府军关系恶化，行动受理想约束</td><td>中期</td></tr>
+						<tr><td>安图恩城市警卫总署</td><td>城市秩序、执法资源、谈判空间</td><td>穿戴防弹衣的高护甲单位，城市巡逻便利</td><td>持械行为限制，腐败派系可能反噬</td><td>中后期</td></tr>
+						<tr><td>政府军</td><td>外国扶持、正规军火力、低合法性</td><td>多类型高级单位与短期安全通行</td><td>民众支持下降、其他组织成员解散，并在不久后遭到进攻</td><td>后期</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="relationship-propagation">
+				<h2>势力关系与连锁影响</h2>
+				<div class="callout">势力关系不应只是一条彼此独立的好感度。玩家对某个势力采取行动后，影响应沿产业依赖、政治立场、关键人物和公众认知传播到与它有关的其他势力。</div>
+				<div class="table-scroll propagation-table-scroll">
+					<table>
+					<thead><tr><th>关系维度</th><th>记录内容</th><th>可产生的连锁结果</th></tr></thead>
+					<tbody>
+						<tr><td>产业关系</td><td>原料、加工、运输、销售、洗钱、装备和人力等上下游依赖。</td><td>供货量、商品价格、收入、招募速度与单位补充发生变化。</td></tr>
+						<tr><td>政治关系</td><td>同盟、敌对、附庸、外国支持，以及对政权合法性的竞争。</td><td>阵营好感、巡逻密度、区域封锁、报复行动与任务开放状态发生变化。</td></tr>
+						<tr><td>人物关系</td><td>首领之间的亲属、债务、旧怨、秘密协议和私人利益。</td><td>关键角色的忠诚、背叛、斡旋能力与特殊任务发生变化。</td></tr>
+						<tr><td>公众认知</td><td>行动是否公开、平民伤亡、证据是否曝光，以及社会舆论如何理解此事。</td><td>民众支持、阵营声望、执法压力和政府军反应发生变化。</td></tr>
+					</tbody>
+					</table>
+				</div>
+				<div class="callout warning"><strong>已确认示例：</strong>莫尔坎庄园生产原料，卡洛维家族负责提炼、运输与销售。玩家迫使庄园改种粮食，可能提高民众支持，却会削弱卡洛维的原料供应、降低卡洛维关系，并改变毒品价格、黑市收入与相关任务。反过来，玩家打击卡洛维的销售网络，也会压低莫尔坎庄园的原料收益。</div>
+				<ul class="checklist">
+					<li>关系可以不对称：甲依赖乙，不代表乙同等依赖甲。</li>
+					<li>填写各势力页面时，优先记录“连接是什么”和“玩家行为如何传播”，再决定具体好感数值。</li>
+					<li>连锁影响强度由依赖程度、行动是否公开、人员伤亡、合同是否违约及证据是否曝光共同决定。</li>
+					<li>同一事件可以同时带来正负后果，例如提高民众支持，却损害某条产业链的收入和兵源。</li>
+				</ul>
+			</section>
+
+			<section id="relationship-rules">
+				<h2>关系与收编规则</h2>
+				<table>
+					<thead><tr><th>关系状态</th><th>触发条件</th><th>玩法表现</th><th>叙事要求</th></tr></thead>
+					<tbody>
+						<tr><td>陌生</td><td>玩家首次进入势力范围或接到相关任务</td><td>只开放传闻、低级委托和有限交易</td><td>以环境、传单、NPC 对话先建立第一印象</td></tr>
+						<tr><td>合作</td><td>完成关键委托，或支付资源换取短期帮助</td><td>开放一次性支援、折扣、情报或临时通行</td><td>明确对方不是玩家下属，只是利益一致</td></tr>
+						<tr><td>同盟</td><td>解决阵营内部危机并选择路线</td><td>提供常驻收益、可招募单位或地图区域便利</td><td>需要出现话事人承诺、反对派不满和公开后果</td></tr>
+						<tr><td>收编</td><td>玩家获得足够威望、资源或武力压制</td><td>阵营资源进入 Haven 管理，但会触发兼容性冲突</td><td>必须保留原阵营文化，不应变成无名数值奖励</td></tr>
+						<tr><td>敌对</td><td>攻击成员、违背承诺、选择其死敌路线</td><td>巡逻、伏击、价格上升、区域封锁或任务失败</td><td>让玩家知道是自己的选择造成了敌意</td></tr>
+					</tbody>
+				</table>
+				<div class="callout warning">政府军路线应作为特殊极端选择处理：这支由外国扶持的现政权武装能给玩家最强的短期正规化收益，但会摧毁多数非政府同盟、显著降低民众支持，并在后续章节转化为更大规模的反噬。</div>
+			</section>
+
+			<section id="character-template">
+				<h2>话事人与角色模板</h2>
+				<table>
+					<tbody>
+						<tr><th>第一眼标签</th><td>玩家在 5 秒内能记住的视觉、语言或行为特征。</td></tr>
+						<tr><th>个人欲望</th><td>角色真正想得到的东西，不能只写“为了阵营利益”。</td></tr>
+						<tr><th>可交易筹码</th><td>角色能给玩家什么：人、钱、装备、情报、通行权、舆论、合法性。</td></tr>
+						<tr><th>底线</th><td>玩家触碰后会导致敌对、背叛或永久失去某条路线的条件。</td></tr>
+						<tr><th>反转点</th><td>中后期揭示的秘密、软肋或真正业务，让角色从标签变成立体人物。</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="open-questions">
+				<h2>待确认问题</h2>
+				<ul class="checklist">
+					<li>阵营加入是否互斥：黑帮类、政府类、抵抗类是否只能选择一条主路线。</li>
+					<li>民众支持度的阈值：哪些阵营会提高支持，哪些阵营会降低支持，降低到何处会触发叛乱或封锁。</li>
+					<li>阵营单位上限：每个阵营是否提供无限招募、特殊名额，还是只给一支独特小队。</li>
+					<li>话事人是否可以死亡、替换或被玩家扶持，替换后阵营收益是否改变。</li>
+					<li>灰钥协议的人口贩卖、夜莺联合会的成人娱乐和毒品种植等内容的表现尺度与地区发行风险。</li>
+				</ul>
+			</section>
+
+			<p class="footer">SilverChoir 游戏策划文档 · 世界与叙事 / 阵营与角色</p>
+		</main>
+	</div>
+	<script src="docs.js"></script>
+</body>
+</html>

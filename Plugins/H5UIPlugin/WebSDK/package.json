@@ -1,0 +1,20 @@
+{
+  "name": "h5-ui-plugin-web-sdk",
+  "private": true,
+  "version": "0.3.0",
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "build": "pnpm --filter @h5ui-plugin/vue build && pnpm --filter h5ui-vue-basic-example build && pnpm --filter silver-choir-start-menu build && pnpm --filter silver-choir-base-control build && pnpm --filter silver-choir-iron-bazaar build",
+    "build:vue": "pnpm --filter @h5ui-plugin/vue build",
+    "build:example": "pnpm --filter h5ui-vue-basic-example build",
+    "build:start-menu": "pnpm --filter silver-choir-start-menu build",
+    "build:base-control": "pnpm --filter silver-choir-base-control build",
+    "build:iron-bazaar": "pnpm --filter silver-choir-iron-bazaar build"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vue": "latest"
+  }
+}

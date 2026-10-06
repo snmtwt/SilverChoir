@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HybridMotionSystem 使用与优化指南</title>
+  <style>
+    :root{color-scheme:light dark;--accent:#4aa3ff;--panel:color-mix(in srgb,Canvas 94%,var(--accent) 6%);--line:color-mix(in srgb,CanvasText 18%,transparent)}
+    body{max-width:1080px;margin:0 auto;padding:32px 24px 80px;font:16px/1.75 system-ui,"Microsoft YaHei",sans-serif;color:CanvasText;background:Canvas}
+    h1,h2,h3{line-height:1.3} h1{font-size:2.2rem} h2{margin-top:2.5rem;padding-bottom:.35rem;border-bottom:1px solid var(--line)}
+    code{padding:.12rem .35rem;border-radius:4px;background:var(--panel)} pre{padding:16px;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+    table{width:100%;border-collapse:collapse} th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}
+    .note{padding:14px 16px;border-left:4px solid var(--accent);background:var(--panel)}
+    nav{padding:16px 20px;background:var(--panel);border:1px solid var(--line);border-radius:8px} a{color:var(--accent)}
+  </style>
+</head>
+<body>
+<h1>HybridMotionSystem</h1>
+<p class="note"><strong>新版使用手册：</strong><a href="manual.html">智能对象交互动画、通知与轨迹生成说明</a>。本页保留已有插件总览。</p>
+<p>这是以 GASP 的 Mover 2.0 + State Machine + Chooser 运动方案为基础的 UE 5.8 插件。本版保留原动画蓝图的使用方式，同时增加非侵入式组件数据源、AI/Mass 世界空间输入、动画语义网络同步、Chooser 结果缓存和可分级轨迹预测。</p>
+
+<nav><strong>章节</strong>
+  <ol>
+    <li><a href="#architecture">架构与兼容性</a></li>
+    <li><a href="#setup">快速配置</a></li>
+    <li><a href="#component">动画数据组件</a></li>
+    <li><a href="#mover">GASP 风格 Mover 组件</a></li>
+    <li><a href="#animblueprint">动画蓝图、状态机与 Chooser</a></li>
+    <li><a href="#trajectory">轨迹质量与性能</a></li>
+    <li><a href="#network">AI、Mass 与网络</a></li>
+    <li><a href="#extensions">物品交互、翻越与布娃娃扩展</a></li>
+    <li><a href="#editor-tools">编辑器工具</a></li>
+    <li><a href="#api">关键 API</a></li>
+  </ol>
+</nav>
+
+<h2 id="architecture">1. 架构与兼容性</h2>
+<table>
+  <tr><th>层</th><th>职责</th><th>兼容策略</th></tr>
+  <tr><td><code>HMS_Mover</code></td><td>Mover 2.0 行走模式、步态参数、朝向和导航输入。</td><td>保留原数据结构和蓝图节点；已适配 UE 5.8 的 <code>FMoverSimContext</code> 签名。</td></tr>
+  <tr><td><code>UHMS_AnimInstance</code></td><td>轨迹、基础运动数据、状态、AimOffset、Chooser 和 BlendStack 输入。</td><td>类名、原变量和原状态机函数保持不变。</td></tr>
+  <tr><td><code>UHMS_AnimationDataComponent</code></td><td>可选的 Actor → AnimInstance 数据桥，提供外部朝向、瞄准、世界输入和网络同步。</td><td>有组件时优先读取；没有组件时继续调用 <code>HMS_CharacterAnimationInterface</code>。</td></tr>
+  <tr><td>SmartObject / Overlay / 自定义节点</td><td>交互、覆盖层和骨骼混合。</td><td>保留新版插件原有模块。</td></tr>
+</table>
+<p class="note">已停用旧 <code>MotionWeave</code> 插件，但没有删除其文件，便于对比与回退。新项目应只启用 <code>HybridMotionSystem</code>。</p>
+
+<h2 id="setup">2. 快速配置</h2>
+<ol>
+  <li>在项目插件中启用 HybridMotionSystem、Mover、Chooser、BlendStack、PoseSearch 和 AnimationWarping。</li>
+  <li>使动画蓝图继承 <code>UHMS_AnimInstance</code>。原 HMS 动画蓝图可直接继续使用。</li>
+  <li>在动画实例默认值中配置 <code>ChooserTable</code>。</li>
+  <li>需要 AI/Mass、外部瞄准或网络语义同步时，向单位 Actor 添加“HMS 动画数据组件”。</li>
+</ol>
+
+<h2 id="component">3. HMS 动画数据组件</h2>
+<p>组件不是 Pawn 基类，不会消耗 NavMover 输入，也不会接管移动模拟。它可以挂在任何拥有骨骼网格的 Actor/Pawn 上，专门传递动画语义。</p>
+<ul>
+  <li><strong>使用控制器方向数据</strong>：默认开启，保持原 HMS 玩家模式。AI/Mass 请关闭。</li>
+  <li><strong>设置世界空间移动输入</strong>：导航、Mass Processor 或 StateTree 直接传入世界方向，不经控制器坐标转换。</li>
+  <li><strong>设置朝向与瞄准方向</strong>：两者分离，可支持转身、横移、炮塔或上半身瞄准。</li>
+  <li><strong>启用动画语义网络同步</strong>：只复制步态、旋转模式、姿态和压缩方向；位置与速度仍由 Mover 复制。</li>
+</ul>
+
+<h2 id="mover">4. GASP 风格 Mover 组件</h2>
+<p><code>UHMS_CharacterMoverComponent</code> 是可直接替换 <code>UCharacterMoverComponent</code> 的组件，不要求使用指定 Pawn。它默认安装 HMS 行走和下落模式，并保留 Mover 的地面检测、碰撞、台阶、斜坡、网络预测、回滚以及 <code>UNavMoverComponent</code> 导航链路。</p>
+<table>
+  <tr><th>能力</th><th>样例默认值</th><th>行为</th></tr>
+  <tr><td>步行起步</td><td>165 cm/s；500 cm/s²</td><td>从当前速度平滑加速，弹簧状态进入 Mover 网络预测。</td></tr>
+  <tr><td>跑步起步</td><td>375 cm/s；800 cm/s²</td><td>方向输入出现后逐步达到跑速，不再瞬间跳到最大速度。</td></tr>
+  <tr><td>冲刺起步</td><td>585 cm/s；300 cm/s²</td><td>使用较弱转向强度和更长朝向平滑时间，保持 GASP 冲刺手感。</td></tr>
+  <tr><td>停止</td><td>1000 cm/s²</td><td>输入消失后生成连续减速段，速度归零后由动画状态选择停步/Idle。</td></tr>
+  <tr><td>步态降速</td><td>300 cm/s²</td><td>从冲刺切换到跑/走时独立减速，避免与普通停步混用。</td></tr>
+  <tr><td>蹲伏</td><td>165 cm/s</td><td><code>bWantsToCrouch</code> 随输入命令参与预测，同时同步动画姿态标签。</td></tr>
+</table>
+<p>速度变化使用与样例 <code>SmoothWalkingMode</code> 等价的临界阻尼弹簧。HMS 使用自己的 <code>FHMS_SmoothWalkingState</code>，因为 UE 5.8 将引擎对应状态放在 Mover 模块私有目录；该状态实现网络序列化、误差校正和插值，避免只在动画层伪造起步与停步。</p>
+<p>旧蓝图如果曾序列化保存引擎默认 <code>WalkingMode</code>/<code>FallingMode</code>，组件会在加载和注册时自动升级为 HMS 模式；用户明确配置的自定义模式不会被覆盖。</p>
+
+<h3>移动基座与快速折返</h3>
+<p><code>UHMS_AnimationDataComponent</code> 会监听 UE 5.8 Mover 的 <code>OnBasedMovementApplied</code>，把每个模拟帧由移动/旋转平台产生的世界空间增量写入 <code>FHMS_AnimationProperties.BasedMovementDelta</code>。动画蓝图的 <code>OnUpdate_OffsetRootBone</code> 将其位置与旋转分量传给 <code>ApplyDeltaToOffsetRootBone</code>，避免平台移动后视觉根骨滞留在旧世界位置。该值来自 Mover 模拟，不依赖 Controller，并沿用 Mover 对网络代理和回滚帧的处理。</p>
+<p>静态地面上的 180° 折返不属于 Based Movement。HMS 会比较当前二维速度方向与最新输入方向；夹角达到“折返判定角度”（默认 110°）时，将 Offset Root Bone 旋转模式临时切换为 Interpolate，并使用更短的“折返根骨释放半衰期”（默认 0.05 秒），让旧方向的根偏移快速释放。普通移动仍保留原 0.3 秒平滑，因此不会牺牲起步与转弯的稳定性。</p>
+
+<h3>输入方式</h3>
+<ul>
+  <li><code>ProducePlayerHMSInput</code>：WASD/玩家输入，写入方向、步态、旋转模式和蹲伏意图。</li>
+  <li><code>ProduceNavHMSInput</code>：消费 <code>UNavMoverComponent</code> 的导航方向和期望速度，适用于 AI MoveTo。</li>
+  <li>Mass 可直接构造同一份 <code>FHMS_MoverInput</code>；不要在模拟线程读取 Controller 或任意 Actor 状态。</li>
+</ul>
+
+<h2 id="animblueprint">5. 动画蓝图、状态机与 Chooser</h2>
+<p>保持原 HMS 逻辑：状态机进入状态时，使用 GameplayTag Container 调用 <code>SetBlendStackAnimFromChooser</code>，Chooser 以动画实例为 Object Context 查询，结果写入 <code>BlendStackInputs</code>。</p>
+<pre><code>状态进入
+  → SetBlendStackAnimFromChooser(状态 GameplayTag, 是否强制混合)
+  → Chooser: 状态标签 + Stance + Gait + MovementDirection + RotationMode
+  → BlendStackInputs: Anim / Loop / StartTime / BlendTime / BlendProfile / Tags
+  → Blend Stack 节点</code></pre>
+<p>开启“缓存重复动画查询”后，当状态标签、姿态、方向、步态和旋转模式都未改变，且未要求强制混合时，不会重复执行 Chooser。传入 <code>bForceBlend=true</code> 仍会重新查询，保留随机变体和重进入逻辑。</p>
+
+<h3>下落、落地与 MovementMode</h3>
+<p><code>UHMS_AnimationDataComponent</code> 默认监听 Mover 的 <code>OnMovementModeChanged</code>，自动完成 <code>Walking → OnGround</code>、<code>Falling → InAir</code>、<code>Flying → Flying</code> 映射。未安装数据组件时，动画实例也会直接读取 Mover 当前模式作为回退，因此普通 Mover Pawn 同样能够进入空中状态图。</p>
+<table>
+  <tr><th>动画变量</th><th>含义</th></tr>
+  <tr><td><code>bJustBecameAirborne / bIsFalling</code></td><td>离地首帧和下降阶段，用于跳跃过渡与空中循环选择。</td></tr>
+  <tr><td><code>VerticalVelocity / AirTime / TimeToApex</code></td><td>垂直速度、滞空时间和预计到达最高点时间。</td></tr>
+  <tr><td><code>GroundDistance / PredictedTimeToLand</code></td><td>仅在 InAir 时执行一次向下单线检测并估算落地时间；地面单位没有额外 Trace。</td></tr>
+  <tr><td><code>bJustLanded / JustLanded_Heavy / LandingVelocity</code></td><td>落地首帧、重落地判定和落地前速度，供 Chooser 选择轻/重落地动画。</td></tr>
+  <tr><td><code>SlopeAngle</code></td><td>相对动画根朝向计算的前后/左右坡度。</td></tr>
+</table>
+
+<h2 id="trajectory">6. 轨迹质量与性能</h2>
+<table>
+  <tr><th>质量</th><th>行为</th><th>建议</th></tr>
+  <tr><td>完整（含碰撞）</td><td>运行 PoseSearch 轨迹预测并进行世界碰撞修正。</td><td>只给近景玩家或确实依赖该修正的单位。</td></tr>
+  <tr><td>预测（无碰撞）</td><td>使用 Mover Predictor，跳过额外世界 Trace。</td><td>默认；适合实时战术单位。</td></tr>
+  <tr><td>轻量级</td><td>根据已复制速度、世界意图和外部朝向推导过渡数据。</td><td>远景 LOD、大规模 AI 或无 Mover Actor。</td></tr>
+</table>
+<p>默认轨迹间隔为 0.033333 秒（约 30Hz），LOD 2 开始自动使用轻量轨迹。近景动画图仍每帧更新速度、AimOffset 和混合，只是不再对轨迹做每帧重建。</p>
+<p class="note">UE 5.8 已将 <code>HandleTransformTrajectoryWorldCollisions</code> 标注为不适合 Mover 工作流。因此默认为“预测（无碰撞）”；“完整”仅用于效果兼容。</p>
+
+<h2 id="network">7. AI、Mass 与网络</h2>
+<ol>
+  <li>服务器 AI/Mass Processor 调用组件的世界输入、朝向和瞄准 Setter。</li>
+  <li>服务器保持权威 Mover 位置/速度，组件只向 Simulated Proxy 复制动画语义。</li>
+  <li>玩家 Autonomous Proxy 发送方向时使用不可靠 RPC 和可配置频率，步态/姿态变化使用可靠 RPC。</li>
+  <li>动画实例不依赖 Controller 才能计算 MovementDirection；世界输入可直接与外部朝向比较。</li>
+</ol>
+
+<h2 id="extensions">8. 交互、翻越与布娃娃扩展</h2>
+<ul>
+  <li><strong>物品交互</strong>：继续以 SmartObject 作为交互目标和槽位来源，动作阶段可以增加到动画数据组件，不需要修改 Pawn 基类。</li>
+  <li><strong>翻越</strong>：建议新建独立 Traversal Component，输出动作 GameplayTag、阶段和 Motion Warping 目标。目标检测与动画选择分离，因此后续可将“指定翻越对象”替换为通用环境扫描。</li>
+  <li><strong>布娃娃</strong>：作为独立动作模式，由组件复制进入/恢复语义；物理骨骼网络复制与移动语义分开。</li>
+</ul>
+
+<h3>HMS 布娃娃组件</h3>
+<p><code>UHMS_RagdollComponent</code> 已实现为可选、非侵入式组件。它会自动查找骨骼网格、根碰撞、Mover、NavMover 和动画数据组件；也可以在细节面板显式指定网格与碰撞。角色不需要继承 HMS Pawn。</p>
+<ol>
+  <li>向单位添加“HMS 布娃娃组件”，确认骨盆骨骼（默认 <code>pelvis</code>）和脊柱参考骨骼（默认 <code>spine_05</code>）适配当前骨架。</li>
+  <li>配置面朝上/面朝下起身 Montage，并确保动画图中存在 Montage 使用的 Slot。姿势快照默认名为 <code>Ragdoll</code>。</li>
+  <li>调用 <code>EnterRagdoll</code>：组件停止导航、释放 Mover PrimaryVisual、分离网格并开启物理，同时将动画 MovementMode 设为 Ragdoll。</li>
+  <li>调用 <code>RecoverFromRagdoll</code>：服务器依据骨盆、脊柱和地面检测计算恢复位置与正反面，保存快照，恢复原相对变换/碰撞/Mover，再播放对应 Montage。</li>
+</ol>
+<p>组件只在布娃娃期间 Tick，并持续输出 <code>FHMS_RagdollProperties</code>（脊柱速度、质心速度、是否面朝上、是否接地等）。进入与恢复使用可靠服务器 RPC，恢复变换和 Montage 使用 Multicast；Mover 继续负责正常移动复制。大规模单位无需布娃娃时可以不添加该组件，完全没有其 Tick 成本。</p>
+
+<h2 id="editor-tools">9. 编辑器工具</h2>
+<h3>批量动画重定向</h3>
+<p>从编辑器主菜单选择“工具 → Hybrid Motion System → 批量动画重定向”。面板使用 UE 5.8 的 <code>UIKRetargetBatchOperation::RunBatchRetarget</code>，不会修改源动画。</p>
+<ol>
+  <li>选择源动画文件夹和目标文件夹，路径应为 <code>/Game/...</code> 内容路径。</li>
+  <li>选择已配置源、目标预览 Mesh 的 IK Retargeter。</li>
+  <li>按需设置递归扫描、保留子目录、覆盖同名资源和命名规则。</li>
+  <li>点击“开始批量重定向”。完成后会显示扫描数量、生成数量和目标位置。</li>
+</ol>
+<p class="note">目标文件夹不能等于源文件夹或位于源文件夹内部。启用“包含引用的动画资源”可能产生源目录之外的附加资源，通常保持关闭。</p>
+
+<h2 id="api">10. 关键 API</h2>
+<table>
+  <tr><th>API</th><th>用途</th></tr>
+  <tr><td><code>SetBlendStackAnimFromChooser</code></td><td>保留的状态进入查询入口。</td></tr>
+  <tr><td><code>BlendStackInputs</code></td><td>保留的 Blend Stack 节点输入数据。</td></tr>
+  <tr><td><code>SetWorldSpaceMovementInput</code></td><td>AI/Mass/Nav 向动画系统提供世界空间意图。</td></tr>
+  <tr><td><code>SetFacingAndAimingDirections</code></td><td>同时设置角色朝向与瞄准方向，并自动切换到外部方向模式。</td></tr>
+  <tr><td><code>GetAnimationProperties</code></td><td>AnimInstance 从组件读取当前帧语义快照。</td></tr>
+  <tr><td><code>HMS_CharacterAnimationInterface</code></td><td>无组件时的原有兼容数据源。</td></tr>
+  <tr><td><code>UHMS_CharacterMoverComponent</code></td><td>安装 HMS 行走/下落模式并兼容旧蓝图的非侵入式 Mover 组件。</td></tr>
+  <tr><td><code>FHMS_SmoothWalkingState</code></td><td>参与预测、回滚和插值的起步/停步平滑状态。</td></tr>
+  <tr><td><code>UHMS_RagdollComponent</code></td><td>非侵入式布娃娃进入、物理属性、网络恢复和起身 Montage。</td></tr>
+  <tr><td><code>ResolveMoverMovementMode</code></td><td>把 UE 5.8 Mover 模式名转换为 HMS 动画 MovementMode。</td></tr>
+</table>
+
+<h2>11. UE 5.8 版本说明</h2>
+<ul>
+  <li>Chooser 头文件使用公开路径 <code>Chooser.h</code>。</li>
+  <li>Mover 行走模式使用包含 <code>FMoverSimContext</code> 的新 <code>GenerateMove_Implementation</code> 签名。</li>
+  <li>编辑器根运动提取已切换到 <code>ExtractRootMotionFromRange</code> + <code>FAnimExtractContext</code>。</li>
+</ul>
+</body>
+</html>

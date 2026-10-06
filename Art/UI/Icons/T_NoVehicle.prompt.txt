@@ -1,0 +1,7 @@
+Created with the built-in image_gen tool, transparent background.
+
+Final prompt:
+Create one polished game HUD placeholder icon for NO ASSIGNED VEHICLE, transparent PNG background. A minimal clean flat outline icon of a rugged military four-door jeep, exact side view, two visible circular tires, angular hood and windshield, spare tire at rear, crisp medium-weight consistent lines. Muted desaturated steel blue #729AB2 linework only, no black, no white, no shading, no gradients, no glow, no photographic details, no ground line, no text or letters. Small round minus badge near upper right of jeep indicates no assigned vehicle, discreet and harmonious. Do NOT put a diagonal slash across the vehicle. Designed for a dark navy tactical UI; legible at only 112x63 pixels, so use a strong simple silhouette and very few internal details. Single icon, centered with balanced padding on a wide 16:9 transparent canvas. Vehicle takes about 78% of canvas width. No frame, no background.
+
+Imported into the Operations Command Room T_NoVehicle UI texture with a
+512-pixel runtime size limit. Original generated alpha is preserved.

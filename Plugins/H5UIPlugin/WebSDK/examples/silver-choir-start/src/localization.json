@@ -1,0 +1,225 @@
+{
+  "defaultLanguage": "zh-CN",
+  "languages": {
+    "zh-CN": {
+      "htmlLanguage": "zh-CN",
+      "documentTitle": "银色唱诗班",
+      "languageSwitchLabel": "EN",
+      "languageSwitchHint": "切换至英文",
+      "brandName": "银色唱诗班",
+      "brandSubtitle": "战略指挥网络",
+      "networkStatus": "指挥网络在线",
+      "networkDetail": "指挥链路 / 稳定",
+      "chapter": "SC // 01",
+      "era": "战术纪元 2049",
+      "kicker": "寂静之后，唯有回响",
+      "titleTop": "银色",
+      "titleBottom": "唱诗班",
+      "titleCaption": "SILVER CHOIR",
+      "tagline": "当旧世界的回声消散，最后的合唱将成为我们的武器。",
+      "missionData": [
+        { "label": "区域", "value": "CN–07" },
+        { "label": "协议", "value": "夜幕" },
+        { "label": "信号", "value": "98.6%" }
+      ],
+      "signalCore": "唱",
+      "signalStatus": "在线",
+      "menuAriaLabel": "主菜单",
+      "menuHeading": "主终端",
+      "menuInstruction": "选择指令",
+      "menu": {
+        "newGame": { "label": "开始行动", "sublabel": "开启新战役" },
+        "continue": { "label": "继续任务", "sublabel": "恢复行动" },
+        "settings": { "label": "系统设置", "sublabel": "系统配置" },
+        "archives": { "label": "行动档案", "sublabel": "任务记录" },
+        "quit": { "label": "断开连接", "sublabel": "退出终端" }
+      },
+      "awaitingCommand": "等待指令",
+      "directiveSent": "指令已发送",
+      "settingsPage": {
+        "eyebrow": "系统核心 // 配置终端",
+        "headerCode": "配置 // 04",
+        "cardCode": "SC / 配置",
+        "title": "系统设置",
+        "description": "调整作战终端、音频与控制参数。所有变更将在确认后应用。",
+        "back": "返回主菜单",
+        "apply": "应用设置",
+        "reset": "恢复默认",
+        "applied": "设置已应用",
+        "resetDone": "已恢复默认设置",
+        "tabs": {
+          "general": "通用",
+          "display": "显示",
+          "audio": "音频",
+          "controls": "控制"
+        },
+        "general": {
+          "title": "通用设置",
+          "language": "界面语言",
+          "languageHint": "切换界面显示语言",
+          "languageOptions": [
+            { "value": "zh-CN", "label": "中文" },
+            { "value": "en-US", "label": "English" }
+          ],
+          "difficulty": "默认难度",
+          "difficultyHint": "新行动采用的敌方强度",
+          "difficultyOptions": ["故事", "标准", "战术", "极限"],
+          "subtitles": "显示字幕",
+          "subtitlesHint": "显示对话与关键语音字幕",
+          "tutorials": "战术提示",
+          "tutorialsHint": "在关键节点显示操作建议"
+        },
+        "display": {
+          "title": "显示设置",
+          "windowMode": "显示模式",
+          "windowModeHint": "选择游戏窗口模式",
+          "windowModeOptions": ["全屏", "无边框窗口", "窗口化"],
+          "resolution": "分辨率",
+          "resolutionHint": "设置游戏画面输出尺寸",
+          "resolutionOptions": ["1920 × 1080", "2560 × 1440", "3840 × 2160"],
+          "brightness": "亮度",
+          "brightnessHint": "调整暗部场景可见度",
+          "vsync": "垂直同步",
+          "vsyncHint": "减少画面撕裂"
+        },
+        "audio": {
+          "title": "音频设置",
+          "master": "主音量",
+          "masterHint": "控制全部声音的输出音量",
+          "music": "音乐音量",
+          "musicHint": "控制背景音乐音量",
+          "effects": "音效音量",
+          "effectsHint": "控制战斗与环境音效",
+          "voice": "语音音量",
+          "voiceHint": "控制角色对话音量"
+        },
+        "controls": {
+          "title": "控制设置",
+          "sensitivity": "镜头灵敏度",
+          "sensitivityHint": "调整鼠标镜头移动速度",
+          "invertY": "反转纵轴",
+          "invertYHint": "反转镜头上下移动方向",
+          "edgeScroll": "边缘滚动",
+          "edgeScrollHint": "鼠标靠近屏幕边缘时移动镜头",
+          "cameraShake": "镜头震动",
+          "cameraShakeHint": "启用战斗中的镜头震动效果"
+        },
+        "enabled": "开启",
+        "disabled": "关闭"
+      },
+      "build": "版本 0.8.17",
+      "secureChannel": "安全频道 // 4A",
+      "copyright": "© 银色唱诗班指挥部"
+    },
+    "en-US": {
+      "htmlLanguage": "en",
+      "documentTitle": "Silver Choir",
+      "languageSwitchLabel": "中文",
+      "languageSwitchHint": "Switch to Chinese",
+      "brandName": "SILVER CHOIR",
+      "brandSubtitle": "STRATEGIC COMMAND NETWORK",
+      "networkStatus": "COMMAND NETWORK ONLINE",
+      "networkDetail": "COMMAND LINK / STABLE",
+      "chapter": "SC // 01",
+      "era": "TACTICAL ERA 2049",
+      "kicker": "A WORLD WITHOUT SILENCE",
+      "titleTop": "SILVER",
+      "titleBottom": "CHOIR",
+      "titleCaption": "THE LAST RESONANCE",
+      "tagline": "When the echoes of the old world fade, the final chorus becomes our weapon.",
+      "missionData": [
+        { "label": "SECTOR", "value": "CN–07" },
+        { "label": "PROTOCOL", "value": "NIGHTFALL" },
+        { "label": "SIGNAL", "value": "98.6%" }
+      ],
+      "signalCore": "SC",
+      "signalStatus": "ONLINE",
+      "menuAriaLabel": "Main menu",
+      "menuHeading": "MAIN TERMINAL",
+      "menuInstruction": "SELECT DIRECTIVE",
+      "menu": {
+        "newGame": { "label": "NEW OPERATION", "sublabel": "BEGIN CAMPAIGN" },
+        "continue": { "label": "CONTINUE", "sublabel": "RESUME OPERATION" },
+        "settings": { "label": "SETTINGS", "sublabel": "SYSTEM CONFIGURATION" },
+        "archives": { "label": "ARCHIVES", "sublabel": "MISSION RECORDS" },
+        "quit": { "label": "DISCONNECT", "sublabel": "EXIT TERMINAL" }
+      },
+      "awaitingCommand": "AWAITING COMMAND",
+      "directiveSent": "DIRECTIVE SENT",
+      "settingsPage": {
+        "eyebrow": "SYSTEM CORE // CONFIGURATION TERMINAL",
+        "headerCode": "CFG // 04",
+        "cardCode": "SC / CONFIG",
+        "title": "SYSTEM SETTINGS",
+        "description": "Configure terminal, audio, display, and control parameters. Changes are applied on confirmation.",
+        "back": "BACK TO MAIN MENU",
+        "apply": "APPLY SETTINGS",
+        "reset": "RESTORE DEFAULTS",
+        "applied": "SETTINGS APPLIED",
+        "resetDone": "DEFAULT SETTINGS RESTORED",
+        "tabs": {
+          "general": "GENERAL",
+          "display": "DISPLAY",
+          "audio": "AUDIO",
+          "controls": "CONTROLS"
+        },
+        "general": {
+          "title": "GENERAL SETTINGS",
+          "language": "Interface Language",
+          "languageHint": "Choose the language used by the interface",
+          "languageOptions": [
+            { "value": "zh-CN", "label": "Chinese" },
+            { "value": "en-US", "label": "English" }
+          ],
+          "difficulty": "Default Difficulty",
+          "difficultyHint": "Enemy strength used for new operations",
+          "difficultyOptions": ["Story", "Standard", "Tactical", "Extreme"],
+          "subtitles": "Subtitles",
+          "subtitlesHint": "Show subtitles for dialogue and critical comms",
+          "tutorials": "Tactical Guidance",
+          "tutorialsHint": "Show operational advice at key moments"
+        },
+        "display": {
+          "title": "DISPLAY SETTINGS",
+          "windowMode": "Display Mode",
+          "windowModeHint": "Choose the game window mode",
+          "windowModeOptions": ["Fullscreen", "Borderless", "Windowed"],
+          "resolution": "Resolution",
+          "resolutionHint": "Set the game output resolution",
+          "resolutionOptions": ["1920 × 1080", "2560 × 1440", "3840 × 2160"],
+          "brightness": "Brightness",
+          "brightnessHint": "Adjust visibility in dark scenes",
+          "vsync": "Vertical Sync",
+          "vsyncHint": "Reduce visible screen tearing"
+        },
+        "audio": {
+          "title": "AUDIO SETTINGS",
+          "master": "Master Volume",
+          "masterHint": "Control the overall output volume",
+          "music": "Music Volume",
+          "musicHint": "Control the background music volume",
+          "effects": "Effects Volume",
+          "effectsHint": "Control combat and environment effects",
+          "voice": "Voice Volume",
+          "voiceHint": "Control character dialogue volume"
+        },
+        "controls": {
+          "title": "CONTROL SETTINGS",
+          "sensitivity": "Camera Sensitivity",
+          "sensitivityHint": "Adjust mouse camera movement speed",
+          "invertY": "Invert Vertical Axis",
+          "invertYHint": "Reverse vertical camera movement",
+          "edgeScroll": "Edge Scrolling",
+          "edgeScrollHint": "Move the camera near screen edges",
+          "cameraShake": "Camera Shake",
+          "cameraShakeHint": "Enable camera shake during combat"
+        },
+        "enabled": "ON",
+        "disabled": "OFF"
+      },
+      "build": "BUILD 0.8.17",
+      "secureChannel": "SECURE CHANNEL // 4A",
+      "copyright": "© SILVER CHOIR COMMAND"
+    }
+  }
+}

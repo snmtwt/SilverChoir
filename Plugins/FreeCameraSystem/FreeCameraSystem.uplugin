@@ -1,0 +1,10 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "Free Camera System",
+  "Description": "Standalone top-down free camera extracted from G_Framework: movement, rotation, zoom, bounds and camera state transitions.",
+  "Category": "Camera",
+  "CanContainContent": false,
+  "Modules": [{ "Name": "FreeCameraSystem", "Type": "Runtime", "LoadingPhase": "Default" }]
+}

@@ -1,0 +1,22 @@
+{
+  "tool": "image_gen built-in",
+  "mode": "edit",
+  "aspect_ratio": "3:4",
+  "transparent_background": false,
+  "prompt": "Create an edited portrait from TWO references. IMAGE 1 is the identity and clothing source: preserve exactly that adult character's face, hairstyle, hair color, expression, lighting, dark navy background and tactical uniform. IMAGE 2 is ONLY the user's desired FRAMING reference: match its head-and-shoulders crop, amount of visible shoulder/upper chest, and comfortable head size. Output a vertical 3:4 portrait. Show the full hair, head, neck and both shoulder tops with only a small amount of upper chest like image 2, never the waist, abdomen or full torso. Do not make an extreme face close-up. Composition guide: all hair begins about 5% down the canvas; chin near 62% canvas height; head occupies about 60% canvas width; shoulder line and collar occupy the lower portion; lower edge shortly below shoulder line. Keep the full face, ears as appropriate, jaw and chin entirely visible, with safe hair margins. Same camera gaze and realistic game art as image 1. No text, no frame, no watermark, no additional person. Important: keep the person from image 1, use image 2 for composition only. Aspect ratio 3:4, ideally 1152x1536.",
+  "reference": "Art/UI/Portraits/framing-reference.png",
+  "output_files": [
+    "Art/UI/Portraits/T_TestPortrait_01.png",
+    "Art/UI/Portraits/T_TestPortrait_02.png",
+    "Art/UI/Portraits/T_TestPortrait_03.png",
+    "Art/UI/Portraits/T_TestPortrait_04.png"
+  ],
+  "source_identity_prompts": "generation-prompts.json",
+  "square_crop": {
+    "focus": [
+      0.5,
+      0.4
+    ],
+    "scale": 1
+  }
+}
