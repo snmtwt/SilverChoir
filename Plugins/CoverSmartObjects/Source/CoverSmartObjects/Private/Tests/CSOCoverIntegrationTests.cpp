@@ -54,6 +54,8 @@ namespace
             CopyStruct(TEXT("BakeBoundsTransform"), &BoundsTransform);
             const FVector Extent = Target->GenerationBounds->GetUnscaledBoxExtent();
             CopyStruct(TEXT("BakeBoundsExtent"), &Extent);
+            FindFProperty<FFloatProperty>(Target->GetClass(), TEXT("BakedCornerInsetDistance"))->SetPropertyValue_InContainer(Target, Target->CornerInsetDistance);
+            FindFProperty<FIntProperty>(Target->GetClass(), TEXT("BakedGenerationVersion"))->SetPropertyValue_InContainer(Target, 2);
             FindFProperty<FBoolProperty>(Target->GetClass(), TEXT("bHasBake"))->SetPropertyValue_InContainer(Target, true);
         }
 
@@ -121,6 +123,65 @@ bool FCSOLowWallTest::RunTest(const FString& Parameters)
     R = Test.Covers->FindCover(Q);
     TestEqual(TEXT("Incomplete evaluation reports budget, not no-cover"), R.Status, ECSOCoverQueryStatus::BudgetExceeded);
     TestTrue(TEXT("Budget flag returned"), R.bSearchTruncated);
+    return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FCSOLowCrouchWallTest, "CoverSmartObjects.Integration.EightyCentimeterLowCrouch", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FCSOLowCrouchWallTest::RunTest(const FString& Parameters)
+{
+    FCSOTestWorld Test;
+    Test.Wall->SetWorldLocation(FVector(100, 0, 40));
+    Test.Wall->SetBoxExtent(FVector(20, 200, 40), true); // Actual 80 cm wall, not a mocked trace result.
+    Test.Volume->AgentProfile.Radius = 42.f;
+    Test.Volume->AgentProfile.StandHalfHeight = 92.f;
+    Test.Volume->AgentProfile.CrouchHalfHeight = 60.f;
+    Test.Volume->AgentProfile.bEnableLowCrouch = true;
+    Test.Volume->AgentProfile.LowCrouchBodyHeight = 72.f;
+    Test.Volume->AgentProfile.LowCrouchEyeHeight = 62.f;
+    Test.Volume->BakedCovers.Empty();
+    Test.SeedBake(Test.Volume, FVector::ZeroVector);
+    Test.Volume->BakedCovers[0].bLowCrouched = true;
+    Test.Covers->RefreshVolume(Test.Volume);
+    TestEqual(TEXT("Low-crouch cover registers as a real Smart Object"), Test.Covers->GetRegisteredCoverCount(), 1);
+
+    FCSOCoverQuery Q = Test.Query();
+    TestFalse(TEXT("Queries require explicit animation support before selecting low crouch"), Q.bAllowLowCrouch);
+    TestEqual(TEXT("Default query rejects a low-crouch-only slot"), Test.Covers->FindCover(Q).Status, ECSOCoverQueryStatus::NoCover);
+    Q.bAllowLowCrouch = true;
+    FCSOCoverQueryResult R = Test.Covers->FindCover(Q);
+    TestTrue(TEXT("Supported low stance hides behind 80 cm wall and permits standing shot"), R.IsValid());
+    TestTrue(TEXT("Low result retains native smart-object and slot handles"), R.SmartObjectHandle.IsValid() && R.SlotHandle.IsValid());
+    TestEqual(TEXT("Result identifies required low animation stance"), R.Stance, ECSOCoverStance::LowCrouch);
+    TestTrue(TEXT("Low stance also reports crouching for existing consumers"), R.bCrouched);
+    TestEqual(TEXT("Result returns required concealed body height"), R.RequiredBodyHeight, 72.f);
+    TestEqual(TEXT("Result returns required concealed eye height"), R.RequiredEyeHeight, 62.f);
+    TestEqual(TEXT("Low wall permits a full standing peek"), R.Peek, ECSOPeek::Stand);
+    TestEqual(TEXT("Standing firing anchor stays at the normal eye height"), R.PeekLocation, FVector(0, 0, 160));
+
+    Q.TargetEnemy.Z = 300.f;
+    TestFalse(TEXT("Elevated target seeing over the same low wall is still rejected"), Test.Covers->FindCover(Q).IsValid());
+    Q.TargetEnemy.Z = 0.f;
+    TestTrue(TEXT("Returning target to ground restores protection"), Test.Covers->FindCover(Q).IsValid());
+
+    UBoxComponent* Ceiling = Test.Box(FVector(0, 0, 160), FVector(60, 60, 5));
+    Ceiling->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+    TestFalse(TEXT("Movement-only ceiling still prevents rising from low cover to fire"), Test.Covers->FindCover(Q).IsValid());
+
+    // Switch to a lateral shot that never stands up: now a ceiling above the
+    // visual silhouette must be rejected specifically by crouched capsule room.
+    Ceiling->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    Test.Wall->SetBoxExtent(FVector(20, 50, 40), true);
+    Test.Volume->BakedCovers[0].PeekMask = int32(ECSOPeek::Right);
+    Test.Volume->BakedCovers[0].RightPeekDistance = 80.f;
+    Test.Covers->RefreshVolume(Test.Volume);
+    R = Test.Covers->FindCover(Q);
+    TestTrue(TEXT("Low lateral firing is usable without standing"), R.IsValid() && R.Peek == ECSOPeek::Right);
+    Ceiling->SetWorldLocation(FVector(0, 0, 110));
+    Ceiling->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    TestFalse(TEXT("Space above the 72 cm silhouette must still fit the actual 120 cm crouching capsule"), Test.Covers->FindCover(Q).IsValid());
+    Ceiling->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    TestTrue(TEXT("Removing physical obstruction restores low-cover usability"), Test.Covers->FindCover(Q).IsValid());
+    TestEqual(TEXT("Low-cover selection never shrinks the physical crouching profile"), Test.Volume->AgentProfile.CrouchHalfHeight, 60.f);
     return true;
 }
 

@@ -14,9 +14,9 @@ DEFINE_LOG_CATEGORY_STATIC(LogCoverSmartObjects, Log, All);
 
 namespace
 {
-    TAutoConsoleVariable<int32> CVarDebug(TEXT("cso.Debug"), 0, TEXT("Draw nearby cover points and baked peek directions. 0=off, 1=on."));
+    TAutoConsoleVariable<int32> CVarDebug(TEXT("cso.Debug"), 0, TEXT("Draw baked covers in realtime editor viewports and registered nearby covers during Play. 0=off, 1=on. Per-volume Draw Debug remains independent."));
     TAutoConsoleVariable<float> CVarDebugRadius(TEXT("cso.DebugRadius"), 5000.f, TEXT("Cover debug distance from the player camera in cm."));
-    TAutoConsoleVariable<int32> CVarDebugMaxPoints(TEXT("cso.DebugMaxPoints"), 256, TEXT("Maximum visible cover points per debug update."));
+    TAutoConsoleVariable<int32> CVarDebugMaxPoints(TEXT("cso.DebugMaxPoints"), 256, TEXT("Maximum visible cover points per runtime update, or per volume in editor preview."));
     TAutoConsoleVariable<int32> CVarDebugPartitions(TEXT("cso.DebugPartitions"), 0, TEXT("Draw spatial hash cells alongside cover points."));
     TAutoConsoleVariable<int32> CVarDebugLabels(TEXT("cso.DebugLabels"), 0, TEXT("Draw cover IDs, occupancy and remaining lease seconds."));
 
@@ -99,7 +99,8 @@ void UCSOCoverSubsystem::RegisterVolume(ACSOCoverVolume* Volume)
             || Record.Data.Position.GetAbsMax() > 1.e9 || Record.Data.WallDirection.IsNearlyZero()
             || !FMath::IsFinite(Record.Data.LeftPeekDistance) || !FMath::IsFinite(Record.Data.RightPeekDistance)
             || Record.Data.LeftPeekDistance < 0.f || Record.Data.RightPeekDistance < 0.f
-            || Record.Data.LeftPeekDistance > 10000.f || Record.Data.RightPeekDistance > 10000.f) continue;
+            || Record.Data.LeftPeekDistance > 10000.f || Record.Data.RightPeekDistance > 10000.f
+            || (Record.Data.bLowCrouched && (!Record.Data.bCrouched || !Volume->AgentProfile.bEnableLowCrouch))) continue;
         Record.Data.WallDirection = Record.Data.WallDirection.GetSafeNormal2D();
         if (Record.Data.WallDirection.IsNearlyZero()) continue;
         Record.Profile = Volume->AgentProfile;
@@ -437,7 +438,7 @@ void UCSOCoverSubsystem::DrawRuntimeDebug()
             const ESmartObjectSlotState State = GetSmartObjects()->GetSlotState(Cover->SlotHandle);
             const FColor Color = State == ESmartObjectSlotState::Occupied ? FColor::Red
                 : (State == ESmartObjectSlotState::Claimed ? FColor::Orange
-                : (Cover->Data.bCrouched ? FColor::Cyan : FColor::Blue));
+                : (Cover->Data.bLowCrouched ? FColor(180, 80, 255) : (Cover->Data.bCrouched ? FColor::Cyan : FColor::Blue)));
             DrawDebugPoint(World, Cover->Data.Position, 9.f, Color, false, Life);
             const FVector Eye = Cover->Data.GetEye(Cover->Profile);
             DrawDebugLine(World, Cover->Data.Position, Eye, Color, false, Life, 0, 1.5f);
@@ -449,7 +450,7 @@ void UCSOCoverSubsystem::DrawRuntimeDebug()
             {
                 const double Remaining = Reservation ? FMath::Max(0.0, Reservation->ExpiresAt - World->GetTimeSeconds()) : 0.0;
                 const FString Label = FString::Printf(TEXT("%lld %s%s %.1fs"), Id,
-                    Cover->Data.bCrouched ? TEXT("Crouch ") : TEXT("Stand "),
+                    Cover->Data.bLowCrouched ? TEXT("LowCrouch ") : (Cover->Data.bCrouched ? TEXT("Crouch ") : TEXT("Stand ")),
                     State == ESmartObjectSlotState::Occupied ? TEXT("Occupied") : (State == ESmartObjectSlotState::Claimed ? TEXT("Claimed") : TEXT("Free")), Remaining);
                 DrawDebugString(World, Eye + FVector(0, 0, 25), Label, nullptr, Color, Life, false, 0.8f);
             }

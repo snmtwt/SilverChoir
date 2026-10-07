@@ -12,6 +12,15 @@ enum class ECSOPeek : uint8
 };
 ENUM_CLASS_FLAGS(ECSOPeek)
 
+/** Animation/body silhouette required while hiding. Physical capsule dimensions remain in the agent profile. */
+UENUM(BlueprintType)
+enum class ECSOCoverStance : uint8
+{
+    Stand,
+    Crouch,
+    LowCrouch
+};
+
 UENUM(BlueprintType)
 enum class ECSOCoverRanking : uint8
 {
@@ -36,6 +45,10 @@ struct COVERSMARTOBJECTS_API FCSOAgentProfile
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="1")) float StandHalfHeight = 90.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="1")) float CrouchEyeHeight = 100.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="1")) float StandEyeHeight = 160.f;
+    /** Enables baking lower animation silhouettes; does not shrink the physical crouching capsule. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Low Crouch") bool bEnableLowCrouch = true;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Low Crouch", meta=(ClampMin="1", EditCondition="bEnableLowCrouch")) float LowCrouchBodyHeight = 72.f;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Low Crouch", meta=(ClampMin="1", EditCondition="bEnableLowCrouch")) float LowCrouchEyeHeight = 62.f;
     /** Extra exposure beyond the detected wall edge. The bake stores the full eye displacement per side. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="0")) float LeanDistance = 20.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="0")) float Clearance = 3.f;
@@ -52,11 +65,16 @@ struct COVERSMARTOBJECTS_API FCSOBakedCover
     /** Unit horizontal direction from agent towards the obstacle. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover") FVector WallDirection = FVector::ForwardVector;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover") bool bCrouched = true;
+    /** Low crouch also requires bCrouched=true. This describes the pose silhouette, never a smaller collision capsule. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(EditCondition="bCrouched")) bool bLowCrouched = false;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(Bitmask, BitmaskEnum="/Script/CoverSmartObjects.ECSOPeek")) int32 PeekMask = 0;
     /** Full lateral eye displacement: measured distance to edge plus Profile.LeanDistance. Zero uses the profile value for manually authored points. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="0")) float LeftPeekDistance = 0.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="0")) float RightPeekDistance = 0.f;
     FVector GetRight() const { return FVector::CrossProduct(FVector::UpVector, WallDirection).GetSafeNormal(); }
+    ECSOCoverStance GetStance() const;
+    float GetBodyHeight(const FCSOAgentProfile& Profile) const;
+    float GetEyeHeight(const FCSOAgentProfile& Profile) const;
     FVector GetEye(const FCSOAgentProfile& Profile) const;
     FVector GetPeekEye(const FCSOAgentProfile& Profile, ECSOPeek Peek) const;
 };
@@ -81,6 +99,8 @@ struct COVERSMARTOBJECTS_API FCSOCoverQuery
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="1")) int32 MaxTraces = 2048;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover", meta=(ClampMin="1")) int32 MaxPathTests = 16;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover") bool bRequireReachable = true;
+    /** Opt in only when this AI supports the baked low-crouch animation and matching damage silhouette. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover") bool bAllowLowCrouch = false;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover") TEnumAsByte<ECollisionChannel> TraceChannel = ECC_Visibility;
     /** Match the bake's sight geometry setting. Movement clearance always uses simple collision. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover") bool bTraceComplex = false;
@@ -103,6 +123,11 @@ struct COVERSMARTOBJECTS_API FCSOCoverQueryResult
     UPROPERTY(BlueprintReadOnly, Category="Cover") FVector PeekLocation = FVector::ZeroVector;
     UPROPERTY(BlueprintReadOnly, Category="Cover") ECSOPeek Peek = ECSOPeek::None;
     UPROPERTY(BlueprintReadOnly, Category="Cover") bool bCrouched = false;
+    UPROPERTY(BlueprintReadOnly, Category="Cover") ECSOCoverStance Stance = ECSOCoverStance::Stand;
+    /** Maximum pose silhouette height assumed by the protection test, measured above feet. */
+    UPROPERTY(BlueprintReadOnly, Category="Cover") float RequiredBodyHeight = 0.f;
+    /** Covered eye height assumed by this stance, measured above feet. */
+    UPROPERTY(BlueprintReadOnly, Category="Cover") float RequiredEyeHeight = 0.f;
     UPROPERTY(BlueprintReadOnly, Category="Cover") FSmartObjectHandle SmartObjectHandle;
     UPROPERTY(BlueprintReadOnly, Category="Cover") FSmartObjectSlotHandle SlotHandle;
     UPROPERTY(BlueprintReadOnly, Category="Cover") FSmartObjectClaimHandle ClaimHandle;

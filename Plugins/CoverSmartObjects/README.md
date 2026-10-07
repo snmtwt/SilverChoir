@@ -7,18 +7,34 @@
 1. 编译后重新打开编辑器，在插件列表确认 **掩体智能对象 (Cover Smart Objects)** 已启用。
 2. 地图需要已构建的 Recast NavMesh。放置 **Cover Smart Object Volume**，调整 `Generation Bounds / Box Extent` 覆盖区域。保持 Actor/组件缩放为 1、无俯仰和翻滚。
 3. 设置 `Agent Profile`，点击 **Bake Cover**，检查 `Last Bake Report`，保存地图。World Partition 地图需要先加载待烘焙单元；建议每个流送区域各放一个小 Volume。
-4. 开启 Volume 的 `Draw Debug` 检查烘焙点和探出方向。青色为蹲姿，黄色为站姿，绿色箭头为静态可探出方向，红色表示烘焙数据已失效。
+4. 开启 Volume 的 `Draw Debug` 检查烘焙点和探出方向。青色为普通蹲姿，紫色为低蹲，黄色为站姿，绿色箭头为静态可探出方向，红色表示烘焙数据已失效。
 5. 游戏中获取 `CSOCoverSubsystem`（Get World Subsystem），构造 `CSOCoverQuery`，调用 **Find And Claim Cover** 或 **Find Cover Queued**。只查看结果可调用 **Find Cover**。
-6. `Status == Success` 后移动到 `Location`，按 `WallDirection` 朝向掩体。`bCrouched` 指定躲藏姿态，`Peek` / `PeekLocation` 给出这次查询能够看见目标的探头方式和世界眼睛位置。
+6. `Status == Success` 后移动到 `Location`，按 `WallDirection` 朝向掩体。`Stance` 指定 Stand / Crouch / LowCrouch，`RequiredBodyHeight`、`RequiredEyeHeight` 是该隐藏姿态相对脚底的高度；`Peek` / `PeekLocation` 给出这次查询能够看见目标的探头方式和世界眼睛位置。兼容字段 `bCrouched` 对普通蹲姿和低蹲均为 true，不应单靠它选择低蹲动画。
 7. 抵达后先 **Validate Cover**，再 **Occupy Cover**。持续使用时周期调用 **Renew Cover Lease**；离开、任务终止或死亡时调用 **Release Cover**。离开视野或场景变化后，射击前再次验证。
 
 输入 `Origin` 是角色脚底；`TargetEnemy`、`Enemies` 默认也是脚底，统一加 `EnemyEyeHeight = 160cm`。若传入真实眼睛/瞄准坐标，将 `Enemy Positions Are Eyes` 打开。目标不需要重复放入数组；重复坐标会去重。占用和寻路时将 `User` 设置为查询 Pawn 或 Controller。
+
+### 80cm 半墙与低蹲姿态
+
+默认普通蹲姿的碰撞高 120cm、眼高 100cm，不能藏在 80cm 墙后。`Enable Low Crouch` 开启后，烘焙额外检查低蹲身体轮廓（默认 `Low Crouch Body Height = 72cm`、`Low Crouch Eye Height = 62cm`）；普通姿态能用的点仍优先保持普通姿态。低蹲不会缩小物理胶囊，身体空间校验继续使用 `Crouch Half Height`，因此狭窄顶棚仍可使其无效。
+
+游戏 AI **接入并校准低蹲动画后**，在 Query 设置 `Allow Low Crouch = true`。它默认关闭，避免没有对应动画的角色误用矮墙。72/62cm 是可配置的动画契约，不会自动把角色模型或头骨降到该高度；实际姿态须达到返回高度。对高处或近处敌人，实时身体遮挡检测仍可能拒绝该点。
+
+SilverChoir 当前 `UnitPawnBase` / HMS 的物理尺寸为半径 42cm、站立半高 92cm、蹲姿半高 60cm，蹲姿眼高约离脚 110cm；配置 Volume 时应匹配实际角色。插件通用默认半径 34cm 不能用于更大角色的尺寸保证。
+
+### 固定墙角停靠距离
+
+在 `CSOCoverVolume → Cover → Generation` 设置 **Corner Inset Distance**（默认 50cm），然后点击 **Bake Cover** 并保存地图。它表示角色脚底中心沿墙面方向、到实际遮挡边缘的内缩距离；两侧墙面的点以同一规则定位。墙端柱也计入实际碰撞轮廓，不以网格包围盒或导航采样点作为墙角。
+
+`Agent Profile → Lean Distance` 仍表示越过边缘后露出的距离（默认 20cm），所以默认侧探眼睛的横向位移是 **50 + 20 = 70cm**。`Max Side Peek Distance` 必须容纳两者之和。改变内缩距离会令现有烘焙失效，需要重烘焙；动画可按这两个尺寸校准，运行时使用返回的 `Location` 和 `PeekLocation`。
+
+侧探点会重新验证导航、地面、胶囊、身体遮挡和头部运动；固定位置不安全时不生成该侧探点。低墙中间仅支持站起射击的点仍沿墙采样。此参数统一的是沿墙到侧边的距离；角色与墙面之间的垂直间距仍由导航和胶囊净空决定。
 
 ## 筛选规则
 
 - 硬条件：角色胶囊有空间；目标看不到头顶、胸、双肩、骨盆和膝部六个采样点；至少一种烘焙允许的探身方式当前能看见目标。默认还要求存在完整导航路径。
 - 半墙起身：重新检测站立胶囊、从蹲姿眼睛到站姿眼睛的球形扫掠、站姿眼睛到目标的射线。
-- 全墙侧探：按你的确认，采用 **越过墙角后再露出 20cm**。烘焙分别测量左右边缘，将到边缘的横向距离加上 `LeanDistance = 20cm`，保存为每点左右实际探头距离。运行时验证到该位置的扫掠及对目标的射线。探头搜索有最大距离限制，过宽墙体中段不会生成不合理的超长探身。
+- 全墙侧探：采用 **固定墙角内缩 + 越过墙角后再露出 20cm**。烘焙找到实际边缘，将侧探点移动到 `CornerInsetDistance` 指定位置，保存完整侧探距离；运行时验证到该位置的扫掠及对目标的射线。探头搜索有最大距离限制，过宽墙体中段不会生成不合理的超长探身。
 - 其他敌人：每人只要看得到任何身体采样点，即计为暴露；全部采样点被挡住才算对该敌人隐蔽。
 - `Balanced` 默认分数 = 距离厘米 + 暴露敌人数 × `ExposurePenalty`（默认 1000cm），越小越好。
 - `SafestThenNearest` 先比较暴露人数，再比较距离；`Nearest` 只比较满足硬条件后的距离。
@@ -49,11 +65,16 @@ cso.DebugMaxPoints 256
 cso.DebugPartitions 1
 cso.DebugLabels 1
 cso.DebugQuery 1
+cso.DebugBake 1
 ```
 
-前五项显示附近烘焙能力、分区、ID、占用及租约；最后一项显示当前查询遮挡射线、射击射线和拒绝原因。也可只打开单次 Query 的 `Draw Debug`。静态绿色探身箭头只说明烘焙时前方可用，实际能否命中某个敌人仍以当前查询为准。关闭时将对应开关设为 0。
+`cso.Debug 1` 在**编辑器未运行游戏时也生效**：读取已加载 Volume 的烘焙点，显示身体位置、墙面方向和绿色探身箭头。编辑器预览会透过墙体显示，且不按玩家距离裁剪；保持视口 **Realtime / 实时** 开启（Ctrl+R）。每个 Volume 的显示数量受 `MaxDebugPoints` 和 `cso.DebugMaxPoints` 限制。也可单独勾选 Volume 的 `Cover → Debug → Draw Debug`，这个开关独立于控制台全局开关。
+
+进入 Play 后，子系统显示玩家附近已注册的掩体，`DebugRadius`、分区和占用/租约标签在运行时生效。`DebugQuery` 显示当前查询遮挡射线、射击射线和拒绝原因。也可只打开单次 Query 的 `Draw Debug`。静态绿色探身箭头只说明烘焙时前方可用，实际能否命中某个敌人仍以当前查询为准。关闭全局显示用 `cso.Debug 0`；单独开启的 Volume 还需取消其 `Draw Debug`。
 
 结果带候选、碰撞和寻路次数；子系统提供已注册掩体/分区/预约数量。Unreal Insights 中可查看 `CSO_FindCover` 与 `CSO_ValidateCover` 的 CPU 区间。
+
+`cso.DebugBake 1` 后重新点击 **Bake Cover**，Output Log 会记录候选坐标、导航投射、胶囊阻挡组件、身体露出采样及探身失败原因；默认关闭，诊断结束用 `cso.DebugBake 0`。`cso.DebugBakeMaxLines` 限制单次输出数量，默认 10000，避免复杂地图无上限刷日志。它用于解释“为什么这里没有生成掩体”，与显示已生成点的 `cso.Debug` 分开。
 
 ## 集成边界与验收
 

@@ -169,7 +169,7 @@ namespace CSOQuery
     {
         const auto& P = Cover.Profile;
         const auto& D = Cover.Data;
-        const double Height = 2. * (D.bCrouched ? P.CrouchHalfHeight : P.StandHalfHeight);
+        const double Height = D.GetBodyHeight(P);
         const FVector Up = FVector::UpVector;
         const FVector Shoulder = D.GetRight() * P.Radius * 0.9;
         Out.Add(D.Position + Up * (Height - 2.));
@@ -242,6 +242,11 @@ namespace CSOQuery
     {
         ++Context.Candidates;
         if (!Cover.Profile.IsValid() || Cover.Data.WallDirection.IsNearlyZero()) { return ETest::Rejected; }
+        if (Cover.Data.bLowCrouched && (!Cover.Data.bCrouched || !Cover.Profile.bEnableLowCrouch || !Context.Query.bAllowLowCrouch))
+        {
+            Context.Reject(Cover, TEXT("Low crouch requires supported pose"));
+            return ETest::Rejected;
+        }
         if (Cover.Profile.Radius < Context.RequestedRadius || Cover.Profile.StandHalfHeight * 2.f < Context.RequestedHeight)
         {
             Context.Reject(Cover, TEXT("Agent exceeds baked profile"));
@@ -279,6 +284,9 @@ namespace CSOQuery
         Result.Location = Cover.Data.Position;
         Result.WallDirection = Cover.Data.WallDirection;
         Result.bCrouched = Cover.Data.bCrouched;
+        Result.Stance = Cover.Data.GetStance();
+        Result.RequiredBodyHeight = Cover.Data.GetBodyHeight(Cover.Profile);
+        Result.RequiredEyeHeight = Cover.Data.GetEyeHeight(Cover.Profile);
         Result.SmartObjectHandle = Cover.SmartObjectHandle;
         Result.SlotHandle = Cover.SlotHandle;
         Result.Peek = Chosen;
@@ -369,6 +377,7 @@ FCSOCoverQueryResult UCSOCoverSubsystem::FindCover(const FCSOCoverQuery& Query)
                 ++RecordsTouched;
                 const FCSORuntimeCover* Cover = Covers.Find(Id);
                 if (!Cover || !IsCoverAvailable(*Cover, Query.User)) { continue; }
+                if (Cover->Data.bLowCrouched && !Query.bAllowLowCrouch) { continue; }
                 const FVector Delta = Cover->Data.Position - Query.Origin;
                 if (FMath::Abs(Delta.Z) <= Query.MaxVerticalDistance && Delta.SizeSquared() <= RadiusSquared) { Nearby.Add(Cover); }
             }

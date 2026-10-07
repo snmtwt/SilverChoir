@@ -10,6 +10,7 @@
 #include "SubSystem/PlayerUnitSubSystem/PlayerUnitLibrary.h"
 #include "Components/HMS_NavMoverComponent.h"
 #include "Components/HMS_AnimationDataComponent.h"
+#include "Animation/HMS_AnimationQueryLibrary.h"
 #include "Object/Unit/UnitAIController.h"
 #include "NavigationSystem.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -105,6 +106,20 @@ bool AUnitPawnBase::RemoveWearableMesh(FGuid Key)
     }
     return true;
 }
+
+#pragma region 动画
+bool AUnitPawnBase::SetAnimationBehaviorState(FGameplayTag BehaviorState)
+{
+    if (!IsInGameThread() || IsActorBeingDestroyed() || !IsValid(MeshComponent)) return false;
+    return UHMS_AnimationQueryLibrary::SetAnimationBehaviorState(MeshComponent->GetAnimInstance(), BehaviorState);
+}
+
+bool AUnitPawnBase::SetEquippedWeaponType(FGameplayTag EquippedWeaponType)
+{
+    if (!IsInGameThread() || IsActorBeingDestroyed() || !IsValid(MeshComponent)) return false;
+    return UHMS_AnimationQueryLibrary::SetEquippedWeaponType(MeshComponent->GetAnimInstance(), EquippedWeaponType);
+}
+#pragma endregion
 
 void AUnitPawnBase::PostInitializeComponents()
 {

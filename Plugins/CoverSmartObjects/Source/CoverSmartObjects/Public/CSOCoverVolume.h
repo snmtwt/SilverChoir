@@ -29,7 +29,10 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Generation", meta=(ClampMin="10", ClampMax="1000")) float PeekProbeDistance = 150.f;
     /** Maximum displacement from the covered eye to a side firing position, including the margin beyond the wall edge. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Generation", meta=(ClampMin="10", ClampMax="500")) float MaxSidePeekDistance = 100.f;
-    /** Resolution when finding the end of the occluding surface; the final margin is conservative by up to this amount. */
+    /** Fixed distance along the wall from the feet center to its actual occluding edge, including end pillars.
+     * Side firing travels this distance plus AgentProfile.LeanDistance. Unsafe fixed anchors are rejected. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Generation", meta=(ClampMin="0", ClampMax="500", Units="cm")) float CornerInsetDistance = 50.f;
+    /** Coarse edge search step. Detected transitions are then refined to at most 0.125cm. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Generation", meta=(ClampMin="1", ClampMax="25")) float SideEdgeSearchStep = 5.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Generation", meta=(ClampMin="0", ClampMax="89")) float MaxFloorSlopeDegrees = 45.f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Cover|Generation") TEnumAsByte<ECollisionChannel> GeometryTraceChannel = ECC_Visibility;
@@ -68,5 +71,8 @@ private:
     UPROPERTY() bool bBakedTraceComplex = false;
     UPROPERTY() float BakedMaxSidePeekDistance = 100.f;
     UPROPERTY() float BakedSideEdgeSearchStep = 5.f;
+    UPROPERTY() float BakedCornerInsetDistance = 0.f;
+    /** Zero is deliberately the default so assets baked before fixed corner anchors must be rebuilt. */
+    UPROPERTY() int32 BakedGenerationVersion = 0;
     UPROPERTY() bool bHasBake = false;
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/Pawn.h"
 #include "MoverSimulationTypes.h"
 #include "HMS_MovementStruct.h"
@@ -40,6 +41,16 @@ public:
     /** 销毁该 Key 对应的穿戴组件；不存在时返回 false。 */
     UFUNCTION(BlueprintCallable, Category="单位|穿戴", meta=(DisplayName="删除穿戴骨骼网格体"))
     bool RemoveWearableMesh(FGuid Key);
+
+#pragma region 动画
+    /** 修改自身 Mesh 动画实例的行为标签；动画实例未就绪或标签无效时返回 false。 */
+    UFUNCTION(BlueprintCallable, Category="单位|动画", meta=(DisplayName="修改行为状态"))
+    bool SetAnimationBehaviorState(UPARAM(meta=(Categories="HMS.Behavior")) FGameplayTag BehaviorState);
+
+    /** 修改动画使用的武器标签，不执行实际装备操作；动画实例未就绪或标签无效时返回 false。 */
+    UFUNCTION(BlueprintCallable, Category="单位|动画", meta=(DisplayName="修改装备武器类型"))
+    bool SetEquippedWeaponType(UPARAM(meta=(Categories="HMS.Weapon")) FGameplayTag EquippedWeaponType);
+#pragma endregion
 
     /** 世界空间速度(cm/s)。持续生效，传零停止；可由控制器或蓝图调用。 */
     UFUNCTION(BlueprintCallable, Category="单位|移动", meta=(DisplayName="设置单位移动速度"))
